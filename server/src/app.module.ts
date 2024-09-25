@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigProvider } from 'src/common/database/provider/database-config.provider';
 import { DoModule } from 'src/module/do/do.module';
@@ -12,6 +13,10 @@ import { WeeklyFeedbackModule } from './module/weekly-feedback/weekly-feedback.m
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),
     }),
