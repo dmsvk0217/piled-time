@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 @Injectable()
 export class TypeOrmConfigProvider {
-  constructor(private configService: ConfigService) {}
-
   public static forRoot(): TypeOrmModuleOptions {
     return {
-      type: 'mariadb',
+      type: 'mysql',
       host: process.env.DATABASE_HOST,
       port: +process.env.DATABASE_PORT,
       username: process.env.DATABASE_USER,
