@@ -1,8 +1,8 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
+import { Category } from "src/module/category/category.entity";
+import { Feedback } from "src/module/feedback/feedback.entity";
+import { Memo } from "src/module/memo/memo.entity";
 import { Column, Entity, OneToMany } from "typeorm";
-import { Category } from "../category/category.entity";
-import { Feedback } from "../feedback/feedback.entity";
-import { Memo } from "../memo/memo.entity";
 
 @Entity()
 export class User extends BaseEntity {

@@ -1,6 +1,6 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
+import { User } from "src/module/user/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { User } from "../user/user.entity";
 
 @Entity()
 export class Memo extends BaseEntity {

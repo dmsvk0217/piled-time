@@ -1,7 +1,7 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
+import { FeedbackType } from "src/module/feedback/feedback.enum";
+import { User } from "src/module/user/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { User } from "../user/user.entity";
-import { FeedbackType } from "./feedback.enum";
 
 @Entity()
 export class Feedback extends BaseEntity {
