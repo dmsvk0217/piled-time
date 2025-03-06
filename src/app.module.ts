@@ -5,6 +5,7 @@ import { TypeOrmConfigProvider } from "src/common/database/provider/database-con
 import { CategoryModule } from "src/module/category/category.module";
 import { FeedbackModule } from "src/module/feedback/feedback.module";
 import { MemoModule } from "src/module/memo/memo.module";
+import { TodoModule } from "src/module/todo/todo.module";
 import { UserModule } from "src/module/user/user.module";
 
 @Module({
@@ -20,6 +21,7 @@ import { UserModule } from "src/module/user/user.module";
     CategoryModule,
     FeedbackModule,
     MemoModule,
+    TodoModule,
   ],
 })
 export class AppModule {}

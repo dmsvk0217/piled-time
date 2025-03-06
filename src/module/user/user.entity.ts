@@ -2,6 +2,7 @@ import { BaseEntity } from "src/common/database/entities/base.entity";
 import { Category } from "src/module/category/category.entity";
 import { Feedback } from "src/module/feedback/feedback.entity";
 import { Memo } from "src/module/memo/memo.entity";
+import { Todo } from "src/module/todo/todo.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
@@ -15,8 +16,8 @@ export class User extends BaseEntity {
   @OneToMany(() => Memo, (memo) => memo.user)
   memos: Memo[];
 
-  // @OneToMany(() => TodoList, (todoList) => todoList.user)
-  // todoLists: TodoList[];
+  @OneToMany(() => Todo, (todolist) => todolist.user)
+  todolists: Todo[];
 
   @Column({ type: "varchar" })
   name: string;
