@@ -1,22 +1,21 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
+import { Category } from "../category/category.entity";
+import { Feedback } from "../feedback/feedback.entity";
 
 @Entity()
 export class User extends BaseEntity {
-  // @OneToMany(() => Category, (category) => category.user)
-  // categorys: Category[];
+  @OneToMany(() => Category, (category) => category.user)
+  categorys: Category[];
+
+  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  feedbacks: Feedback[];
 
   // @OneToMany(() => Memo, (memo) => memo.user)
   // memos: Memo[];
 
   // @OneToMany(() => TodoList, (todoList) => todoList.user)
   // todoLists: TodoList[];
-
-  // @OneToMany(() => DailyFeedback, (dailyFeedback) => dailyFeedback.user)
-  // dailyFeedbacks: DailyFeedback[];
-
-  // @OneToMany(() => WeeklyFeedback, (weeklyFeedback) => weeklyFeedback.user)
-  // weeklyFeedbacks: WeeklyFeedback[];
 
   @Column({ type: "varchar" })
   name: string;

@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { join } from "path";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 @Injectable()
@@ -13,7 +12,7 @@ export class TypeOrmConfigProvider {
       username: process.env.DB_USERNAME,
       password: String(process.env.DB_PASSWORD),
       database: process.env.DB_NAME,
-      entities: [join(__dirname, "**", "*.entity.{ts,js}")],
+      entities: ["dist/**/*.entity.js"],
       synchronize: Boolean(process.env.DB_SYNCHRONIZE),
       logging: true,
       namingStrategy: new SnakeNamingStrategy(),
