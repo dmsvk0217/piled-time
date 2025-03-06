@@ -1,0 +1,15 @@
+import { BaseEntity } from "src/common/database/entities/base.entity";
+import { Todo } from "src/module/todo/todo.entity";
+import { Column, Entity, ManyToOne } from "typeorm";
+
+@Entity()
+export class Action extends BaseEntity {
+  @ManyToOne(() => Todo, (todo) => todo.actions)
+  todo: Todo;
+
+  @Column({ type: "datetime" })
+  startAt: string;
+
+  @Column({ type: "integer" })
+  duration: number;
+}

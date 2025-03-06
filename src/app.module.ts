@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { TypeOrmConfigProvider } from "src/common/database/provider/database-config.provider";
+import { ActionModule } from "src/module/action/action.module";
 import { CategoryModule } from "src/module/category/category.module";
 import { FeedbackModule } from "src/module/feedback/feedback.module";
 import { MemoModule } from "src/module/memo/memo.module";
@@ -24,6 +25,7 @@ import { UserModule } from "src/module/user/user.module";
     MemoModule,
     TodoModule,
     PlanModule,
+    ActionModule,
   ],
 })
 export class AppModule {}
