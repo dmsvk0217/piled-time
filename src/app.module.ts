@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { TypeOrmConfigProvider } from "./common/database/provider/database-config.provider";
 import { CategoryModule } from "./module/category/category.module";
 import { FeedbackModule } from "./module/feedback/feedback.module";
+import { MemoModule } from "./module/memo/memo.module";
 import { UserModule } from "./module/user/user.module";
 
 @Module({
@@ -18,6 +19,7 @@ import { UserModule } from "./module/user/user.module";
     UserModule,
     CategoryModule,
     FeedbackModule,
+    MemoModule,
   ],
 })
 export class AppModule {}
