@@ -6,10 +6,7 @@ import { UserModule } from "./module/user/user.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: `.${process.env.NODE_ENV}.env`,
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),
     }),

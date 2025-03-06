@@ -7,14 +7,14 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 export class TypeOrmConfigProvider {
   public static forRoot(): TypeOrmModuleOptions {
     return {
-      type: "postgres",
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_USER,
-      password: String(process.env.DATABASE_PASSWORD),
-      database: process.env.DATABASE_NAME,
+      type: "mysql",
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: String(process.env.DB_PASSWORD),
+      database: process.env.DB_NAME,
       entities: [join(__dirname, "**", "*.entity.{ts,js}")],
-      synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE),
+      synchronize: Boolean(process.env.DB_SYNCHRONIZE),
       logging: true,
       namingStrategy: new SnakeNamingStrategy(),
     };

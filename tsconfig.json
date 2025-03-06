@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "declaration": true,
     "removeComments": true,
@@ -10,14 +10,13 @@
     "target": "ES6",
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": "./",
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "strict": true
-  }
+    "noFallthroughCasesInSwitch": false
+  },
+  "include": ["src/**/*", "test/**/*"]
 }
