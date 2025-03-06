@@ -1,5 +1,6 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
 import { Category } from "src/module/category/category.entity";
+import { Plan } from "src/module/plan/plan.entity";
 import { User } from "src/module/user/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
@@ -10,6 +11,9 @@ export class Todo extends BaseEntity {
 
   @ManyToOne(() => Category, (category) => category.todos)
   category: Category;
+
+  @ManyToOne(() => Plan, (plan) => plan.todo)
+  plans: Plan[];
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   date: string;
