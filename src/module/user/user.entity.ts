@@ -1,6 +1,7 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
-import { Column } from "typeorm";
+import { Column, Entity } from "typeorm";
 
+@Entity()
 export class User extends BaseEntity {
   // @OneToMany(() => Category, (category) => category.user)
   // categorys: Category[];
