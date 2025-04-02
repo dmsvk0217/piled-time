@@ -5,7 +5,7 @@ import { CategoryCreateRequest, CategoryUpdateRequest } from "src/module/categor
 import { FindAllDocs, FindOneDocs, RemoveDocs, SaveDocs, UpdateDocs } from "./decorator/swagger";
 
 @ApiTags("category")
-@Controller("categorys")
+@Controller("categories")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
