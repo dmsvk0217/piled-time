@@ -1,7 +1,7 @@
 import { ApiBody, ApiCreatedResponse, ApiOperation } from "@nestjs/swagger";
 import { CategoryCreateRequest, CategoryResponse } from "src/module/category/dto";
 
-export function SaveDocs(): MethodDecorator {
+export function CreateDocs(): MethodDecorator {
   return (target: string, key: string, descriptor: any) => {
     ApiOperation({
       summary: "카테고리 정보 저장",

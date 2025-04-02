@@ -1,6 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CategoryCreateRequest, CategoryUpdateRequest } from "src/module/category/dto";
+import { plainToInstance } from "class-transformer";
+import {
+  CategoryCreateRequest,
+  CategoryResponse,
+  CategoryUpdateRequest,
+} from "src/module/category/dto";
 import { Category } from "src/module/category/entities/category.entity";
 import { CategoryException } from "src/module/category/errors/category.exception";
 import { User } from "src/module/user/user.entity";
@@ -18,7 +23,8 @@ export class CategoryService {
 
   async create(request: CategoryCreateRequest) {
     const category = this.categoryRepository.create({ ...request });
-    return await this.categoryRepository.save(category);
+    const result = await this.categoryRepository.save(category);
+    return plainToInstance(CategoryResponse, result);
   }
 
   async findAll() {

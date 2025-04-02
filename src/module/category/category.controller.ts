@@ -2,14 +2,14 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from "@ne
 import { ApiTags } from "@nestjs/swagger";
 import { CategoryService } from "src/module/category/category.service";
 import { CategoryCreateRequest, CategoryUpdateRequest } from "src/module/category/dto";
-import { FindAllDocs, FindOneDocs, RemoveDocs, SaveDocs, UpdateDocs } from "./decorator/swagger";
+import { CreateDocs, FindAllDocs, FindOneDocs, RemoveDocs, UpdateDocs } from "./decorator/swagger";
 
 @ApiTags("category")
 @Controller("categories")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @SaveDocs()
+  @CreateDocs()
   @Post()
   create(@Body() request: CategoryCreateRequest) {
     return this.categoryService.create(request);

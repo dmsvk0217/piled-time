@@ -3,18 +3,18 @@ import {
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from "typeorm";
 
 export class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: "datetime" })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: "datetime" })
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'datetime' })
+  @DeleteDateColumn({ type: "datetime" })
   deletedAt: Date;
 }
