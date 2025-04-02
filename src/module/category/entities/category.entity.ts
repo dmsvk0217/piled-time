@@ -5,7 +5,7 @@ import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class Category extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.categorys)
+  @ManyToOne(() => User, (user) => user.categories)
   user: User;
 
   @OneToMany(() => Todo, (todo) => todo.category)

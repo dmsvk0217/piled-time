@@ -8,7 +8,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 @Entity()
 export class User extends BaseEntity {
   @OneToMany(() => Category, (category) => category.user)
-  categorys: Category[];
+  categories: Category[];
 
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];
