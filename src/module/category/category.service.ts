@@ -28,11 +28,13 @@ export class CategoryService {
   }
 
   async findAll() {
-    return await this.categoryRepository.find();
+    const categories = await this.categoryRepository.find();
+    return categories.map((category) => plainToInstance(CategoryResponse, category));
   }
 
   async findOne(id: number) {
-    return await this.findcategoryById(id);
+    const result = await this.findcategoryById(id);
+    return plainToInstance(CategoryResponse, result);
   }
 
   async update(id: number, request: CategoryUpdateRequest) {

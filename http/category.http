@@ -6,3 +6,9 @@ Content-Type: application/json
   "name": "Stu13232dy",
   "color": "#ffcc00"
 }
+
+### FindOne Category
+GET http://localhost:4000/categories/1
+
+### FindAll Category
+GET http://localhost:4000/categories
