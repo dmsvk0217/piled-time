@@ -5,7 +5,7 @@ export class CategoryException {
   static readonly NOT_EXISTS = new PTException(
     [
       {
-        code: "category.find.not-found",
+        code: "plied-time.category.not-found",
         message: "카테고리가 존재하지 않습니다.",
         httpStatus: HttpStatus.NOT_FOUND,
       },

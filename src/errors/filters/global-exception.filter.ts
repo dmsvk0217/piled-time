@@ -12,29 +12,45 @@ import { PTException } from "src/errors/exception";
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  private exception: HttpException;
-  private isException: boolean;
-
   catch(exception: HttpException, host: ArgumentsHost) {
-    exception = this.checkNotFoundException(exception);
-
-    this.isException = exception instanceof PTException;
-    this.exception = exception;
-
+    const normalizedException = this.normalizeException(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    response.status(this.getStatus()).json(this.getBody(request));
+    const status = this.getStatus(normalizedException);
+    const body = this.getBody(normalizedException, request);
+
+    response.status(status).json(body);
   }
 
-  private getStatus(): HttpStatus {
-    return this.isException ? this.exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+  private normalizeException(exception: HttpException): HttpException {
+    if (exception instanceof NotFoundException) {
+      return new PTException(
+        [
+          {
+            code: "plied-time.not-found.url",
+            message: "존재하지 않은 URL 호출입니다.",
+            httpStatus: HttpStatus.NOT_FOUND,
+          },
+        ],
+        HttpStatus.NOT_FOUND
+      );
+    }
+    return exception;
   }
 
-  private getBody(request: Request): string | object {
-    const body = this.isException
-      ? this.exception.getResponse()
+  private getStatus(exception: HttpException): HttpStatus {
+    return exception instanceof PTException
+      ? exception.getStatus()
+      : HttpStatus.INTERNAL_SERVER_ERROR;
+  }
+
+  private getBody(exception: HttpException, request: Request): string | object {
+    const isPTException = exception instanceof PTException;
+
+    const body = isPTException
+      ? exception.getResponse()
       : {
           errors: [
             {
@@ -44,32 +60,21 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             },
           ],
         };
-    if (process.env.NODE_ENV !== "production") this.setDebug(body);
+
+    if (process.env.NODE_ENV !== "production") {
+      this.appendDebugInfo(body, exception);
+    }
+
     return body;
   }
 
-  private setDebug(body: object | string) {
-    const format = this.exception.stack?.split("\n");
-    body["debug"] = {
-      type: format?.[0],
-      file: format?.[1].match(/at (\w+\.\w+)/)?.[1],
-    };
-  }
-
-  private checkNotFoundException(exception: HttpException) {
-    const isNotFoundException = exception instanceof NotFoundException;
-    if (isNotFoundException) {
-      return new PTException(
-        [
-          {
-            code: "buybly.not-found.url",
-            message: "존재하지 않은 URL 호출입니다.",
-            httpStatus: HttpStatus.NOT_FOUND,
-          },
-        ],
-        HttpStatus.NOT_FOUND
-      );
+  private appendDebugInfo(body: any, exception: HttpException) {
+    if (typeof body === "object" && exception.stack) {
+      const [type, fileLine] = exception.stack.split("\n");
+      body.debug = {
+        type,
+        file: fileLine?.match(/at (\w+\.\w+)/)?.[1],
+      };
     }
-    return exception;
   }
 }
