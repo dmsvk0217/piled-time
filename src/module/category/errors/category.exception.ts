@@ -1,8 +1,8 @@
 import { HttpStatus } from "@nestjs/common";
-import { Exception } from "src/errors/exception";
+import { PTException } from "src/errors/exception";
 
 export class CategoryException {
-  static readonly NOT_EXISTS = new Exception(
+  static readonly NOT_EXISTS = new PTException(
     [
       {
         code: "category.find.not-found",
@@ -11,16 +11,5 @@ export class CategoryException {
       },
     ],
     HttpStatus.NOT_FOUND
-  );
-
-  static readonly ALREADY_EXISTS = new Exception(
-    [
-      {
-        code: "category.save.already-exists",
-        message: "카테고리가 이미 존재합니다.",
-        httpStatus: HttpStatus.BAD_REQUEST,
-      },
-    ],
-    HttpStatus.BAD_REQUEST
   );
 }

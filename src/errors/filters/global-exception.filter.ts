@@ -8,7 +8,7 @@ import {
 } from "@nestjs/common";
 import { Request, Response } from "express";
 import * as process from "node:process";
-import { Exception } from "src/errors/exception";
+import { PTException } from "src/errors/exception";
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -18,7 +18,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     exception = this.checkNotFoundException(exception);
 
-    this.isException = exception instanceof Exception;
+    this.isException = exception instanceof PTException;
     this.exception = exception;
 
     const ctx = host.switchToHttp();
@@ -59,7 +59,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   private checkNotFoundException(exception: HttpException) {
     const isNotFoundException = exception instanceof NotFoundException;
     if (isNotFoundException) {
-      return new Exception(
+      return new PTException(
         [
           {
             code: "buybly.not-found.url",

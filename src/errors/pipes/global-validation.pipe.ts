@@ -1,13 +1,13 @@
 import { ValidationPipe } from "@nestjs/common";
 import { ValidationError } from "class-validator";
-import { Exception } from "src/errors/exception";
+import { PTException } from "src/errors/exception";
 import { ValidateExceptionType } from "src/errors/types";
 
 export class GlobalValidationPipe extends ValidationPipe {
   public createExceptionFactory() {
     return (errors: ValidationError[]) => {
       const extractionErrors = this.extractionValidationErrors(errors);
-      return new Exception(extractionErrors);
+      return new PTException(extractionErrors);
     };
   }
 

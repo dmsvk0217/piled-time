@@ -1,6 +1,7 @@
 import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
 import { NestFactory, Reflector } from "@nestjs/core";
 import { setUpSwagger } from "src/common/swagger/swagger.setup";
+import { GlobalExceptionFilter } from "src/errors/filters/global-exception.filter";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
@@ -19,6 +20,7 @@ async function bootstrap() {
       excludeExtraneousValues: true,
     })
   );
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   await app.listen(process.env.PORT);
 }

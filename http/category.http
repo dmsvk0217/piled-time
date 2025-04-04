@@ -8,7 +8,8 @@ Content-Type: application/json
 }
 
 ### FindOne Category
-GET http://localhost:4000/categories/1
+GET http://localhost:4000/categories/5
+
 
 ### FindAll Category
 GET http://localhost:4000/categories
