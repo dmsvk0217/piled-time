@@ -9,7 +9,7 @@ import {
 import { Category } from "src/module/category/entities/category.entity";
 import { CategoryException } from "src/module/category/errors/category.exception";
 import { User } from "src/module/user/user.entity";
-import { Repository } from "typeorm";
+import { FindOneOptions, Repository } from "typeorm";
 
 @Injectable()
 export class CategoryService {
@@ -21,41 +21,42 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>
   ) {}
 
-  async create(request: CategoryCreateRequest) {
+  async create(request: CategoryCreateRequest): Promise<CategoryResponse> {
     const category = this.categoryRepository.create({ ...request });
     const result = await this.categoryRepository.save(category);
     return plainToInstance(CategoryResponse, result);
   }
 
-  async findAll() {
+  async findAll(): Promise<CategoryResponse[]> {
     const categories = await this.categoryRepository.find();
     return categories.map((category) => plainToInstance(CategoryResponse, category));
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<CategoryResponse> {
     const result = await this.findcategoryById(id);
     return plainToInstance(CategoryResponse, result);
   }
 
-  async update(id: number, request: CategoryUpdateRequest) {
+  async update(id: number, request: CategoryUpdateRequest): Promise<CategoryResponse> {
     const category = await this.findcategoryById(id);
     this.categoryRepository.merge(category, request);
-    return await this.categoryRepository.save(category);
+    const result = await this.categoryRepository.save(category);
+    return plainToInstance(CategoryResponse, result);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const category = await this.findcategoryById(id);
     await this.categoryRepository.softRemove(category);
   }
 
-  private async findcategoryById(id: number) {
+  private async findcategoryById(id: number): Promise<Category> {
     const options = this.getOneOptions(id);
     const category = await this.categoryRepository.findOne(options);
     if (!category) throw CategoryException.NOT_EXISTS;
     return category;
   }
 
-  private getOneOptions(id: number) {
+  private getOneOptions(id: number): FindOneOptions<Category> {
     return {
       where: { id },
     };
