@@ -8,8 +8,21 @@ Content-Type: application/json
 }
 
 ### FindOne Category
-GET http://localhost:4000/categories/5
+GET http://localhost:4000/categories/1
 
 
 ### FindAll Category
 GET http://localhost:4000/categories
+
+
+### update Category
+PATCH  http://localhost:4000/categories/1
+Content-Type: application/json
+
+{
+  "name": "Stu132ff32dy",
+  "color": "#ffcc00"
+}
+
+### delete Category
+DELETE  http://localhost:4000/categories/1
