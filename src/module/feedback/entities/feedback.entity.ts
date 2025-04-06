@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
-import { FeedbackType } from "src/module/feedback/feedback.enum";
+import { FeedbackType } from "src/module/feedback/enum/feedback.enum";
 import { User } from "src/module/user/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
