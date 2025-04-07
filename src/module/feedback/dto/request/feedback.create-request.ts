@@ -1,4 +1,5 @@
 import { OmitType } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import { IsDate, IsEnum, IsNotEmpty, IsString } from "class-validator";
 import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { FeedbackType } from "src/module/feedback/enum/feedback.enum";
@@ -14,6 +15,7 @@ export class FeedbackCreateRequest extends OmitType(Feedback, [
   @IsEnum(FeedbackType)
   type: FeedbackType;
 
+  @Type(() => Date)
   @IsNotEmpty()
   @IsDate()
   date: Date;
@@ -29,12 +31,4 @@ export class FeedbackCreateRequest extends OmitType(Feedback, [
   @IsNotEmpty()
   @IsString()
   comment: string;
-
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  color: string;
 }
