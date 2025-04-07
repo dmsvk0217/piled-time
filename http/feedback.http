@@ -1,0 +1,35 @@
+### Create Category
+POST http://localhost:4000/feedbacks
+Content-Type: application/json
+
+{
+  "type": "DAILY",
+  "date": "2025-04-07",
+  "goodPoint": "this is goodPoint",
+  "badPoint": "this is badPoint",
+  "comment": "this is comment"
+}
+
+### FindOne Category
+GET http://localhost:4000/feedbacks/1
+
+
+### FindAll Category
+GET http://localhost:4000/feedbacks
+
+
+### update Category
+PATCH  http://localhost:4000/feedbacks/1
+Content-Type: application/json
+
+
+{
+  "type": "DAILY",
+  "date": "2025-04-06",
+  "goodPoint": "this is goodPoint update",
+  "badPoint": "this is badPoint update",
+  "comment": "this is comment update"
+}
+
+### delete Category
+DELETE  http://localhost:4000/feedbacks/1
