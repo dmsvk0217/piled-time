@@ -2,7 +2,7 @@ import { BaseEntity } from "src/common/database/entities/base.entity";
 import { Action } from "src/module/action/action.entity";
 import { Category } from "src/module/category/entities/category.entity";
 import { Plan } from "src/module/plan/plan.entity";
-import { User } from "src/module/user/user.entity";
+import { User } from "src/module/user/entities/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity()

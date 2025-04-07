@@ -1,0 +1,32 @@
+### Create User
+POST http://localhost:4000/users
+Content-Type: application/json
+
+{
+  "name": "my name",
+  "email": "test@gmail.com",
+  "phone": "010-1234-1234",
+  "password": "this is password"
+}
+
+### FindOne User
+GET http://localhost:4000/users/1
+
+
+### FindAll User
+GET http://localhost:4000/users
+
+
+### update User
+PATCH  http://localhost:4000/users/1
+Content-Type: application/json
+
+{
+  "name": "my name update",
+  "email": "TEST@gmail.com",
+  "phone": "010-4321-4321",
+  "password": "this is password update"
+}
+
+### delete User
+DELETE  http://localhost:4000/users/1

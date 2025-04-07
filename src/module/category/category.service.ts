@@ -8,7 +8,7 @@ import {
 } from "src/module/category/dto";
 import { Category } from "src/module/category/entities/category.entity";
 import { CategoryException } from "src/module/category/errors/category.exception";
-import { User } from "src/module/user/user.entity";
+import { User } from "src/module/user/entities/user.entity";
 import { FindOneOptions, Repository } from "typeorm";
 
 @Injectable()

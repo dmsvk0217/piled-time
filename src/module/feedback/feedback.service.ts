@@ -8,7 +8,7 @@ import {
 } from "src/module/feedback/dto";
 import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { FeedbackException } from "src/module/feedback/errors/feedback.exception";
-import { User } from "src/module/user/user.entity";
+import { User } from "src/module/user/entities/user.entity";
 import { FindOneOptions, Repository } from "typeorm";
 
 @Injectable()
