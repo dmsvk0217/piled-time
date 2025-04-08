@@ -12,9 +12,11 @@ export class CategoryResponse extends IntersectionType(
   @ApiProperty({ type: () => UserResponse })
   user: UserResponse;
 
+  @ApiProperty({ example: "독서", description: "카테고리 이름" })
   @Expose()
   name: string;
 
+  @ApiProperty({ example: "#FFFFFF", description: "헥스 컬러 코드" })
   @Expose()
   color: string;
 }
