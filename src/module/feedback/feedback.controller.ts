@@ -1,37 +1,38 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
+import { CrudDocs } from "src/common/docs/crud-docs.decorator";
+import { FeedbackDocs } from "src/module/feedback/decorator/swagger";
 import {
   FeedbackCreateRequest,
   FeedbackResponse,
   FeedbackUpdateRequest,
 } from "src/module/feedback/dto";
 import { FeedbackService } from "src/module/feedback/feedback.service";
-import { CreateDocs, FindAllDocs, FindOneDocs, RemoveDocs, UpdateDocs } from "./decorator/swagger";
 
 @ApiTags("feedback")
 @Controller("feedbacks")
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
-  @CreateDocs()
+  @CrudDocs.create(FeedbackDocs.create)
   @Post()
   create(@Body() request: FeedbackCreateRequest): Promise<FeedbackResponse> {
     return this.feedbackService.create(request);
   }
 
-  @FindAllDocs()
+  @CrudDocs.findAll(FeedbackDocs.findAll)
   @Get()
   findAll(): Promise<FeedbackResponse[]> {
     return this.feedbackService.findAll();
   }
 
-  @FindOneDocs()
+  @CrudDocs.findOne(FeedbackDocs.findOne)
   @Get(":id")
   findOne(@Param("id") id: number): Promise<FeedbackResponse> {
     return this.feedbackService.findOne(id);
   }
 
-  @UpdateDocs()
+  @CrudDocs.update(FeedbackDocs.update)
   @Patch(":id")
   update(
     @Param("id") id: number,
@@ -41,7 +42,7 @@ export class FeedbackController {
   }
 
   @HttpCode(204)
-  @RemoveDocs()
+  @CrudDocs.remove(FeedbackDocs.remove)
   @Delete(":id")
   remove(@Param("id") id: number): Promise<void> {
     return this.feedbackService.remove(id);
