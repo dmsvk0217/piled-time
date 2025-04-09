@@ -1,18 +1,29 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { UserCreateRequest, UserResponse, UserUpdateRequest } from "src/module/user/dto";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { UserResponse, UserUpdateRequest } from "src/module/user/dto";
 import { UserService } from "src/module/user/user.service";
-import { CreateDocs, FindAllDocs, FindOneDocs, RemoveDocs, UpdateDocs } from "./decorator/swagger";
+import { FindAllDocs, FindOneDocs, RemoveDocs, UpdateDocs } from "./decorator/swagger";
 
 @ApiTags("user")
+@UseGuards(JwtAuthGuard)
 @Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @CreateDocs()
-  @Post()
-  create(@Body() request: UserCreateRequest): Promise<UserResponse> {
-    return this.userService.create(request);
+  @Get("/profile")
+  getProfile(@Req() req) {
+    return req.user;
   }
 
   @FindAllDocs()

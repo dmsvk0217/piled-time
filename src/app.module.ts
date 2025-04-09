@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthModule } from "src/auth/auth.module";
 import { TypeOrmConfigProvider } from "src/common/database/provider/database-config.provider";
 import { ActionModule } from "src/module/action/action.module";
 import { CategoryModule } from "src/module/category/category.module";
@@ -19,6 +20,7 @@ import { UserModule } from "src/module/user/user.module";
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),
     }),
+    AuthModule,
     UserModule,
     CategoryModule,
     FeedbackModule,

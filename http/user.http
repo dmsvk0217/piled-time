@@ -12,6 +12,9 @@ Content-Type: application/json
 ### FindOne User
 GET http://localhost:4000/users/1
 
+### Get User profile
+GET http://localhost:4000/users/profile
+
 
 ### FindAll User
 GET http://localhost:4000/users
@@ -30,3 +33,4 @@ Content-Type: application/json
 
 ### delete User
 DELETE  http://localhost:4000/users/1
+

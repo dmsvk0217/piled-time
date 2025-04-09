@@ -22,12 +22,15 @@ export class User extends BaseEntity {
   @Column({ type: "varchar" })
   name: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", unique: true })
   email: string;
 
   @Column({ type: "varchar" })
-  phone: string;
+  provider: string; // 'google'
 
-  @Column({ type: "varchar" })
-  password: string;
+  @Column({ type: "varchar", nullable: true })
+  phone?: string;
+
+  @Column({ type: "varchar", nullable: true })
+  password?: string;
 }
