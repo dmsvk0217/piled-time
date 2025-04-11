@@ -10,46 +10,45 @@ import { Repository } from "typeorm";
 @Injectable()
 export class MemoService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-
     @InjectRepository(Memo)
-    private readonly MemoRepository: Repository<Memo>
+    private readonly memoRepository: Repository<Memo>
   ) {}
 
-  async create(request: MemoCreateRequest): Promise<MemoResponse> {
-    const Memo = this.MemoRepository.create({ ...request });
-    const result = await this.MemoRepository.save(Memo);
+  async create(request: MemoCreateRequest, user: User): Promise<MemoResponse> {
+    const memo = this.memoRepository.create({ ...request, user });
+    const result = await this.memoRepository.save(memo);
     return plainToInstance(MemoResponse, result);
   }
 
-  async findAll(): Promise<MemoResponse[]> {
-    const categories = await this.MemoRepository.find();
-    return categories.map((Memo) => plainToInstance(MemoResponse, Memo));
-  }
-
-  async findOne(id: number): Promise<MemoResponse> {
-    const result = await this.findMemoById(id);
-    return plainToInstance(MemoResponse, result);
-  }
-
-  async update(id: number, request: MemoUpdateRequest): Promise<MemoResponse> {
-    const Memo = await this.findMemoById(id);
-    this.MemoRepository.merge(Memo, request);
-    const result = await this.MemoRepository.save(Memo);
-    return plainToInstance(MemoResponse, result);
-  }
-
-  async remove(id: number): Promise<void> {
-    const Memo = await this.findMemoById(id);
-    await this.MemoRepository.softRemove(Memo);
-  }
-
-  private async findMemoById(id: number): Promise<Memo> {
-    const Memo = await this.MemoRepository.findOne({
-      where: { id },
+  async findAll(user: User): Promise<MemoResponse[]> {
+    const memos = await this.memoRepository.find({
+      where: { user: { id: user.id } },
     });
-    if (!Memo) throw MemoException.NOT_EXISTS;
-    return Memo;
+    return memos.map((Memo) => plainToInstance(MemoResponse, Memo));
+  }
+
+  async findOne(id: number, user: User): Promise<MemoResponse> {
+    const result = await this.findById(id, user);
+    return plainToInstance(MemoResponse, result);
+  }
+
+  async update(id: number, request: MemoUpdateRequest, user: User): Promise<MemoResponse> {
+    const memo = await this.findById(id, user);
+    this.memoRepository.merge(memo, request);
+    const result = await this.memoRepository.save(memo);
+    return plainToInstance(MemoResponse, result);
+  }
+
+  async remove(id: number, user: User): Promise<void> {
+    const memo = await this.findById(id, user);
+    await this.memoRepository.softRemove(memo);
+  }
+
+  private async findById(id: number, user: User): Promise<Memo> {
+    const memo = await this.memoRepository.findOne({
+      where: { id, user: { id: user.id } },
+    });
+    if (!memo) throw MemoException.NOT_EXISTS;
+    return memo;
   }
 }
