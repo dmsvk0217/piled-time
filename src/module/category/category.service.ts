@@ -9,7 +9,7 @@ import {
 import { Category } from "src/module/category/entities/category.entity";
 import { CategoryException } from "src/module/category/errors/category.exception";
 import { User } from "src/module/user/entities/user.entity";
-import { FindOneOptions, Repository } from "typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class CategoryService {
@@ -50,15 +50,10 @@ export class CategoryService {
   }
 
   private async findcategoryById(id: number): Promise<Category> {
-    const options = this.getOneOptions(id);
-    const category = await this.categoryRepository.findOne(options);
+    const category = await this.categoryRepository.findOne({
+      where: { id },
+    });
     if (!category) throw CategoryException.NOT_EXISTS;
     return category;
-  }
-
-  private getOneOptions(id: number): FindOneOptions<Category> {
-    return {
-      where: { id },
-    };
   }
 }

@@ -24,7 +24,7 @@ export class UserService {
 
   async findAll(): Promise<UserResponse[]> {
     const categories = await this.userRepository.find();
-    return categories.map((User) => plainToInstance(UserResponse, User));
+    return categories.map((user) => plainToInstance(UserResponse, user));
   }
 
   async findOne(id: number): Promise<UserResponse> {
@@ -33,20 +33,20 @@ export class UserService {
   }
 
   async update(id: number, request: UserUpdateRequest): Promise<UserResponse> {
-    const User = await this.findById(id);
-    this.userRepository.merge(User, request);
-    const result = await this.userRepository.save(User);
+    const user = await this.findById(id);
+    this.userRepository.merge(user, request);
+    const result = await this.userRepository.save(user);
     return plainToInstance(UserResponse, result);
   }
 
   async remove(id: number): Promise<void> {
-    const User = await this.findById(id);
-    await this.userRepository.softRemove(User);
+    const user = await this.findById(id);
+    await this.userRepository.softRemove(user);
   }
 
   private async findById(id: number): Promise<User> {
-    const User = await this.userRepository.findOne({ where: { id } });
-    if (!User) throw UserException.NOT_EXISTS;
-    return User;
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) throw UserException.NOT_EXISTS;
+    return user;
   }
 }
