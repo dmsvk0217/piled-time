@@ -21,37 +21,38 @@ export class FeedbackService {
     private readonly feedbackRepository: Repository<Feedback>
   ) {}
 
-  async create(request: FeedbackCreateRequest): Promise<FeedbackResponse> {
-    const feedback = this.feedbackRepository.create({ ...request });
+  async create(request: FeedbackCreateRequest, user: User): Promise<FeedbackResponse> {
+    const feedback = this.feedbackRepository.create({ ...request, user });
     const result = await this.feedbackRepository.save(feedback);
     return plainToInstance(FeedbackResponse, result);
   }
 
-  async findAll(): Promise<FeedbackResponse[]> {
+  async findAll(user: User): Promise<FeedbackResponse[]> {
     const categories = await this.feedbackRepository.find();
     return categories.map((Feedback) => plainToInstance(FeedbackResponse, Feedback));
   }
 
-  async findOne(id: number): Promise<FeedbackResponse> {
-    const result = await this.findFeedbackById(id);
+  async findOne(id: number, user: User): Promise<FeedbackResponse> {
+    const result = await this.findById(id, user);
     return plainToInstance(FeedbackResponse, result);
   }
 
-  async update(id: number, request: FeedbackUpdateRequest): Promise<FeedbackResponse> {
-    const feedback = await this.findFeedbackById(id);
+  async update(id: number, request: FeedbackUpdateRequest, user: User): Promise<FeedbackResponse> {
+    const feedback = await this.findById(id, user);
     this.feedbackRepository.merge(feedback, request);
     const result = await this.feedbackRepository.save(feedback);
     return plainToInstance(FeedbackResponse, result);
   }
 
-  async remove(id: number): Promise<void> {
-    const feedback = await this.findFeedbackById(id);
+  async remove(id: number, user: User): Promise<void> {
+    const feedback = await this.findById(id, user);
     await this.feedbackRepository.softRemove(feedback);
   }
 
-  private async findFeedbackById(id: number): Promise<Feedback> {
+  private async findById(id: number, user: User): Promise<Feedback> {
     const feedback = await this.feedbackRepository.findOne({
-      where: { id },
+      where: { id, user: { id: user.id } },
+      relations: ["user"],
     });
     if (!feedback) throw FeedbackException.NOT_EXISTS;
     return feedback;
