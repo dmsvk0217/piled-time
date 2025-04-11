@@ -1,36 +1,35 @@
 import { ExecutionContext, Injectable, Logger } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { UserService } from "../../module/user/user.service";
+import { AuthService } from "src/auth/auth.service";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
   private logger = new Logger(JwtAuthGuard.name);
 
-  constructor(private readonly userService: UserService) {
+  constructor(private authService: AuthService) {
     super();
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const { method, originalUrl, ip, headers } = request;
+    const { method, originalUrl, ip } = request;
+
+    const result = (await super.canActivate(context)) as boolean;
 
     try {
-      const result = (await super.canActivate(context)) as boolean;
       const { email } = request.user;
-
-      const user = await this.userService.findByEmail(email);
+      const user = await this.authService.findByEmail(email);
       request.user = user;
 
       this.logger.log(
-        `✅ JWT 인증 성공 | ${method} ${originalUrl} | userId=${user?.id ?? "N/A"}, email=${user?.email ?? "N/A"}, ip=${ip}`
+        `✅ JWT 인증 성공 | ${method} ${originalUrl} | userId=${user?.id}, email=${user?.email}, ip=${ip}`
       );
 
       return result;
     } catch (err) {
       this.logger.warn(
-        `❌ JWT 인증 실패 | ${method} ${originalUrl} | ip=${ip} | reason=${err?.message ?? "Unknown error"}`
+        `❌ JWT 인증 실패 | ${method} ${originalUrl} | ip=${ip} | reason=${err?.message}`
       );
-
       throw err;
     }
   }

@@ -18,8 +18,10 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    return await this.userRepository.findOne({ where: { email } });
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) throw UserException.NOT_EXISTS;
+    return user;
   }
 
   async findAll(): Promise<UserResponse[]> {
