@@ -14,9 +14,6 @@ import { Repository } from "typeorm";
 @Injectable()
 export class FeedbackService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-
     @InjectRepository(Feedback)
     private readonly feedbackRepository: Repository<Feedback>
   ) {}
@@ -28,7 +25,9 @@ export class FeedbackService {
   }
 
   async findAll(user: User): Promise<FeedbackResponse[]> {
-    const categories = await this.feedbackRepository.find();
+    const categories = await this.feedbackRepository.find({
+      where: { user: { id: user.id } },
+    });
     return categories.map((Feedback) => plainToInstance(FeedbackResponse, Feedback));
   }
 
@@ -52,7 +51,6 @@ export class FeedbackService {
   private async findById(id: number, user: User): Promise<Feedback> {
     const feedback = await this.feedbackRepository.findOne({
       where: { id, user: { id: user.id } },
-      relations: ["user"],
     });
     if (!feedback) throw FeedbackException.NOT_EXISTS;
     return feedback;

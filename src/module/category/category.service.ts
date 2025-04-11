@@ -26,11 +26,7 @@ export class CategoryService {
 
   async findAll(user: User): Promise<CategoryResponse[]> {
     const categories = await this.categoryRepository.find({
-      where: {
-        user: {
-          id: user.id,
-        },
-      },
+      where: { user: { id: user.id } },
     });
     return categories.map((category) => plainToInstance(CategoryResponse, category));
   }
@@ -55,7 +51,6 @@ export class CategoryService {
   private async findById(id: number, user: User): Promise<Category> {
     const category = await this.categoryRepository.findOne({
       where: { id, user: { id: user.id } },
-      relations: ["user"],
     });
     if (!category) throw CategoryException.NOT_EXISTS;
     return category;
