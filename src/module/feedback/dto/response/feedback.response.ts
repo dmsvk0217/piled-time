@@ -3,16 +3,11 @@ import { Expose } from "class-transformer";
 import { BaseResponseDto } from "src/common/database/dto/base-response.dto";
 import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { FeedbackType } from "src/module/feedback/enum/feedback.enum";
-import { UserResponse } from "src/module/user/dto";
 
 export class FeedbackResponse extends IntersectionType(
   OmitType(Feedback, ["user"] as const),
   BaseResponseDto
 ) {
-  @ApiProperty({ type: () => UserResponse })
-  @Expose()
-  user: UserResponse;
-
   @ApiProperty({ example: FeedbackType.DAILY, description: "피드벡 타입" })
   @Expose()
   type: FeedbackType;
