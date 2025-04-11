@@ -1,0 +1,28 @@
+### Create Memo
+POST http://localhost:4000/memos
+Content-Type: application/json
+
+{
+  "date": "2025-01-01",
+  "content": "this is content"
+}
+
+### FindOne Memo
+GET http://localhost:4000/memos/1
+
+
+### FindAll Memo
+GET http://localhost:4000/memos
+
+
+### update Memo
+PATCH  http://localhost:4000/memos/1
+Content-Type: application/json
+
+{
+  "date": "2025-01-01",
+  "content": "this is content update"
+}
+
+### delete Memo
+DELETE  http://localhost:4000/memos/1
