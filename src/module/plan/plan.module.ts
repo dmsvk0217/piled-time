@@ -1,6 +1,15 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Plan } from "src/module/plan/plan.entity";
+import { AuthModule } from "src/auth/auth.module";
+import { Plan } from "src/module/plan/entities/plan.entity";
+import { PlanController } from "src/module/plan/plan.controller";
+import { PlanService } from "src/module/plan/plan.service";
+import { TodoModule } from "src/module/todo/todo.module";
+import { User } from "src/module/user/entities/user.entity";
 
-@Module({ imports: [TypeOrmModule.forFeature([Plan])] })
+@Module({
+  imports: [TypeOrmModule.forFeature([Plan, User]), AuthModule, TodoModule],
+  controllers: [PlanController],
+  providers: [PlanService],
+})
 export class PlanModule {}

@@ -48,9 +48,18 @@ export class TodoService {
     await this.todoRepository.softRemove(todo);
   }
 
-  private async findById(id: number, user: User): Promise<Todo> {
+  async findById(id: number, user: User): Promise<Todo> {
     const todo = await this.todoRepository.findOne({
       where: { id, user: { id: user.id } },
+    });
+    if (!todo) throw TodoException.NOT_EXISTS;
+    return todo;
+  }
+
+  async findDetailById(id: number, user: User): Promise<Todo> {
+    const todo = await this.todoRepository.findOne({
+      where: { id, user: { id: user.id } },
+      relations: ["plans", "actions"],
     });
     if (!todo) throw TodoException.NOT_EXISTS;
     return todo;
