@@ -48,7 +48,7 @@ export class CategoryService {
     await this.categoryRepository.softRemove(category);
   }
 
-  private async findById(id: number, user: User): Promise<Category> {
+  async findById(id: number, user: User): Promise<Category> {
     const category = await this.categoryRepository.findOne({
       where: { id, user: { id: user.id } },
     });

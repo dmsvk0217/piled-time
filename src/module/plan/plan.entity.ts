@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
-import { Todo } from "src/module/todo/todo.entity";
+import { Todo } from "src/module/todo/entities/todo.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity()

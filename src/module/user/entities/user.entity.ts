@@ -2,7 +2,7 @@ import { BaseEntity } from "src/common/database/entities/base.entity";
 import { Category } from "src/module/category/entities/category.entity";
 import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { Memo } from "src/module/memo/entities/memo.entity";
-import { Todo } from "src/module/todo/todo.entity";
+import { Todo } from "src/module/todo/entities/todo.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
