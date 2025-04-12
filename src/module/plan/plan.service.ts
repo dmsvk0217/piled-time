@@ -51,7 +51,7 @@ export class PlanService {
 
   private async findById(id: number, user: User): Promise<Plan> {
     const plan = await this.planRepository.findOne({
-      where: { todo: { user: { id: user.id } } },
+      where: { id, todo: { user: { id: user.id } } },
     });
     if (!plan) throw PlanException.NOT_EXISTS;
     return plan;
