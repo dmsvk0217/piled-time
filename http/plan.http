@@ -1,0 +1,29 @@
+### Create Plan
+POST http://localhost:4000/plans
+Content-Type: application/json
+
+{
+  "todoId": 1,
+  "startAt": "2025-01-01T13:13:13",
+  "duration": 75
+}
+
+### FindOne Plan
+GET http://localhost:4000/plans/1
+
+
+### FindAll Plan
+GET http://localhost:4000/plans
+
+
+### update Plan
+PATCH  http://localhost:4000/plans/1
+Content-Type: application/json
+
+{
+  "startAt": "2025-01-01T13:13:13",
+  "duration": 75
+}
+
+### delete Plan
+DELETE  http://localhost:4000/plans/1

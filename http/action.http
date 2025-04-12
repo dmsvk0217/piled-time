@@ -1,0 +1,29 @@
+### Create Actions
+POST http://localhost:4000/actions
+Content-Type: application/json
+
+{
+  "todoId": 1,
+  "startAt": "2025-01-01T13:13:13",
+  "duration": 75
+}
+
+### FindOne Actions
+GET http://localhost:4000/actions/1
+
+
+### FindAll Actions
+GET http://localhost:4000/actions
+
+
+### update Actions
+PATCH  http://localhost:4000/actions/1
+Content-Type: application/json
+
+{
+  "startAt": "2025-01-01T13:13:13",
+  "duration": 75
+}
+
+### delete Actions
+DELETE  http://localhost:4000/actions/1

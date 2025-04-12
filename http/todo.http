@@ -1,0 +1,29 @@
+### Create Todo
+POST http://localhost:4000/todos
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "date": "2025-01-01",
+  "content": "this is content"
+}
+
+### FindOne Todo
+GET http://localhost:4000/todos/1
+
+
+### FindAll Todo
+GET http://localhost:4000/todos
+
+
+### update Todo
+PATCH  http://localhost:4000/todos/1
+Content-Type: application/json
+
+{
+  "date": "2025-01-01",
+  "content": "this is content"
+}
+
+### delete Todo
+DELETE  http://localhost:4000/todos/1
