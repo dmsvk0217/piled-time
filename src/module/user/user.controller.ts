@@ -10,7 +10,7 @@ import { UserResponse, UserUpdateRequest } from "src/module/user/dto";
 import { User } from "src/module/user/entities/user.entity";
 import { UserService } from "src/module/user/user.service";
 
-@ApiTags("user")
+@ApiTags("User")
 @UseGuards(JwtAuthGuard)
 @Controller("users")
 export class UserController {

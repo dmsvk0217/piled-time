@@ -22,7 +22,7 @@ import {
 import { FeedbackService } from "src/module/feedback/feedback.service";
 import { User } from "src/module/user/entities/user.entity";
 
-@ApiTags("feedback")
+@ApiTags("Feedback")
 @UseGuards(JwtAuthGuard)
 @Controller("feedbacks")
 export class FeedbackController {

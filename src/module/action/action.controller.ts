@@ -20,7 +20,7 @@ import { User } from "src/module/user/entities/user.entity";
 
 @ApiTags("Action")
 @UseGuards(JwtAuthGuard)
-@Controller("Actions")
+@Controller("actions")
 export class ActionController {
   constructor(private readonly actionService: ActionService) {}
 

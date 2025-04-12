@@ -18,7 +18,7 @@ import { TodoCreateRequest, TodoResponse, TodoUpdateRequest } from "src/module/t
 import { TodoService } from "src/module/todo/todo.service";
 import { User } from "src/module/user/entities/user.entity";
 
-@ApiTags("todo")
+@ApiTags("Todo")
 @UseGuards(JwtAuthGuard)
 @Controller("todos")
 export class TodoController {

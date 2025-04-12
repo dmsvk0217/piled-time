@@ -18,7 +18,7 @@ import { MemoCreateRequest, MemoResponse, MemoUpdateRequest } from "src/module/m
 import { MemoService } from "src/module/memo/memo.service";
 import { User } from "src/module/user/entities/user.entity";
 
-@ApiTags("memo")
+@ApiTags("Memo")
 @UseGuards(JwtAuthGuard)
 @Controller("memos")
 export class MemoController {

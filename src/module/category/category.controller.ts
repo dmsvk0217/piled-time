@@ -22,7 +22,7 @@ import {
 } from "src/module/category/dto";
 import { User } from "src/module/user/entities/user.entity";
 
-@ApiTags("category")
+@ApiTags("Category")
 @UseGuards(JwtAuthGuard)
 @Controller("categories")
 export class CategoryController {
