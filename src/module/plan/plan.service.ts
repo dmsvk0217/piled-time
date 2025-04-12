@@ -19,7 +19,7 @@ export class PlanService {
 
   async create(request: PlanCreateRequest, user: User): Promise<PlanResponse> {
     const todo = await this.todoService.findDetailById(request.todoId, user);
-    if (todo.plans) throw PlanException.ALREADY_EXISTS;
+    if (todo.plans.length) throw PlanException.ALREADY_EXISTS;
     const plan = this.planRepository.create({ ...request, todo });
     const result = await this.planRepository.save(plan);
     return plainToInstance(PlanResponse, result);
