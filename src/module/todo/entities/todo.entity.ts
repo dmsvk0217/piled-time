@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/common/database/entities/base.entity";
-import { Action } from "src/module/action/action.entity";
+import { Action } from "src/module/action/entities/action.entity";
 import { Category } from "src/module/category/entities/category.entity";
 import { Plan } from "src/module/plan/entities/plan.entity";
 import { User } from "src/module/user/entities/user.entity";

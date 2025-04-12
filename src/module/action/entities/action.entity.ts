@@ -8,7 +8,7 @@ export class Action extends BaseEntity {
   todo: Todo;
 
   @Column({ type: "datetime" })
-  startAt: string;
+  startAt: Date;
 
   @Column({ type: "integer" })
   duration: number;
