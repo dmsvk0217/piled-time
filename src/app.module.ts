@@ -8,6 +8,7 @@ import { CategoryModule } from "src/module/category/category.module";
 import { FeedbackModule } from "src/module/feedback/feedback.module";
 import { MemoModule } from "src/module/memo/memo.module";
 import { PlanModule } from "src/module/plan/plan.module";
+import { PlannerModule } from "src/module/planner/planner.module";
 import { TodoModule } from "src/module/todo/todo.module";
 import { UserModule } from "src/module/user/user.module";
 
@@ -28,6 +29,7 @@ import { UserModule } from "src/module/user/user.module";
     TodoModule,
     PlanModule,
     ActionModule,
+    PlannerModule,
   ],
 })
 export class AppModule {}
