@@ -6,6 +6,8 @@ import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { FeedbackModule } from "src/module/feedback/feedback.module";
 import { Plan } from "src/module/plan/entities/plan.entity";
 import { PlanModule } from "src/module/plan/plan.module";
+import { PlannerController } from "src/module/planner/planner.controller";
+import { PlannerService } from "src/module/planner/planner.service";
 import { Todo } from "src/module/todo/entities/todo.entity";
 import { TodoModule } from "src/module/todo/todo.module";
 
@@ -17,7 +19,7 @@ import { TodoModule } from "src/module/todo/todo.module";
     ActionModule,
     FeedbackModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [PlannerController],
+  providers: [PlannerService],
 })
 export class PlannerModule {}
