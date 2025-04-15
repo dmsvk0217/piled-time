@@ -1,0 +1,8 @@
+### Get Daily planner
+GET http://localhost:4000/planner/daily?date=2025-01-01
+
+### Get Weekly planner
+GET http://localhost:4000/planner/weekly?start=2025-01-01
+
+### Get Weekday planner
+GET http://localhost:4000/planner/weekday?weekday=WEDNESDAY
