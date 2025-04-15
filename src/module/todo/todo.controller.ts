@@ -13,7 +13,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUser } from "src/common/decorators/user.decorator";
 import { CrudDocs } from "src/common/docs/crud-docs.decorator";
-import { TodoDocs } from "src/module/Todo/decorator/swagger";
+import { TodoDocs } from "src/module/todo/decorator/swagger";
 import { TodoCreateRequest, TodoResponse, TodoUpdateRequest } from "src/module/todo/dto";
 import { TodoService } from "src/module/todo/todo.service";
 import { User } from "src/module/user/entities/user.entity";

@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Action } from "rxjs/internal/scheduler/Action";
+import { AuthModule } from "src/auth/auth.module";
 import { ActionModule } from "src/module/action/action.module";
 import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { FeedbackModule } from "src/module/feedback/feedback.module";
@@ -18,6 +19,7 @@ import { TodoModule } from "src/module/todo/todo.module";
     PlanModule,
     ActionModule,
     FeedbackModule,
+    AuthModule,
   ],
   controllers: [PlannerController],
   providers: [PlannerService],
