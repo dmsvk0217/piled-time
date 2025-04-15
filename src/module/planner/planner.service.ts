@@ -1,57 +1,28 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
-import { PlannerResponse } from "src/module/planner/dto";
+import {
+  DailyPlannerQueryDto,
+  PlannerResponse,
+  PlannerWeekdayResponse,
+  PlannerWeekResponse,
+  WeekdayPlannerQueryDto,
+  WeeklyPlannerQueryDto,
+} from "src/module/planner/dto";
+import { Weekday } from "src/module/planner/type/weekday.enum";
 import { User } from "src/module/user/entities/user.entity";
-import { Repository } from "typeorm";
-import { Action } from "../action/entities/action.entity";
-import { Feedback } from "../feedback/entities/feedback.entity";
-import { Plan } from "../plan/entities/plan.entity";
+import { Between, Repository } from "typeorm";
 import { Todo } from "../todo/entities/todo.entity";
 
 @Injectable()
 export class PlannerService {
   constructor(
     @InjectRepository(Todo)
-    private readonly todoRepo: Repository<Todo>,
-    @InjectRepository(Plan)
-    private readonly planRepo: Repository<Plan>,
-    @InjectRepository(Action)
-    private readonly actionRepo: Repository<Action>,
-    @InjectRepository(Feedback)
-    private readonly feedbackRepo: Repository<Feedback>
+    private readonly todoRepository: Repository<Todo>
   ) {}
-
-  async getDailyPlanner2(user: User, date: Date): Promise<PlannerResponse> {
-    const [todos, plans, actions, feedbacks] = await Promise.all([
-      this.todoRepo.find({
-        where: { user: { id: user.id }, date },
-        relations: ["category"],
-      }),
-      this.planRepo.find({
-        where: { todo: { user: { id: user.id } }, startAt: date },
-        relations: ["todo"],
-      }),
-      this.actionRepo.find({
-        where: { todo: { user: { id: user.id } }, startAt: date },
-        relations: ["todo"],
-      }),
-      this.feedbackRepo.findOne({
-        where: { user: { id: user.id }, date },
-      }),
-    ]);
-
-    return plainToInstance(PlannerResponse, {
-      date,
-      todos,
-      plans,
-      actions,
-      feedback: feedbacks,
-    });
-  }
-
-  async getDailyPlanner(user: User, date: Date): Promise<PlannerResponse> {
-    const todos = await this.todoRepo.find({
+  async getDailyPlanner(user: User, query: DailyPlannerQueryDto): Promise<PlannerResponse> {
+    const date = new Date(query.date);
+    const todos = await this.todoRepository.find({
       where: { user: { id: user.id }, date },
       relations: {
         category: true,
@@ -59,9 +30,55 @@ export class PlannerService {
         actions: true,
       },
     });
-    console.log("🚀 ~ PlannerService ~ getDailyPlanner ~ todos:", todos);
     return plainToInstance(PlannerResponse, {
       todos,
     });
+  }
+
+  async getWeeklyPlanner(user: User, query: WeeklyPlannerQueryDto): Promise<PlannerWeekResponse> {
+    const startDate = new Date(query.start);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
+    const todos = await this.todoRepository.find({
+      where: { user: { id: user.id }, date: Between(startDate, endDate) },
+      relations: {
+        category: true,
+        plans: true,
+        actions: true,
+      },
+    });
+    return plainToInstance(PlannerWeekResponse, { start: startDate, end: endDate, todos });
+  }
+
+  async getWeekdayPlanner(
+    user: User,
+    query: WeekdayPlannerQueryDto
+  ): Promise<PlannerWeekdayResponse> {
+    const weekday = query.weekday;
+    const weekdayIndex = this.getWeekdayIndex(weekday);
+    const todos = await this.todoRepository
+      .createQueryBuilder("todo")
+      .where("todo.user_id = :userId", { userId: user.id })
+      .andWhere("WEEKDAY(todo.date) = :weekdayIndex", { weekdayIndex })
+      .leftJoinAndSelect("todo.category", "category")
+      .leftJoinAndSelect("todo.plans", "plans")
+      .leftJoinAndSelect("todo.actions", "actions")
+      .getMany();
+
+    console.log("🚀 ~ PlannerService ~ todos:", todos);
+    return plainToInstance(PlannerWeekdayResponse, { weekday, todos });
+  }
+
+  private getWeekdayIndex(weekday: Weekday): number {
+    const map: Record<Weekday, number> = {
+      MONDAY: 0,
+      TUESDAY: 1,
+      WEDNESDAY: 2,
+      THURSDAY: 3,
+      FRIDAY: 4,
+      SATURDAY: 5,
+      SUNDAY: 6,
+    };
+    return map[weekday];
   }
 }
