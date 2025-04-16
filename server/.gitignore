@@ -1,4 +1,5 @@
-.vscode/
+.vscode
+/public
 
 # compiled output
 /dist

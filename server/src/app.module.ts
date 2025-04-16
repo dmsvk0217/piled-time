@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { join } from "node:path";
 import { AuthModule } from "src/auth/auth.module";
 import { TypeOrmConfigProvider } from "src/common/database/provider/database-config.provider";
 import { ActionModule } from "src/module/action/action.module";
@@ -14,6 +16,10 @@ import { UserModule } from "src/module/user/user.module";
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public"),
+      exclude: ["/api*"],
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env`,
