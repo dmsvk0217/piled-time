@@ -3,8 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
 import { CategoryService } from "src/module/category/category.service";
 import { TodoCreateRequest, TodoResponse, TodoUpdateRequest } from "src/module/todo/dto";
-import { Todo } from "src/module/todo/entities/Todo.entity";
-import { TodoException } from "src/module/todo/errors/Todo.exception";
+import { Todo } from "src/module/todo/entities/todo.entity";
+import { TodoException } from "src/module/todo/errors/todo.exception";
 import { User } from "src/module/user/entities/user.entity";
 import { Repository } from "typeorm";
 
