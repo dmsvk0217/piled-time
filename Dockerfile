@@ -1,5 +1,5 @@
 # -------- STEP 1: Build React --------
-FROM node:18 AS client-build
+FROM node:20 AS client-build
 
 WORKDIR /app/client
 COPY client/package*.json ./
@@ -9,7 +9,7 @@ RUN npm run build
 
 
 # -------- STEP 2: Build NestJS --------
-FROM node:18 AS server-build
+FROM node:20 AS server-build
 
 WORKDIR /app/server
 COPY server/package*.json ./
@@ -23,7 +23,7 @@ RUN npm run build
 
 
 # -------- STEP 3: Run NestJS App --------
-FROM node:18
+FROM node:20
 
 WORKDIR /app
 COPY --from=server-build /app/server/dist ./dist
