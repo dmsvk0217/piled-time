@@ -1,0 +1,27 @@
+name: Deploy to EC2 on push
+
+on:
+  push:
+    branches: [main] # main 브랜치에 push될 때만 배포됨
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.EC2_KEY }}
+
+      - name: Deploy via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} -p ${{ secrets.EC2_PORT }} << 'EOF'
+            cd ~/piled-time
+            git pull origin main
+            docker compose down
+            docker compose up --build -d
+          EOF
