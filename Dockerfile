@@ -32,5 +32,5 @@ COPY --from=server-build /app/server/package*.json ./
 COPY --from=server-build /app/server/public ./public
 
 EXPOSE 3000
+CMD ["npm", "run", "prod"]
 
-CMD ["node", "dist/main"]

@@ -14,6 +14,8 @@ import { PlannerModule } from "src/module/planner/planner.module";
 import { TodoModule } from "src/module/todo/todo.module";
 import { UserModule } from "src/module/user/user.module";
 
+const isDocker = process.env.BUILD_ENV === "docker";
+
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -22,7 +24,9 @@ import { UserModule } from "src/module/user/user.module";
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env`,
+      envFilePath: isDocker
+        ? join(__dirname, "../../env/app.docker.env")
+        : join(__dirname, "../../env/app.local.env"),
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),

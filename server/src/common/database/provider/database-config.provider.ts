@@ -16,6 +16,8 @@ export class TypeOrmConfigProvider {
       synchronize: Boolean(process.env.DB_SYNCHRONIZE),
       logging: true,
       namingStrategy: new SnakeNamingStrategy(),
+      retryAttempts: 10,
+      retryDelay: 2000, // ms
     };
   }
 }
