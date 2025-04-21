@@ -1,13 +1,13 @@
 export default function Login() {
-  const handleOAuthLogin = () => {
-    window.location.href = "https://your-api.com/auth/google";
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:4000/api/auth/google";
   };
 
   return (
     <div className="p-10">
-      <h1 className="text-xl mb-4">로그인 페이지</h1>
-      <button onClick={handleOAuthLogin} className="bg-blue-500 text-white px-4 py-2 rounded">
-        Google로 로그인
+      <h1 className="text-xl mb-4">로그인</h1>
+      <button onClick={handleGoogleLogin} className="bg-blue-500 text-white px-4 py-2 rounded">
+        Google 로그인
       </button>
     </div>
   );

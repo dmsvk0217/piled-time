@@ -5,8 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
-  },
-  "strict": true,
-  "target": "esnext"
+    },
+    "strict": true,
+    "target": "esnext"
+  }
 }

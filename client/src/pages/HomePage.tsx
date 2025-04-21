@@ -11,9 +11,9 @@ export default function Home() {
 
   return (
     <div className="p-10">
-      <h1 className="text-2xl font-bold">🎉 로그인 성공!</h1>
+      <h1 className="text-2xl font-bold">🎉 로ff그인 성공!</h1>
       <button onClick={handleLogout} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
-        로그아웃
+        로그아웃 f
       </button>
     </div>
   );

@@ -1,10 +1,10 @@
-import { setToken } from "@/utils/auth";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { setToken } from "../utils/auth";
 
 export default function OauthCallback() {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -19,5 +19,5 @@ export default function OauthCallback() {
     }
   }, []);
 
-  return <div className="p-10">로그인 처리 중...</div>;
+  return <div>로그인 처리 중...</div>;
 }
