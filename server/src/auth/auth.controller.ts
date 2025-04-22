@@ -16,6 +16,6 @@ export class AuthController {
   @UseGuards(AuthGuard("google"))
   async googleRedirect(@Req() req, @Res() res) {
     const jwt = this.authService.login(req.user);
-    return res.redirect(`http://localhost:4000/oauth/callback?token=${jwt}`);
+    return res.redirect(`http://localhost:3000/oauth/callback?token=${jwt}`);
   }
 }

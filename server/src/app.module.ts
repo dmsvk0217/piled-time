@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "node:path";
 import { AuthModule } from "src/auth/auth.module";
@@ -14,19 +13,15 @@ import { PlannerModule } from "src/module/planner/planner.module";
 import { TodoModule } from "src/module/todo/todo.module";
 import { UserModule } from "src/module/user/user.module";
 
-const isDocker = process.env.BUILD_ENV === "docker";
-
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "public"),
-      exclude: ["/api*"],
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, "..", "public"),
+    //   exclude: ["/api*"],
+    // }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: isDocker
-        ? join(__dirname, "../../env/app.docker.env")
-        : join(__dirname, "../../env/app.local.env"),
+      envFilePath: join(__dirname, "../.env"),
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),

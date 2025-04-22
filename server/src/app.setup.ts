@@ -8,7 +8,7 @@ import { GlobalValidationPipe } from "src/errors/pipes/global-validation.pipe";
 export function setupApp(app: INestApplication) {
   setUpSwagger(app);
 
-  app.setGlobalPrefix("api");
+  // app.setGlobalPrefix("api");
 
   app.useGlobalPipes(
     new GlobalValidationPipe({
