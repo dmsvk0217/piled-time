@@ -17,12 +17,12 @@ import { UserModule } from "src/module/user/user.module";
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "..", "client", "dist"),
+      rootPath: join(__dirname, "..", "..", "client", "build"),
       exclude: ["/api*"],
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: join(__dirname, "../.env"),
+      envFilePath: join(__dirname, "..", process.env.NODE_ENV === "prod" ? ".env.prod" : ".env"),
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),

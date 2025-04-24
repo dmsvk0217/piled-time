@@ -1,4 +1,5 @@
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
@@ -6,7 +7,10 @@ import { AuthService } from "./auth.service";
 @ApiTags("Auth")
 @Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService
+  ) {}
 
   @Get("google")
   @UseGuards(AuthGuard("google"))
@@ -16,6 +20,7 @@ export class AuthController {
   @UseGuards(AuthGuard("google"))
   async googleRedirect(@Req() req, @Res() res) {
     const jwt = this.authService.login(req.user);
-    return res.redirect(`http://localhost:3000/oauth/callback?token=${jwt}`);
+    const redirectUrl = this.configService.get<string>("OAUTH_REDIRECT_URL");
+    return res.redirect(`${redirectUrl}?token=${jwt}`);
   }
 }
