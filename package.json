@@ -6,7 +6,12 @@
     "dev:server": "cd server && npm run dev",
     "prod": "npm-run-all prod:client prod:server",
     "prod:client": "cd client && npm run build",
-    "prod:server": "cd server && npm run build && npm run start:prod"
+    "prod:server": "cd server && npm run build && npm run start:prod",
+    "build": "npm-run-all build:client build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "prod:server:start": "pm2 start ecosystem.config.js",
+    "pm2": "npm-run-all build:client build:server prod:server:start"
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
