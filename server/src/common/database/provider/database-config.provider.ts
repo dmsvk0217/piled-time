@@ -12,7 +12,7 @@ export class TypeOrmConfigProvider {
       username: process.env.DB_USERNAME,
       password: String(process.env.DB_PASSWORD),
       database: process.env.DB_NAME,
-      entities: ["dist/**/*.entity.js"],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: Boolean(process.env.DB_SYNCHRONIZE),
       logging: true,
       namingStrategy: new SnakeNamingStrategy(),
