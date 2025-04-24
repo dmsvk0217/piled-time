@@ -14,11 +14,9 @@ export class AuthService {
     private readonly userRepository: Repository<User>
   ) {}
 
-  async login(user: User) {
+  login(user: User) {
     const payload = { email: user.email, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return this.jwtService.sign(payload);
   }
 
   async findByEmail(email: string): Promise<User> {
