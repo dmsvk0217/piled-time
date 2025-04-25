@@ -2,7 +2,8 @@ module.exports = {
   apps: [
     {
       name: "piled-server",
-      script: "server/dist/main.js",
+      script: "dist/main.js",
+      cwd: "./server",
       env: {
         NODE_ENV: "prod",
       },
