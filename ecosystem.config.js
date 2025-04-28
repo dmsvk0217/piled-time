@@ -5,7 +5,7 @@ module.exports = {
       script: "dist/main.js",
       cwd: "./server",
       env: {
-        NODE_ENV: "prod",
+        NODE_ENV: "production",
       },
       instances: 1,
       autorestart: true,

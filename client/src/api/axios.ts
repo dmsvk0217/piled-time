@@ -2,8 +2,8 @@ import { getToken } from "@/utils/auth";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:4000", // 서버 주소
-  withCredentials: false, // 쿠키 방식이면 true
+  baseURL: import.meta.env.VITE_API_SERVER_URL,
+  withCredentials: false,
 });
 
 api.interceptors.request.use((config) => {

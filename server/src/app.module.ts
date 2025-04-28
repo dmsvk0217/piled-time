@@ -14,6 +14,17 @@ import { PlannerModule } from "src/module/planner/planner.module";
 import { TodoModule } from "src/module/todo/todo.module";
 import { UserModule } from "src/module/user/user.module";
 
+const envFilePath = (() => {
+  switch (process.env.NODE_ENV) {
+    case "development":
+      return join(__dirname, "..", ".env.development");
+    case "local":
+      return join(__dirname, "..", ".env.local");
+    case "production":
+      return join(__dirname, "..", ".env.production");
+  }
+})();
+
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -22,7 +33,7 @@ import { UserModule } from "src/module/user/user.module";
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: join(__dirname, "..", process.env.NODE_ENV === "prod" ? ".env.prod" : ".env"),
+      envFilePath,
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => TypeOrmConfigProvider.forRoot(),
