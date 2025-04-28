@@ -22,7 +22,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} -p ${{ secrets.EC2_PORT }} << 'EOF'
             cd ~/piled-time
             git pull origin main
-            npm install
+            npm ci
             npm run pm2
             pm2 save
           EOF
