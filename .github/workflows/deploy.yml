@@ -21,6 +21,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} -p ${{ secrets.EC2_PORT }} << 'EOF'
             cd ~/piled-time
+            git reset --hard HEAD
             git pull origin main
             npm ci
             npm run pm2
