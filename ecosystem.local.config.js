@@ -5,8 +5,7 @@ module.exports = {
       script: "./dist/main.js",
       cwd: "./server",
       env: {
-        NODE_ENV: "production",
-        FORCE_COLOR: "0",
+        NODE_ENV: "local",
       },
       instances: 1,
       autorestart: true,
