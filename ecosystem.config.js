@@ -16,7 +16,6 @@ module.exports = {
       merge_logs: true,
       time: true,
       log_date_format: "YYYY-MM-DD HH:mm Z",
-      log_type: "json",
       log_file: "./logs/combined.log",
     },
   ],
