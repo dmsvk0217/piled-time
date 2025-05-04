@@ -27,57 +27,57 @@ export default function Home() {
 
   return (
     <div className="p-10">
-      <h1 className="text-2xl font-bold mb-4">📅 오늘의 플래너</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">📅 오늘의 플래너</h1>
 
-      {/* 에러 메시지 출력 */}
-      {error && <div className="bg-red-100 text-red-700 p-4 rounded mb-6">{error}</div>}
+      {error && <div className="bg-red-100 text-red-700 p-4 rounded mb-6 text-center">{error}</div>}
 
-      {/* 로딩 상태 표시 */}
       {isLoading ? (
-        <p className="text-gray-500">불러오는 중...</p>
+        <p className="text-gray-500 text-center">불러오는 중...</p>
       ) : todos.length === 0 ? (
-        <p className="text-gray-500">오늘 등록된 할 일이 없습니다.</p>
+        <p className="text-gray-500 text-center">오늘 등록된 할 일이 없습니다.</p>
       ) : (
-        todos.map((todo) => (
-          <div key={todo.id} className="mb-6 p-4 border rounded shadow">
-            <h2 className="text-xl font-semibold">📝 {todo.content}</h2>
-            <p className="text-sm text-gray-600">
-              카테고리: <span style={{ color: todo.category.color }}>{todo.category.name}</span>
-            </p>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-400 text-sm text-center">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-400 px-4 py-2">카테고리</th>
+                <th className="border border-gray-400 px-4 py-2">배치</th>
+                <th className="border border-gray-400 px-4 py-2">세부내용</th>
+                <th className="border border-gray-400 px-4 py-2">달성률</th>
+              </tr>
+            </thead>
+            <tbody>
+              {todos.map((todo) => {
+                const totalPlanned = todo.plans.reduce((sum, p) => sum + p.duration, 0);
+                const totalDone = todo.actions.reduce((sum, a) => sum + a.duration, 0);
+                const percent =
+                  totalPlanned > 0 ? Math.min((totalDone / totalPlanned) * 100, 100) : 0;
 
-            {/* Actions */}
-            <div className="mt-2">
-              <h3 className="font-medium">✅ 수행 기록</h3>
-              {todo.actions.length > 0 ? (
-                <ul className="list-disc ml-4">
-                  {todo.actions.map((action) => (
-                    <li key={action.id}>
-                      {action.startAt} - {action.duration}분
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-gray-400">수행 기록 없음</p>
-              )}
-            </div>
-
-            {/* Plans */}
-            <div className="mt-2">
-              <h3 className="font-medium">🗓️ 계획</h3>
-              {todo.plans.length > 0 ? (
-                <ul className="list-disc ml-4">
-                  {todo.plans.map((plan) => (
-                    <li key={plan.id}>
-                      {plan.startAt} - {plan.duration}분
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-gray-400">계획 없음</p>
-              )}
-            </div>
-          </div>
-        ))
+                return (
+                  <tr key={todo.id}>
+                    <td className="border border-gray-400 px-4 py-2">{todo.category.name}</td>
+                    <td className="border border-gray-400 px-4 py-2">✅</td>
+                    <td className="border border-gray-400 px-4 py-2">
+                      <div>{todo.content}</div>
+                      {todo.plans.length > 0 && (
+                        <div className="text-gray-500 text-xs mt-1">
+                          ({todo.plans.map((p) => `${p.duration}m`).join(", ")})
+                        </div>
+                      )}
+                    </td>
+                    <td className="border border-gray-400 px-4 py-2">
+                      <div className="w-full bg-gray-200 h-4 rounded">
+                        <div
+                          className="bg-gray-700 h-4 rounded"
+                          style={{ width: `${percent}%` }}></div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
