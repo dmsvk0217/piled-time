@@ -21,15 +21,22 @@ export class PlannerService {
     private readonly todoRepository: Repository<Todo>
   ) {}
   async getDailyPlanner(user: User, query: DailyPlannerQueryDto): Promise<PlannerResponse> {
-    const date = new Date(query.date);
+    const startDate = new Date(query.date);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 1);
+
     const todos = await this.todoRepository.find({
-      where: { user: { id: user.id }, date },
+      where: {
+        user: { id: user.id },
+        date: Between(startDate, endDate),
+      },
       relations: {
         category: true,
         plans: true,
         actions: true,
       },
     });
+
     return plainToInstance(PlannerResponse, {
       todos,
     });
