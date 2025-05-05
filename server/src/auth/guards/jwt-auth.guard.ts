@@ -20,11 +20,9 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
       const { email } = request.user;
       const user = await this.authService.findByEmail(email);
       request.user = user;
-
       this.logger.log(
         `✅ JWT 인증 성공 | ${method} ${originalUrl} | userId=${user?.id}, email=${user?.email}, ip=${ip}`
       );
-
       return result;
     } catch (err) {
       this.logger.warn(

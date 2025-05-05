@@ -41,9 +41,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   }
 
   private getStatus(exception: HttpException): HttpStatus {
-    return exception instanceof PTException
-      ? exception.getStatus()
-      : HttpStatus.INTERNAL_SERVER_ERROR;
+    if (exception instanceof PTException) {
+      return exception.getStatus();
+    }
+    return exception.getStatus?.() ?? HttpStatus.INTERNAL_SERVER_ERROR;
   }
 
   private getBody(exception: HttpException, request: Request): string | object {
