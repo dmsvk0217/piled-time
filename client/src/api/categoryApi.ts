@@ -1,4 +1,4 @@
-import { Category } from "@/types/category";
+import { Category } from "@/types/planner";
 import api from "./axios";
 
 export const fetchCategories = async (): Promise<Category[]> => {
