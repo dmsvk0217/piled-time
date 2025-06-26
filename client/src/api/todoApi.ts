@@ -5,3 +5,16 @@ export const fetchTodos = async (): Promise<Todo[]> => {
   const res = await api.get<Todo[]>("/api/todos");
   return res.data;
 };
+
+export const createTodo = async (
+  categoryId: number,
+  date: string,
+  content: string
+): Promise<Todo> => {
+  const res = await api.post<Todo>("/api/todos", {
+    categoryId,
+    date,
+    content,
+  });
+  return res.data;
+};
