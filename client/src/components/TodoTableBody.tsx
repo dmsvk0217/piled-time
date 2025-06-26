@@ -19,33 +19,76 @@ export default function TodoTableBody({ todos, manualPercents, setManualPercents
     );
   }
 
+  const MAX_ROWS = 20;
+  const rows = Array.from({ length: MAX_ROWS }, (_, i) => todos[i] || null);
+
   return (
     <tbody>
-      {todos.map((todo) => {
+      {rows.map((todo, idx) => {
+        if (!todo) {
+          return (
+            <tr key={"empty-" + idx} className="bg-gray-50 text-gray-300">
+              <td className="border px-4 py-2" colSpan={4}>
+                &nbsp;
+              </td>
+            </tr>
+          );
+        }
         const percent = manualPercents[todo.id] ?? 0;
-
         return (
           <tr key={todo.id}>
-            <td className="border px-4 py-2">{todo.category.name}</td>
-            <td className="border px-4 py-2">✅</td>
-            <td className="border px-4 py-2">{todo.content}</td>
             <td className="border px-4 py-2">
-              <div className="w-full bg-gray-200 h-4 rounded mb-1">
-                <div className="bg-gray-700 h-4 rounded" style={{ width: `${percent}%` }} />
-              </div>
-              <input
-                type="number"
-                className="border w-16 text-center"
-                min={0}
-                max={100}
-                value={percent}
-                onChange={(e) =>
-                  setManualPercents((prev) => ({
-                    ...prev,
-                    [todo.id]: Math.min(100, Math.max(0, Number(e.target.value))),
-                  }))
-                }
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 16,
+                  height: 16,
+                  backgroundColor: todo.category.color,
+                  borderRadius: 3,
+                  marginRight: 6,
+                  verticalAlign: "middle",
+                }}
               />
+              {todo.category.name}
+            </td>
+            <td className="border px-1 py-2 text-center align-middle">
+              <input type="checkbox" checked readOnly style={{ width: 16, height: 16 }} />
+            </td>
+            <td className="border px-4 py-2">{todo.content}</td>
+            <td className="border px-2 py-2">
+              <div
+                className="w-full h-6 rounded cursor-pointer flex items-center justify-center select-none"
+                style={{
+                  background:
+                    percent === 0
+                      ? "#e5e7eb"
+                      : percent === 25
+                      ? "#60a5fa"
+                      : percent === 50
+                      ? "#38bdf8"
+                      : percent === 75
+                      ? "#34d399"
+                      : percent === 100
+                      ? "#22c55e"
+                      : "#e5e7eb",
+                  color: percent === 0 ? "#888" : "#fff",
+                  transition: "background 0.2s",
+                }}
+                onClick={() => {
+                  const next =
+                    percent === 0
+                      ? 25
+                      : percent === 25
+                      ? 50
+                      : percent === 50
+                      ? 75
+                      : percent === 75
+                      ? 100
+                      : 0;
+                  setManualPercents((prev) => ({ ...prev, [todo.id]: next }));
+                }}>
+                {percent}%
+              </div>
             </td>
           </tr>
         );
