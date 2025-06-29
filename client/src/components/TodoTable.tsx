@@ -10,6 +10,7 @@ interface TodoTableProps {
   manualPercents: { [key: string]: number };
   setManualPercents: React.Dispatch<React.SetStateAction<{ [key: string]: number }>>;
   fetchData: () => Promise<void>;
+  date: string;
 }
 
 export default function TodoTable({
@@ -18,10 +19,10 @@ export default function TodoTable({
   manualPercents,
   setManualPercents,
   fetchData,
+  date,
 }: TodoTableProps) {
   // 등록 폼 상태
   const [categoryId, setCategoryId] = useState<number>(categories[0]?.id || 0);
-  const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -48,21 +49,12 @@ export default function TodoTable({
             value={categoryId}
             onChange={(e) => setCategoryId(Number(e.target.value))}
             className="border px-2 py-1 rounded">
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id} style={{ color: cat.color }}>
+                {cat.name}
               </option>
             ))}
           </select>
-        </div>
-        <div>
-          <label className="block text-xs mb-1">날짜</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="border px-2 py-1 rounded"
-          />
         </div>
         <div>
           <label className="block text-xs mb-1">내용</label>

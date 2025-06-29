@@ -3,16 +3,16 @@ import { fetchDailyPlanner } from "@/api/plannerApi";
 import { Category, Todo } from "@/types/planner";
 import { useEffect, useState } from "react";
 
-export function useTodoData() {
+export function useTodoData(date: string) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = async (targetDate?: string) => {
     try {
-      const today = new Date().toISOString().split("T")[0];
-      const { todos } = await fetchDailyPlanner(today);
+      const queryDate = targetDate || date;
+      const { todos } = await fetchDailyPlanner(queryDate);
       const data = await fetchCategories();
       setTodos(todos);
       setCategories(data);
@@ -26,8 +26,9 @@ export function useTodoData() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(date);
+    // eslint-disable-next-line
+  }, [date]);
 
   return { todos, categories, error, isLoading, fetchData };
 }

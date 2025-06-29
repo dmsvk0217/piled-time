@@ -5,10 +5,9 @@ import { useTodoData } from "@/hooks/useTodoData";
 import { useState } from "react";
 
 export default function HomePage() {
-  const { todos, categories, fetchData } = useTodoData();
-
   const [manualPercents, setManualPercents] = useState<{ [key: string]: number }>({});
   const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
+  const { todos, categories, error, isLoading, fetchData } = useTodoData(date);
 
   return (
     <div className="flex flex-col gap-8 px-2 md:px-8 max-w-6xl mx-auto">
@@ -29,7 +28,8 @@ export default function HomePage() {
             categories={categories}
             manualPercents={manualPercents}
             setManualPercents={setManualPercents}
-            fetchData={fetchData}
+            fetchData={() => fetchData(date)}
+            date={date}
           />
         </div>
         {/* 오른쪽: 시간표 */}

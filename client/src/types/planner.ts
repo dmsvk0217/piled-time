@@ -37,6 +37,7 @@ export interface Todo {
   category: Category;
   actions: Action[];
   plans: Plan[];
+  percent?: number;
 }
 
 export interface DailyPlannerResponse {

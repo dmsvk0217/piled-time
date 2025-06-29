@@ -34,7 +34,7 @@ export default function TodoTableBody({ todos, manualPercents, setManualPercents
             </tr>
           );
         }
-        const percent = manualPercents[todo.id] ?? 0;
+        const percent = todo.percent ?? 0;
         return (
           <tr key={todo.id}>
             <td className="border px-4 py-2">
@@ -52,7 +52,12 @@ export default function TodoTableBody({ todos, manualPercents, setManualPercents
               {todo.category.name}
             </td>
             <td className="border px-1 py-2 text-center align-middle">
-              <input type="checkbox" checked readOnly style={{ width: 16, height: 16 }} />
+              <input
+                type="checkbox"
+                checked={!!(todo.plans?.length || todo.actions?.length)}
+                readOnly
+                style={{ width: 16, height: 16 }}
+              />
             </td>
             <td className="border px-4 py-2">{todo.content}</td>
             <td className="border px-2 py-2">
@@ -75,17 +80,7 @@ export default function TodoTableBody({ todos, manualPercents, setManualPercents
                   transition: "background 0.2s",
                 }}
                 onClick={() => {
-                  const next =
-                    percent === 0
-                      ? 25
-                      : percent === 25
-                      ? 50
-                      : percent === 50
-                      ? 75
-                      : percent === 75
-                      ? 100
-                      : 0;
-                  setManualPercents((prev) => ({ ...prev, [todo.id]: next }));
+                  alert("달성률 변경은 추후 서버 연동 예정입니다.");
                 }}>
                 {percent}%
               </div>
