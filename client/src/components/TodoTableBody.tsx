@@ -2,11 +2,9 @@ import { Todo } from "@/types/planner";
 
 interface Props {
   todos: Todo[];
-  manualPercents: { [key: string]: number };
-  setManualPercents: React.Dispatch<React.SetStateAction<{ [key: string]: number }>>;
 }
 
-export default function TodoTableBody({ todos, manualPercents, setManualPercents }: Props) {
+export default function TodoTableBody({ todos }: Props) {
   if (todos.length === 0) {
     return (
       <tbody>

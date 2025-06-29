@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function HomePage() {
   const [manualPercents, setManualPercents] = useState<{ [key: string]: number }>({});
   const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
-  const { todos, categories, error, isLoading, fetchData } = useTodoData(date);
+  const { todos, categories, fetchData } = useTodoData(date);
 
   return (
     <div className="flex flex-col gap-8 px-2 md:px-8 max-w-6xl mx-auto">

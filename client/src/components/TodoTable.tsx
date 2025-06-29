@@ -13,14 +13,7 @@ interface TodoTableProps {
   date: string;
 }
 
-export default function TodoTable({
-  todos,
-  categories,
-  manualPercents,
-  setManualPercents,
-  fetchData,
-  date,
-}: TodoTableProps) {
+export default function TodoTable({ todos, categories, fetchData, date }: TodoTableProps) {
   // 등록 폼 상태
   const [categoryId, setCategoryId] = useState<number>(categories[0]?.id || 0);
   const [content, setContent] = useState<string>("");
@@ -84,11 +77,7 @@ export default function TodoTable({
           <col style={{ width: "20%" }} /> {/* 달성률 */}
         </colgroup>
         <TodoTableHead categories={categories} fetchData={fetchData} />
-        <TodoTableBody
-          todos={todos}
-          manualPercents={manualPercents}
-          setManualPercents={setManualPercents}
-        />
+        <TodoTableBody todos={todos} />
       </table>
     </div>
   );
