@@ -24,6 +24,12 @@ jobs:
             git reset --hard HEAD
             git pull origin main
             npm ci
+            cd client
+            npm ci
+            cd ..
+            cd server
+            npm ci
+            cd ..
             npm run pm2
             pm2 save
           EOF
