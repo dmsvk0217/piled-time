@@ -18,3 +18,15 @@ export const createTodo = async (
   });
   return res.data;
 };
+
+export const updateTodo = async (
+  id: number,
+  data: Partial<{ date: string; content: string }>
+): Promise<Todo> => {
+  const res = await api.patch<Todo>(`/api/todos/${id}`, data);
+  return res.data;
+};
+
+export const deleteTodo = async (id: number): Promise<void> => {
+  await api.delete(`/api/todos/${id}`);
+};
