@@ -9,7 +9,7 @@ import {
 import { Feedback } from "src/module/feedback/entities/feedback.entity";
 import { FeedbackException } from "src/module/feedback/errors/feedback.exception";
 import { User } from "src/module/user/entities/user.entity";
-import { Repository } from "typeorm";
+import { Between, Repository } from "typeorm";
 
 @Injectable()
 export class FeedbackService {
@@ -24,11 +24,18 @@ export class FeedbackService {
     return plainToInstance(FeedbackResponse, result);
   }
 
-  async findAll(user: User): Promise<FeedbackResponse[]> {
-    const categories = await this.feedbackRepository.find({
-      where: { user: { id: user.id } },
-    });
-    return categories.map((Feedback) => plainToInstance(FeedbackResponse, Feedback));
+  async findAll(user: User, type?: string, date?: string): Promise<FeedbackResponse[]> {
+    const where: any = { user: { id: user.id } };
+    if (type) where.type = type;
+    if (date) {
+      const start = new Date(date);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(date);
+      end.setHours(23, 59, 59, 999);
+      where.date = Between(start, end);
+    }
+    const feedbacks = await this.feedbackRepository.find({ where });
+    return feedbacks.map((feedback) => plainToInstance(FeedbackResponse, feedback));
   }
 
   async findOne(id: number, user: User): Promise<FeedbackResponse> {

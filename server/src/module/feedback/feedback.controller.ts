@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
@@ -36,8 +37,12 @@ export class FeedbackController {
 
   @CrudDocs.findAll(FeedbackDocs.findAll)
   @Get()
-  findAll(@GetUser() user: User): Promise<FeedbackResponse[]> {
-    return this.feedbackService.findAll(user);
+  findAll(
+    @GetUser() user: User,
+    @Query("type") type?: string,
+    @Query("date") date?: string
+  ): Promise<FeedbackResponse[]> {
+    return this.feedbackService.findAll(user, type, date);
   }
 
   @CrudDocs.findOne(FeedbackDocs.findOne)
