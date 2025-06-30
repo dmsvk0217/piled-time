@@ -20,7 +20,9 @@ export interface FeedbackCreateRequest {
 }
 
 export const fetchDailyFeedback = async (date: string): Promise<Feedback | null> => {
-  const res = await api.get<Feedback[]>("/api/feedbacks", { params: { type: "DAILY", date } });
+  const res = await api.get<Feedback[]>("/api/feedbacks", {
+    params: { date },
+  });
   return res.data.length > 0 ? res.data[0] : null;
 };
 
