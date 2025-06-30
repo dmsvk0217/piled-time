@@ -1,4 +1,4 @@
-import { createTodo } from "@/api/todoApi";
+import { createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
 import TodoTableBody from "@/components/TodoTableBody";
 import TodoTableHead from "@/components/TodoTableHead";
 import { Category, Todo } from "@/types/planner";
@@ -11,9 +11,18 @@ interface TodoTableProps {
   setManualPercents: React.Dispatch<React.SetStateAction<{ [key: string]: number }>>;
   fetchData: () => Promise<void>;
   date: string;
+  assigningTodoId: number | null;
+  setAssigningTodo: (id: number | null) => void;
 }
 
-export default function TodoTable({ todos, categories, fetchData, date }: TodoTableProps) {
+export default function TodoTable({
+  todos,
+  categories,
+  fetchData,
+  date,
+  assigningTodoId,
+  setAssigningTodo,
+}: TodoTableProps) {
   // 등록 폼 상태
   const [categoryId, setCategoryId] = useState<number>(categories[0]?.id || 0);
   const [content, setContent] = useState<string>("");
@@ -26,6 +35,26 @@ export default function TodoTable({ todos, categories, fetchData, date }: TodoTa
     try {
       await createTodo(categoryId, date, content);
       setContent("");
+      await fetchData();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdate = async (todo: Todo, data: Partial<Todo>) => {
+    setLoading(true);
+    try {
+      await updateTodo(todo.id, data);
+      await fetchData();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (todo: Todo) => {
+    setLoading(true);
+    try {
+      await deleteTodo(todo.id);
       await fetchData();
     } finally {
       setLoading(false);
@@ -75,9 +104,16 @@ export default function TodoTable({ todos, categories, fetchData, date }: TodoTa
           <col style={{ width: 40 }} /> {/* 배치(체크박스) */}
           <col style={{ width: "42%" }} /> {/* 세부내용 */}
           <col style={{ width: "20%" }} /> {/* 달성률 */}
+          <col style={{ width: "10%" }} /> {/* 수정/삭제/배치 */}
         </colgroup>
         <TodoTableHead categories={categories} fetchData={fetchData} />
-        <TodoTableBody todos={todos} />
+        <TodoTableBody
+          todos={todos}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+          assigningTodoId={assigningTodoId}
+          setAssigningTodo={setAssigningTodo}
+        />
       </table>
     </div>
   );

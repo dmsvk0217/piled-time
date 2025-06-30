@@ -1,10 +1,91 @@
 import { Todo } from "@/types/planner";
+import { useState } from "react";
+import { FiCheck, FiEdit2, FiPlusSquare, FiTrash2, FiX } from "react-icons/fi";
 
 interface Props {
   todos: Todo[];
+  onUpdate: (todo: Todo, data: Partial<Todo>) => Promise<void>;
+  onDelete: (todo: Todo) => Promise<void>;
+  assigningTodoId: number | null;
+  setAssigningTodo: (id: number | null) => void;
 }
 
-export default function TodoTableBody({ todos }: Props) {
+function EditButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      className="p-1 hover:bg-blue-100 rounded transition"
+      onClick={onClick}
+      disabled={disabled}
+      title="수정"
+      type="button">
+      <FiEdit2 size={18} color="#2563eb" />
+    </button>
+  );
+}
+
+function DeleteButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      className="p-1 hover:bg-red-100 rounded transition"
+      onClick={onClick}
+      disabled={disabled}
+      title="삭제"
+      type="button">
+      <FiTrash2 size={18} color="#ef4444" />
+    </button>
+  );
+}
+
+function SaveButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      className="p-1 hover:bg-green-100 rounded transition"
+      onClick={onClick}
+      disabled={disabled}
+      title="저장"
+      type="button">
+      <FiCheck size={18} color="#16a34a" />
+    </button>
+  );
+}
+
+function CancelButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      className="p-1 hover:bg-gray-100 rounded transition"
+      onClick={onClick}
+      disabled={disabled}
+      title="취소"
+      type="button">
+      <FiX size={18} color="#6b7280" />
+    </button>
+  );
+}
+
+function AssignButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      className="p-1 hover:bg-green-100 rounded transition"
+      onClick={onClick}
+      disabled={disabled}
+      title="타임테이블에 배치"
+      type="button">
+      <FiPlusSquare size={18} color="#22c55e" />
+    </button>
+  );
+}
+
+export default function TodoTableBody({
+  todos,
+  onUpdate,
+  onDelete,
+  assigningTodoId,
+  setAssigningTodo,
+}: Props) {
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editContent, setEditContent] = useState("");
+  const [editLoading, setEditLoading] = useState(false);
+
   if (todos.length === 0) {
     return (
       <tbody>
@@ -33,8 +114,9 @@ export default function TodoTableBody({ todos }: Props) {
           );
         }
         const percent = todo.percent ?? 0;
+        const isEditing = editId === todo.id;
         return (
-          <tr key={todo.id}>
+          <tr key={todo.id} className="group">
             <td className="border px-4 py-2">
               <span
                 style={{
@@ -57,7 +139,30 @@ export default function TodoTableBody({ todos }: Props) {
                 style={{ width: 16, height: 16 }}
               />
             </td>
-            <td className="border px-4 py-2">{todo.content}</td>
+            <td className="border px-4 py-2">
+              {isEditing ? (
+                <input
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  className="border px-2 py-1 rounded w-40 focus:outline-blue-400"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      (async () => {
+                        setEditLoading(true);
+                        await onUpdate(todo, { content: editContent });
+                        setEditId(null);
+                        setEditLoading(false);
+                      })();
+                    } else if (e.key === "Escape") {
+                      setEditId(null);
+                    }
+                  }}
+                />
+              ) : (
+                todo.content
+              )}
+            </td>
             <td className="border px-2 py-2">
               <div
                 className="w-full h-6 rounded cursor-pointer flex items-center justify-center select-none"
@@ -81,6 +186,50 @@ export default function TodoTableBody({ todos }: Props) {
                   alert("달성률 변경은 추후 서버 연동 예정입니다.");
                 }}>
                 {percent}%
+              </div>
+            </td>
+            <td className="border px-2 py-2">
+              <div
+                className={`flex gap-1 justify-center items-center ${
+                  isEditing ? "" : "hidden group-hover:flex"
+                }`}>
+                {isEditing ? (
+                  <>
+                    <SaveButton
+                      onClick={async () => {
+                        setEditLoading(true);
+                        await onUpdate(todo, { content: editContent });
+                        setEditId(null);
+                        setEditLoading(false);
+                      }}
+                      disabled={editLoading || !editContent.trim()}
+                    />
+                    <CancelButton onClick={() => setEditId(null)} disabled={editLoading} />
+                  </>
+                ) : (
+                  <>
+                    <EditButton
+                      onClick={() => {
+                        setEditId(todo.id);
+                        setEditContent(todo.content);
+                      }}
+                    />
+                    <DeleteButton
+                      onClick={async () => {
+                        if (window.confirm("정말 삭제하시겠습니까?")) {
+                          setEditLoading(true);
+                          await onDelete(todo);
+                          setEditLoading(false);
+                        }
+                      }}
+                      disabled={editLoading}
+                    />
+                  </>
+                )}
+                <AssignButton
+                  onClick={() => setAssigningTodo(todo.id)}
+                  disabled={isEditing || assigningTodoId === todo.id}
+                />
               </div>
             </td>
           </tr>

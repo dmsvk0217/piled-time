@@ -8,6 +8,15 @@ export default function HomePage() {
   const [manualPercents, setManualPercents] = useState<{ [key: string]: number }>({});
   const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const { todos, categories, fetchData } = useTodoData(date);
+  const [assigningTodoId, setAssigningTodo] = useState<number | null>(null);
+
+  // plan 생성 API 임시 (실제 구현 시 분리)
+  const handleAssignPlan = async (todoId: number, startAt: Date, duration: number) => {
+    // TODO: plan 생성 API 호출
+    alert(`plan 생성: todoId=${todoId}, startAt=${startAt.toISOString()}, duration=${duration}`);
+    setAssigningTodo(null);
+    await fetchData(date);
+  };
 
   return (
     <div className="flex flex-col gap-8 px-2 md:px-8 max-w-6xl mx-auto">
@@ -30,11 +39,13 @@ export default function HomePage() {
             setManualPercents={setManualPercents}
             fetchData={() => fetchData(date)}
             date={date}
+            assigningTodoId={assigningTodoId}
+            setAssigningTodo={setAssigningTodo}
           />
         </div>
         {/* 오른쪽: 시간표 */}
         <div className="min-w-[320px] max-w-[420px] w-1/2">
-          <TimeTable />
+          <TimeTable assigningTodoId={assigningTodoId} onAssignPlan={handleAssignPlan} />
         </div>
       </div>
       {/* 아래: 피드백 */}
