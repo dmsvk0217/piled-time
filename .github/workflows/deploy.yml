@@ -1,35 +1,41 @@
-name: Deploy to EC2 using PM2
+name: Build and Push Docker Images
 
 on:
   push:
     branches: [main]
 
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup SSH Key
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.EC2_KEY }}
-
-      - name: Deploy via SSH
+      # ✅ .env 파일 생성 (서버용 환경 변수)
+      - name: Create .env file for docker-compose
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} -p ${{ secrets.EC2_PORT }} << 'EOF'
-            cd ~/piled-time
-            git reset --hard HEAD
-            git pull origin main
-            npm ci
-            cd client
-            npm ci
-            cd ..
-            cd server
-            npm ci
-            cd ..
-            npm run pm2
-            pm2 save
-          EOF
+          mkdir -p server
+          echo "DB_HOST=db" >> server/.env.local
+          echo "DB_USER=${{ secrets.DB_USER }}" >> server/.env.local
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> server/.env.local
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.DB_PASS }}" >> server/.env.local
+
+      # ✅ Docker Hub 로그인
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
+
+      # ✅ Build & Push React
+      - name: Build and Push React image (dist only)
+        run: |
+          docker build -t $DOCKER_USER/react_app ./client
+          docker push $DOCKER_USER/react_app
+
+      # ✅ Build & Push NestJS
+      - name: Build and Push NestJS image
+        run: |
+          docker build --env-file ./server/.env.local -t $DOCKER_USER/nest_api ./server
+          docker push $DOCKER_USER/nest_api

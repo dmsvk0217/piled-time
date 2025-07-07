@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx_gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    depends_on:
+      - backend
+
+  frontend:
+    build: ./frontend
+    container_name: react_build
+    command: ["true"] # build용 컨테이너 (nginx에서 정적파일 mount만)
+    volumes:
+      - ./frontend/dist:/app/dist
+
+  backend:
+    build: ./backend
+    container_name: nest_api
+    restart: always
+    expose:
+      - "3000"
+    env_file:
+      - ./server/.env.local
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    container_name: mysql_db
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./server/.env.local
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    entrypoint: >
+      sh -c "certbot certonly --webroot
+      --webroot-path=/var/www/certbot
+      --email dmsvk0217@gmail.com
+      --agree-tos
+      --no-eff-email
+      -d piledtime.com -d www.piledtime.com"
+
+volumes:
+  mysql_data:
