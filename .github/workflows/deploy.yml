@@ -24,18 +24,18 @@ jobs:
           docker build \
             -f client/Dockerfile.nginx-react \
             --build-arg BUILD_SCRIPT=build:production \
-            -t $DOCKER_USER/react-nginx-app \
+            -t ${{ secrets.DOCKER_USER }}/react-nginx-app \
             .
-          docker push $DOCKER_USER/react-nginx-app
+          docker push ${{ secrets.DOCKER_USER }}/react-nginx-app
 
       # ✅ Build & Push NestJS (context: ./server)
       - name: Build and Push NestJS image
         run: |
           docker build \
             --build-arg START_SCRIPT=start:production \
-            -t $DOCKER_USER/nest-server \
+            -t ${{ secrets.DOCKER_USER }}/nest-server \
             ./server
-          docker push $DOCKER_USER/nest-server
+          docker push ${{ secrets.DOCKER_USER }}/nest-server
 
       # ✅ Deploy to EC2
       - name: Deploy to EC2
@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/piled-time
-            docker pull $DOCKER_USER/react-nginx-app
-            docker pull $DOCKER_USER/nest-server
+            docker pull ${{ secrets.DOCKER_USER }}/react-nginx-app
+            docker pull ${{ secrets.DOCKER_USER }}/nest-server
             docker compose -f docker-compose.ec2.yml down
             docker compose -f docker-compose.ec2.yml up -d
