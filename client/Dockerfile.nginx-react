@@ -6,8 +6,10 @@ WORKDIR /app
 # 빌드 스크립트를 build arg로 전달
 ARG BUILD_SCRIPT=build:localserver
 
-COPY ./client ./
+COPY ./client/package*.json ./
 RUN npm install
+
+COPY ./client .
 RUN npm run $BUILD_SCRIPT
 
 # Stage 2: Nginx + React
