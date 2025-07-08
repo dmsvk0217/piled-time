@@ -5,7 +5,7 @@ import { Action } from "src/module/action/entities/action.entity";
 
 export class ActionResponse extends IntersectionType(
   OmitType(Action, ["todo"] as const),
-  BaseResponseDto
+  BaseResponseDto,
 ) {
   @ApiProperty({ example: "2025-01-01", description: "실행 시작 날짜" })
   @Expose()

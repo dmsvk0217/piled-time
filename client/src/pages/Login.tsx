@@ -3,6 +3,8 @@ export default function Login() {
     window.location.href = import.meta.env.VITE_API_SERVER_URL + "/api/auth/google";
   };
 
+  console.log(import.meta.env.VITE_API_SERVER_URL);
+
   return (
     <div className="p-10">
       <h1 className="text-xl mb-4">로그인</h1>

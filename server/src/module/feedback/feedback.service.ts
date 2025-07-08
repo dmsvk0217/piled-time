@@ -15,16 +15,23 @@ import { Between, Repository } from "typeorm";
 export class FeedbackService {
   constructor(
     @InjectRepository(Feedback)
-    private readonly feedbackRepository: Repository<Feedback>
+    private readonly feedbackRepository: Repository<Feedback>,
   ) {}
 
-  async create(request: FeedbackCreateRequest, user: User): Promise<FeedbackResponse> {
+  async create(
+    request: FeedbackCreateRequest,
+    user: User,
+  ): Promise<FeedbackResponse> {
     const feedback = this.feedbackRepository.create({ ...request, user });
     const result = await this.feedbackRepository.save(feedback);
     return plainToInstance(FeedbackResponse, result);
   }
 
-  async findAll(user: User, type?: string, date?: string): Promise<FeedbackResponse[]> {
+  async findAll(
+    user: User,
+    type?: string,
+    date?: string,
+  ): Promise<FeedbackResponse[]> {
     const where: any = { user: { id: user.id } };
     if (type) where.type = type;
     if (date) {
@@ -35,7 +42,9 @@ export class FeedbackService {
       where.date = Between(start, end);
     }
     const feedbacks = await this.feedbackRepository.find({ where });
-    return feedbacks.map((feedback) => plainToInstance(FeedbackResponse, feedback));
+    return feedbacks.map((feedback) =>
+      plainToInstance(FeedbackResponse, feedback),
+    );
   }
 
   async findOne(id: number, user: User): Promise<FeedbackResponse> {
@@ -43,7 +52,11 @@ export class FeedbackService {
     return plainToInstance(FeedbackResponse, result);
   }
 
-  async update(id: number, request: FeedbackUpdateRequest, user: User): Promise<FeedbackResponse> {
+  async update(
+    id: number,
+    request: FeedbackUpdateRequest,
+    user: User,
+  ): Promise<FeedbackResponse> {
     const feedback = await this.findById(id, user);
     this.feedbackRepository.merge(feedback, request);
     const result = await this.feedbackRepository.save(feedback);

@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "node:path";
 import { AuthModule } from "src/auth/auth.module";
@@ -27,10 +26,6 @@ const envFilePath = (() => {
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "..", "client", "build"),
-      exclude: ["/api*"],
-    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath,

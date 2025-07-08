@@ -15,10 +15,13 @@ import { Repository } from "typeorm";
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async create(request: CategoryCreateRequest, user: User): Promise<CategoryResponse> {
+  async create(
+    request: CategoryCreateRequest,
+    user: User,
+  ): Promise<CategoryResponse> {
     const category = this.categoryRepository.create({ ...request, user });
     const result = await this.categoryRepository.save(category);
     return plainToInstance(CategoryResponse, result);
@@ -28,7 +31,9 @@ export class CategoryService {
     const categories = await this.categoryRepository.find({
       where: { user: { id: user.id } },
     });
-    return categories.map((category) => plainToInstance(CategoryResponse, category));
+    return categories.map((category) =>
+      plainToInstance(CategoryResponse, category),
+    );
   }
 
   async findOne(id: number, user: User): Promise<CategoryResponse> {
@@ -36,7 +41,11 @@ export class CategoryService {
     return plainToInstance(CategoryResponse, result);
   }
 
-  async update(id: number, request: CategoryUpdateRequest, user: User): Promise<CategoryResponse> {
+  async update(
+    id: number,
+    request: CategoryUpdateRequest,
+    user: User,
+  ): Promise<CategoryResponse> {
     const category = await this.findById(id, user);
     this.categoryRepository.merge(category, request);
     const result = await this.categoryRepository.save(category);

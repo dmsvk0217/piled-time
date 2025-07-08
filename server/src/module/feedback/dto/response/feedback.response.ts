@@ -6,7 +6,7 @@ import { FeedbackType } from "src/module/feedback/enum/feedback.enum";
 
 export class FeedbackResponse extends IntersectionType(
   OmitType(Feedback, ["user"] as const),
-  BaseResponseDto
+  BaseResponseDto,
 ) {
   @ApiProperty({ example: FeedbackType.DAILY, description: "피드벡 타입" })
   @Expose()

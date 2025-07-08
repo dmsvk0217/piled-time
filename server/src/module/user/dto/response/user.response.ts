@@ -4,8 +4,14 @@ import { BaseResponseDto } from "src/common/database/dto/base-response.dto";
 import { User } from "src/module/user/entities/user.entity";
 
 export class UserResponse extends IntersectionType(
-  OmitType(User, ["categories", "feedbacks", "memos", "todolists", "password"] as const),
-  BaseResponseDto
+  OmitType(User, [
+    "categories",
+    "feedbacks",
+    "memos",
+    "todolists",
+    "password",
+  ] as const),
+  BaseResponseDto,
 ) {
   @ApiProperty({ example: "name", description: "유저 이름" })
   @Expose()

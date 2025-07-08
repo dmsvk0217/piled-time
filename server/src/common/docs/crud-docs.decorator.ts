@@ -28,7 +28,7 @@ export class CrudDocs {
       ApiCreatedResponse({
         description: `${options.entityName} 저장 성공`,
         type: options.responseDto,
-      })
+      }),
     );
   }
 
@@ -42,7 +42,7 @@ export class CrudDocs {
         description: `${options.entityName} 리스트 조회 성공`,
         type: options.responseDto,
         isArray: true,
-      })
+      }),
     );
   }
 
@@ -60,7 +60,7 @@ export class CrudDocs {
       ApiOkResponse({
         description: `${options.entityName} 조회 성공`,
         type: options.responseDto,
-      })
+      }),
     );
   }
 
@@ -79,7 +79,7 @@ export class CrudDocs {
       ApiOkResponse({
         description: `${options.entityName} 수정 성공`,
         type: options.responseDto,
-      })
+      }),
     );
   }
 
@@ -96,7 +96,7 @@ export class CrudDocs {
       }),
       ApiNoContentResponse({
         description: `${options.entityName} 삭제 성공`,
-      })
+      }),
     );
   }
 }

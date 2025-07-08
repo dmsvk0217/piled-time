@@ -10,7 +10,7 @@ import { Repository } from "typeorm";
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(data: Partial<User>): Promise<User> {

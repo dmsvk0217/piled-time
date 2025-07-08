@@ -5,7 +5,7 @@ import { Memo } from "src/module/memo/entities/memo.entity";
 
 export class MemoResponse extends IntersectionType(
   OmitType(Memo, ["user"] as const),
-  BaseResponseDto
+  BaseResponseDto,
 ) {
   @ApiProperty({ example: "2025-01-01", description: "메모작성 날짜" })
   @Expose()

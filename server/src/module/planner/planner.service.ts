@@ -18,9 +18,12 @@ import { Todo } from "../todo/entities/todo.entity";
 export class PlannerService {
   constructor(
     @InjectRepository(Todo)
-    private readonly todoRepository: Repository<Todo>
+    private readonly todoRepository: Repository<Todo>,
   ) {}
-  async getDailyPlanner(user: User, query: DailyPlannerQueryDto): Promise<PlannerResponse> {
+  async getDailyPlanner(
+    user: User,
+    query: DailyPlannerQueryDto,
+  ): Promise<PlannerResponse> {
     const startDate = new Date(query.date);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 1);
@@ -42,7 +45,10 @@ export class PlannerService {
     });
   }
 
-  async getWeeklyPlanner(user: User, query: WeeklyPlannerQueryDto): Promise<PlannerWeekResponse> {
+  async getWeeklyPlanner(
+    user: User,
+    query: WeeklyPlannerQueryDto,
+  ): Promise<PlannerWeekResponse> {
     const startDate = new Date(query.start);
     const endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6);
@@ -54,12 +60,16 @@ export class PlannerService {
         actions: true,
       },
     });
-    return plainToInstance(PlannerWeekResponse, { start: startDate, end: endDate, todos });
+    return plainToInstance(PlannerWeekResponse, {
+      start: startDate,
+      end: endDate,
+      todos,
+    });
   }
 
   async getWeekdayPlanner(
     user: User,
-    query: WeekdayPlannerQueryDto
+    query: WeekdayPlannerQueryDto,
   ): Promise<PlannerWeekdayResponse> {
     const weekday = query.weekday;
     const weekdayIndex = this.getWeekdayIndex(weekday);

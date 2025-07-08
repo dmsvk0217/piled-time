@@ -1,7 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
-import { ActionCreateRequest, ActionResponse, ActionUpdateRequest } from "src/module/action/dto";
+import {
+  ActionCreateRequest,
+  ActionResponse,
+  ActionUpdateRequest,
+} from "src/module/action/dto";
 import { Action } from "src/module/action/entities/action.entity";
 import { ActionException } from "src/module/action/errors/action.exception";
 import { TodoService } from "src/module/todo/todo.service";
@@ -14,10 +18,13 @@ export class ActionService {
     @InjectRepository(Action)
     private readonly actionRepository: Repository<Action>,
 
-    private readonly todoService: TodoService
+    private readonly todoService: TodoService,
   ) {}
 
-  async create(request: ActionCreateRequest, user: User): Promise<ActionResponse> {
+  async create(
+    request: ActionCreateRequest,
+    user: User,
+  ): Promise<ActionResponse> {
     const todo = await this.todoService.findDetailById(request.todoId, user);
     if (todo.actions.length) throw ActionException.ALREADY_EXISTS;
     const action = this.actionRepository.create({ ...request, todo });
@@ -37,7 +44,11 @@ export class ActionService {
     return plainToInstance(ActionResponse, result);
   }
 
-  async update(id: number, request: ActionUpdateRequest, user: User): Promise<ActionResponse> {
+  async update(
+    id: number,
+    request: ActionUpdateRequest,
+    user: User,
+  ): Promise<ActionResponse> {
     const action = await this.findById(id, user);
     this.actionRepository.merge(action, request);
     const result = await this.actionRepository.save(action);

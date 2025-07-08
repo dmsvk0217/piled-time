@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build and Push Docker Images, EC2 Deploy
 
 on:
   push:
@@ -15,27 +15,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # ✅ .env 파일 생성 (서버용 환경 변수)
-      - name: Create .env file for docker-compose
-        run: |
-          mkdir -p server
-          echo "DB_HOST=db" >> server/.env.local
-          echo "DB_USER=${{ secrets.DB_USER }}" >> server/.env.local
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> server/.env.local
-          echo "MYSQL_ROOT_PASSWORD=${{ secrets.DB_PASS }}" >> server/.env.local
-
-      # ✅ Docker Hub 로그인
       - name: Docker Login
         run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
-      # ✅ Build & Push React
-      - name: Build and Push React image (dist only)
+      # ✅ Build & Push React + Nginx (context: .)
+      - name: Build and Push React-Nginx image
         run: |
-          docker build -t $DOCKER_USER/react_app ./client
-          docker push $DOCKER_USER/react_app
+          docker build \
+            -f client/Dockerfile.nginx-react \
+            -t $DOCKER_USER/react-nginx-app \
+            .
+          docker push $DOCKER_USER/react-nginx-app
 
-      # ✅ Build & Push NestJS
+      # ✅ Build & Push NestJS (context: ./server)
       - name: Build and Push NestJS image
         run: |
-          docker build --env-file ./server/.env.local -t $DOCKER_USER/nest_api ./server
-          docker push $DOCKER_USER/nest_api
+          docker build \
+            --build-arg START_SCRIPT=start:production \
+            -t $DOCKER_USER/nest-server \
+            ./server
+          docker push $DOCKER_USER/nest-server
+
+      # ✅ Deploy to EC2
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/piled-time
+            docker pull $DOCKER_USER/react-nginx-app
+            docker pull $DOCKER_USER/nest-server
+            docker compose -f docker-compose.ec2.yml down
+            docker compose -f docker-compose.ec2.yml up -d

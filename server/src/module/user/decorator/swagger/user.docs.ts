@@ -1,5 +1,9 @@
 import { CrudDocsOptions } from "src/common/docs/crud-docs.decorator";
-import { UserCreateRequest, UserResponse, UserUpdateRequest } from "src/module/user/dto";
+import {
+  UserCreateRequest,
+  UserResponse,
+  UserUpdateRequest,
+} from "src/module/user/dto";
 
 const entityName = "유저";
 

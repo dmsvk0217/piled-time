@@ -10,6 +10,6 @@ export class TodoException {
         httpStatus: HttpStatus.NOT_FOUND,
       },
     ],
-    HttpStatus.NOT_FOUND
+    HttpStatus.NOT_FOUND,
   );
 }

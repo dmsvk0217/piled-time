@@ -13,7 +13,7 @@ export async function setUpSwagger(app: INestApplication) {
         description: "JWT 인증 토큰",
         in: "header",
       },
-      "Authorization"
+      "Authorization",
     )
     .build();
 

@@ -11,7 +11,7 @@ export class AuthService {
     private jwtService: JwtService,
 
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
   ) {}
 
   login(user: User) {

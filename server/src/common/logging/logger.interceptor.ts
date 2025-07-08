@@ -1,4 +1,9 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from "@nestjs/common";
 import { Request } from "express";
 import { Observable, catchError, tap } from "rxjs";
 import { Logger } from "src/common/logging/logger";
@@ -26,7 +31,7 @@ export class LoggingInterceptor implements NestInterceptor {
         logger.errors(method, url, Date.now() - start);
         logger.trace(error?.stack || error);
         throw error;
-      })
+      }),
     );
   }
 }

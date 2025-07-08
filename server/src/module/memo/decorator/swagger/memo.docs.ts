@@ -1,5 +1,9 @@
 import { CrudDocsOptions } from "src/common/docs/crud-docs.decorator";
-import { MemoCreateRequest, MemoResponse, MemoUpdateRequest } from "src/module/memo/dto";
+import {
+  MemoCreateRequest,
+  MemoResponse,
+  MemoUpdateRequest,
+} from "src/module/memo/dto";
 
 const entityName = "메모";
 

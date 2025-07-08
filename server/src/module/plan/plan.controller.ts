@@ -14,7 +14,11 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUser } from "src/common/decorators/user.decorator";
 import { CrudDocs } from "src/common/docs/crud-docs.decorator";
 import { PlanDocs } from "src/module/plan/decorator/swagger";
-import { PlanCreateRequest, PlanResponse, PlanUpdateRequest } from "src/module/plan/dto";
+import {
+  PlanCreateRequest,
+  PlanResponse,
+  PlanUpdateRequest,
+} from "src/module/plan/dto";
 import { PlanService } from "src/module/plan/plan.service";
 import { User } from "src/module/user/entities/user.entity";
 
@@ -26,7 +30,10 @@ export class PlanController {
 
   @CrudDocs.create(PlanDocs.create)
   @Post()
-  create(@Body() request: PlanCreateRequest, @GetUser() user: User): Promise<PlanResponse> {
+  create(
+    @Body() request: PlanCreateRequest,
+    @GetUser() user: User,
+  ): Promise<PlanResponse> {
     return this.planService.create(request, user);
   }
 
@@ -38,7 +45,10 @@ export class PlanController {
 
   @CrudDocs.findOne(PlanDocs.findOne)
   @Get(":id")
-  findOne(@Param("id") id: number, @GetUser() user: User): Promise<PlanResponse> {
+  findOne(
+    @Param("id") id: number,
+    @GetUser() user: User,
+  ): Promise<PlanResponse> {
     return this.planService.findOne(id, user);
   }
 
@@ -47,7 +57,7 @@ export class PlanController {
   update(
     @Param("id") id: number,
     @Body() request: PlanUpdateRequest,
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<PlanResponse> {
     return this.planService.update(id, request, user);
   }

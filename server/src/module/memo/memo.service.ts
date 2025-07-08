@@ -1,7 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
-import { MemoCreateRequest, MemoResponse, MemoUpdateRequest } from "src/module/memo/dto";
+import {
+  MemoCreateRequest,
+  MemoResponse,
+  MemoUpdateRequest,
+} from "src/module/memo/dto";
 import { Memo } from "src/module/memo/entities/memo.entity";
 import { MemoException } from "src/module/memo/errors/memo.exception";
 import { User } from "src/module/user/entities/user.entity";
@@ -11,7 +15,7 @@ import { Repository } from "typeorm";
 export class MemoService {
   constructor(
     @InjectRepository(Memo)
-    private readonly memoRepository: Repository<Memo>
+    private readonly memoRepository: Repository<Memo>,
   ) {}
 
   async create(request: MemoCreateRequest, user: User): Promise<MemoResponse> {
@@ -32,7 +36,11 @@ export class MemoService {
     return plainToInstance(MemoResponse, result);
   }
 
-  async update(id: number, request: MemoUpdateRequest, user: User): Promise<MemoResponse> {
+  async update(
+    id: number,
+    request: MemoUpdateRequest,
+    user: User,
+  ): Promise<MemoResponse> {
     const memo = await this.findById(id, user);
     this.memoRepository.merge(memo, request);
     const result = await this.memoRepository.save(memo);

@@ -10,7 +10,7 @@ export class ActionException {
         httpStatus: HttpStatus.NOT_FOUND,
       },
     ],
-    HttpStatus.NOT_FOUND
+    HttpStatus.NOT_FOUND,
   );
 
   static readonly ALREADY_EXISTS = new PTException(
@@ -21,6 +21,6 @@ export class ActionException {
         httpStatus: HttpStatus.BAD_REQUEST,
       },
     ],
-    HttpStatus.BAD_REQUEST
+    HttpStatus.BAD_REQUEST,
   );
 }

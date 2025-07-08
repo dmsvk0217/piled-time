@@ -30,7 +30,10 @@ export class CategoryController {
 
   @CrudDocs.create(CategoryDocs.create)
   @Post()
-  create(@Body() request: CategoryCreateRequest, @GetUser() user: User): Promise<CategoryResponse> {
+  create(
+    @Body() request: CategoryCreateRequest,
+    @GetUser() user: User,
+  ): Promise<CategoryResponse> {
     return this.categoryService.create(request, user);
   }
 
@@ -42,7 +45,10 @@ export class CategoryController {
 
   @CrudDocs.findOne(CategoryDocs.findOne)
   @Get(":id")
-  findOne(@Param("id") id: number, @GetUser() user: User): Promise<CategoryResponse> {
+  findOne(
+    @Param("id") id: number,
+    @GetUser() user: User,
+  ): Promise<CategoryResponse> {
     return this.categoryService.findOne(id, user);
   }
 
@@ -51,7 +57,7 @@ export class CategoryController {
   update(
     @Param("id") id: number,
     @Body() request: CategoryUpdateRequest,
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<CategoryResponse> {
     return this.categoryService.update(id, request, user);
   }

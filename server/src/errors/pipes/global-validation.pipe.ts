@@ -11,9 +11,15 @@ export class GlobalValidationPipe extends ValidationPipe {
     };
   }
 
-  private extractionValidationErrors(errors: ValidationError[]): ValidateExceptionType[] {
+  private extractionValidationErrors(
+    errors: ValidationError[],
+  ): ValidateExceptionType[] {
     return errors.map(({ property, target, constraints }) => {
-      const code = this.getCode(property, target.constructor.name, Object.keys(constraints)[0]);
+      const code = this.getCode(
+        property,
+        target.constructor.name,
+        Object.keys(constraints)[0],
+      );
       return {
         code: code,
         target: property,
@@ -27,6 +33,8 @@ export class GlobalValidationPipe extends ValidationPipe {
   }
 
   private camelToSnake(str: string) {
-    return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`).replace(/^-/, "");
+    return str
+      .replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+      .replace(/^-/, "");
   }
 }

@@ -5,7 +5,7 @@ import { Plan } from "src/module/plan/entities/plan.entity";
 
 export class PlanResponse extends IntersectionType(
   OmitType(Plan, ["todo"] as const),
-  BaseResponseDto
+  BaseResponseDto,
 ) {
   @ApiProperty({ example: "2025-01-01", description: "계획 시작 날짜" })
   @Expose()

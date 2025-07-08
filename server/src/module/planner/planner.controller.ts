@@ -23,7 +23,7 @@ export class PlannerController {
   @ApiOperation({ summary: "일간 플래너 조회" })
   async getDailyPlanner(
     @GetUser() user: User,
-    @Query() query: DailyPlannerQueryDto
+    @Query() query: DailyPlannerQueryDto,
   ): Promise<PlannerResponse> {
     return this.plannerService.getDailyPlanner(user, query);
   }
@@ -32,7 +32,7 @@ export class PlannerController {
   @ApiOperation({ summary: "주간 플래너 조회" })
   async getWeeklyPlanner(
     @GetUser() user: User,
-    @Query() query: WeeklyPlannerQueryDto
+    @Query() query: WeeklyPlannerQueryDto,
   ): Promise<PlannerWeekResponse> {
     return this.plannerService.getWeeklyPlanner(user, query);
   }
@@ -41,7 +41,7 @@ export class PlannerController {
   @ApiOperation({ summary: "요일별 플래너 조회" })
   async getWeekdayPlanner(
     @GetUser() user: User,
-    @Query() query: WeekdayPlannerQueryDto
+    @Query() query: WeekdayPlannerQueryDto,
   ): Promise<PlannerWeekdayResponse> {
     return this.plannerService.getWeekdayPlanner(user, query);
   }

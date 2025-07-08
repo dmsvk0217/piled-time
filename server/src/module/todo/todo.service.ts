@@ -2,7 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
 import { CategoryService } from "src/module/category/category.service";
-import { TodoCreateRequest, TodoResponse, TodoUpdateRequest } from "src/module/todo/dto";
+import {
+  TodoCreateRequest,
+  TodoResponse,
+  TodoUpdateRequest,
+} from "src/module/todo/dto";
 import { Todo } from "src/module/todo/entities/todo.entity";
 import { TodoException } from "src/module/todo/errors/todo.exception";
 import { User } from "src/module/user/entities/user.entity";
@@ -14,11 +18,14 @@ export class TodoService {
     @InjectRepository(Todo)
     private readonly todoRepository: Repository<Todo>,
 
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
   ) {}
 
   async create(request: TodoCreateRequest, user: User): Promise<TodoResponse> {
-    const category = await this.categoryService.findById(request.categoryId, user);
+    const category = await this.categoryService.findById(
+      request.categoryId,
+      user,
+    );
     const todo = this.todoRepository.create({ ...request, user, category });
     const result = await this.todoRepository.save(todo);
     return plainToInstance(TodoResponse, result);
@@ -36,7 +43,11 @@ export class TodoService {
     return plainToInstance(TodoResponse, result);
   }
 
-  async update(id: number, request: TodoUpdateRequest, user: User): Promise<TodoResponse> {
+  async update(
+    id: number,
+    request: TodoUpdateRequest,
+    user: User,
+  ): Promise<TodoResponse> {
     const todo = await this.findById(id, user);
     this.todoRepository.merge(todo, request);
     const result = await this.todoRepository.save(todo);

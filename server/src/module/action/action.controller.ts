@@ -15,7 +15,11 @@ import { GetUser } from "src/common/decorators/user.decorator";
 import { CrudDocs } from "src/common/docs/crud-docs.decorator";
 import { ActionService } from "src/module/action/action.service";
 import { ActionDocs } from "src/module/action/decorator/swagger";
-import { ActionCreateRequest, ActionResponse, ActionUpdateRequest } from "src/module/action/dto";
+import {
+  ActionCreateRequest,
+  ActionResponse,
+  ActionUpdateRequest,
+} from "src/module/action/dto";
 import { User } from "src/module/user/entities/user.entity";
 
 @ApiTags("Action")
@@ -26,7 +30,10 @@ export class ActionController {
 
   @CrudDocs.create(ActionDocs.create)
   @Post()
-  create(@Body() request: ActionCreateRequest, @GetUser() user: User): Promise<ActionResponse> {
+  create(
+    @Body() request: ActionCreateRequest,
+    @GetUser() user: User,
+  ): Promise<ActionResponse> {
     return this.actionService.create(request, user);
   }
 
@@ -38,7 +45,10 @@ export class ActionController {
 
   @CrudDocs.findOne(ActionDocs.findOne)
   @Get(":id")
-  findOne(@Param("id") id: number, @GetUser() user: User): Promise<ActionResponse> {
+  findOne(
+    @Param("id") id: number,
+    @GetUser() user: User,
+  ): Promise<ActionResponse> {
     return this.actionService.findOne(id, user);
   }
 
@@ -47,7 +57,7 @@ export class ActionController {
   update(
     @Param("id") id: number,
     @Body() request: ActionUpdateRequest,
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<ActionResponse> {
     return this.actionService.update(id, request, user);
   }

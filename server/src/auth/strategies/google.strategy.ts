@@ -1,11 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
-import { Strategy as GoogleStrategyBase, Profile } from "passport-google-oauth20";
+import {
+  Strategy as GoogleStrategyBase,
+  Profile,
+} from "passport-google-oauth20";
 import { User } from "src/module/user/entities/user.entity";
 import { UserService } from "src/module/user/user.service";
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(GoogleStrategyBase, "google") {
+export class GoogleStrategy extends PassportStrategy(
+  GoogleStrategyBase,
+  "google",
+) {
   constructor(private userService: UserService) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,

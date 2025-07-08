@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
@@ -36,7 +45,10 @@ export class UserController {
 
   @CrudDocs.update(UserDocs.update)
   @Patch(":id")
-  update(@Param("id") id: number, @Body() request: UserUpdateRequest): Promise<UserResponse> {
+  update(
+    @Param("id") id: number,
+    @Body() request: UserUpdateRequest,
+  ): Promise<UserResponse> {
     return this.userService.update(id, request);
   }
 

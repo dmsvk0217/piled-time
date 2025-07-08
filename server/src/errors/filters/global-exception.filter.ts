@@ -34,7 +34,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             httpStatus: HttpStatus.NOT_FOUND,
           },
         ],
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
     return exception;
@@ -57,7 +57,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             {
               statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
               path: request.url,
-              message: "서버에 알 수 없는 에러가 생겼습니다. 관리자에게 문의해주세요.",
+              message:
+                "서버에 알 수 없는 에러가 생겼습니다. 관리자에게 문의해주세요.",
             },
           ],
         };

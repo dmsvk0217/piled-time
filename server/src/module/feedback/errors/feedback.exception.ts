@@ -10,6 +10,6 @@ export class FeedbackException {
         httpStatus: HttpStatus.NOT_FOUND,
       },
     ],
-    HttpStatus.NOT_FOUND
+    HttpStatus.NOT_FOUND,
   );
 }

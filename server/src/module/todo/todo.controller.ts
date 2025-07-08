@@ -14,7 +14,11 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUser } from "src/common/decorators/user.decorator";
 import { CrudDocs } from "src/common/docs/crud-docs.decorator";
 import { TodoDocs } from "src/module/todo/decorator/swagger";
-import { TodoCreateRequest, TodoResponse, TodoUpdateRequest } from "src/module/todo/dto";
+import {
+  TodoCreateRequest,
+  TodoResponse,
+  TodoUpdateRequest,
+} from "src/module/todo/dto";
 import { TodoService } from "src/module/todo/todo.service";
 import { User } from "src/module/user/entities/user.entity";
 
@@ -26,7 +30,10 @@ export class TodoController {
 
   @CrudDocs.create(TodoDocs.create)
   @Post()
-  create(@Body() request: TodoCreateRequest, @GetUser() user: User): Promise<TodoResponse> {
+  create(
+    @Body() request: TodoCreateRequest,
+    @GetUser() user: User,
+  ): Promise<TodoResponse> {
     return this.todoService.create(request, user);
   }
 
@@ -38,7 +45,10 @@ export class TodoController {
 
   @CrudDocs.findOne(TodoDocs.findOne)
   @Get(":id")
-  findOne(@Param("id") id: number, @GetUser() user: User): Promise<TodoResponse> {
+  findOne(
+    @Param("id") id: number,
+    @GetUser() user: User,
+  ): Promise<TodoResponse> {
     return this.todoService.findOne(id, user);
   }
 
@@ -47,7 +57,7 @@ export class TodoController {
   update(
     @Param("id") id: number,
     @Body() request: TodoUpdateRequest,
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<TodoResponse> {
     return this.todoService.update(id, request, user);
   }

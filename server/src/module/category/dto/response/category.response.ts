@@ -5,7 +5,7 @@ import { Category } from "src/module/category/entities/category.entity";
 
 export class CategoryResponse extends IntersectionType(
   OmitType(Category, ["user", "todos"] as const),
-  BaseResponseDto
+  BaseResponseDto,
 ) {
   @ApiProperty({ example: "독서", description: "카테고리 이름" })
   @Expose()

@@ -11,6 +11,6 @@ export function ProfileDocs(): MethodDecorator {
     ApiOkResponse({
       description: "유저 정보 조회 성공",
       type: UserResponse,
-    })
+    }),
   );
 }
