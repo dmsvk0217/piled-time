@@ -15,6 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Create client/.env.production
+        run: |
+          echo "VITE_API_SERVER_URL=${{ secrets.VITE_API_SERVER_URL }}" > client/.env.production
+
       - name: Docker Login
         run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
