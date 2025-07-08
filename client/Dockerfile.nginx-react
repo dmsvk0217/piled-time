@@ -16,4 +16,4 @@ RUN npm run $BUILD_SCRIPT
 FROM nginx:stable-alpine
 
 COPY --from=builder /app/build /usr/share/nginx/html
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/default.ec2.conf /etc/nginx/conf.d/default.conf
