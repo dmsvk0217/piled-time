@@ -1,6 +1,7 @@
 export default function Login() {
   const handleGoogleLogin = () => {
-    window.location.href = import.meta.env.VITE_API_SERVER_URL + "/api/auth/google";
+    const apiUrl = new URL("/api/auth/google", import.meta.env.VITE_API_SERVER_URL);
+    window.location.href = apiUrl.href;
   };
 
   console.log(import.meta.env.VITE_API_SERVER_URL);
