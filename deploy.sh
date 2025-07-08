@@ -5,6 +5,6 @@ docker compose -f docker-compose.ec2.yml pull
 
 echo "🔁 Restarting containers..."
 docker compose -f docker-compose.ec2.yml down
-docker compose -f docker-compose.ec2.yml up -d
+docker compose -f docker-compose.ec2.yml up -d --force-recreate
 
 echo "✅ Deployment complete."
