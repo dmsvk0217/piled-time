@@ -23,6 +23,7 @@ jobs:
         run: |
           docker build \
             -f client/Dockerfile.nginx-react \
+            --build-arg BUILD_SCRIPT=build:production \
             -t $DOCKER_USER/react-nginx-app \
             .
           docker push $DOCKER_USER/react-nginx-app

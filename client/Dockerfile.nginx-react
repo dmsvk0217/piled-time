@@ -2,14 +2,16 @@
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-COPY ./client .
-RUN npm install && npm run build:localserver
+
+# 빌드 스크립트를 build arg로 전달
+ARG BUILD_SCRIPT=build:localserver
+
+COPY ./client ./
+RUN npm install
+RUN npm run $BUILD_SCRIPT
 
 # Stage 2: Nginx + React
 FROM nginx:stable-alpine
 
-# React 빌드 결과 복사
 COPY --from=builder /app/build /usr/share/nginx/html
-
-# Nginx 설정 복사
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
