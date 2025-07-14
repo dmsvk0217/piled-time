@@ -10,7 +10,6 @@ COPY ./client/package*.json ./
 RUN npm install
 
 COPY ./client .
-COPY ./client/.env.production ./.env.production
 RUN npm run $BUILD_SCRIPT
 
 # Stage 2: Nginx + React
