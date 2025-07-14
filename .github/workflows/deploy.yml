@@ -53,4 +53,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_USER }}/react-nginx-app
             docker pull ${{ secrets.DOCKER_USER }}/nest-server
             docker compose -f docker-compose.ec2.yml down
+            docker image prune -f
             docker compose -f docker-compose.ec2.yml up -d
