@@ -26,7 +26,6 @@ jobs:
       - name: Build and Push React-Nginx image
         run: |
           docker build \
-            --no-cache \
             -f client/Dockerfile.nginx-react \
             --build-arg BUILD_SCRIPT=build:production \
             -t ${{ secrets.DOCKER_USER }}/react-nginx-app \
