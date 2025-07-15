@@ -6,11 +6,6 @@ import { GlobalExceptionFilter } from "src/errors/filters/global-exception.filte
 import { GlobalValidationPipe } from "src/errors/pipes/global-validation.pipe";
 
 export function setupApp(app: INestApplication) {
-  app.enableCors({
-    origin: ["http://localhost:3000", "https://www.piled-time.com", "https://piled-time.com"],
-    credentials: true,
-  });
-
   setUpSwagger(app);
 
   app.setGlobalPrefix("api");
