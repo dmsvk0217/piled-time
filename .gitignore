@@ -1,6 +1,5 @@
 .vscode/
-certbot/
-nginx/default.conf
+
 
 # compiled output
 /dist
