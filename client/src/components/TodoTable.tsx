@@ -1,14 +1,13 @@
 import { createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
 import TodoTableBody from "@/components/TodoTableBody";
 import TodoTableHead from "@/components/TodoTableHead";
-import { Category, Todo } from "@/types/planner";
-import { useState } from "react";
+import { Category } from "@/types/category";
+import { Todo } from "@/types/todo";
+import { useEffect, useState } from "react";
 
 interface TodoTableProps {
   todos: Todo[];
   categories: Category[];
-  manualPercents: { [key: string]: number };
-  setManualPercents: React.Dispatch<React.SetStateAction<{ [key: string]: number }>>;
   fetchData: () => Promise<void>;
   date: string;
   assigningTodoId: number | null;
@@ -23,10 +22,15 @@ export default function TodoTable({
   assigningTodoId,
   setAssigningTodo,
 }: TodoTableProps) {
-  // 등록 폼 상태
-  const [categoryId, setCategoryId] = useState<number>(categories[0]?.id || 0);
+  const [categoryId, setCategoryId] = useState<number>(0);
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      setCategoryId(categories[0].id);
+    }
+  }, [categories]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
