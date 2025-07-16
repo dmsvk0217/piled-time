@@ -1,5 +1,5 @@
 import api from "@/api/axios";
-import { Category } from "@/types/planner";
+import { Category } from "@/types/category";
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import CategoryColorBox from "./CategoryColorBox";

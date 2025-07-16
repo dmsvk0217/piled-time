@@ -1,4 +1,4 @@
-import { Todo } from "@/types/planner";
+import { Todo } from "@/types/todo";
 import { useState } from "react";
 import { FiCheck, FiEdit2, FiPlusSquare, FiTrash2, FiX } from "react-icons/fi";
 
@@ -113,7 +113,7 @@ export default function TodoTableBody({
             </tr>
           );
         }
-        const percent = todo.percent ?? 0;
+        const percent = 0;
         const isEditing = editId === todo.id;
         return (
           <tr key={todo.id} className="group">

@@ -5,7 +5,6 @@ import { useTodoData } from "@/hooks/useTodoData";
 import { useState } from "react";
 
 export default function HomePage() {
-  const [manualPercents, setManualPercents] = useState<{ [key: string]: number }>({});
   const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const { todos, categories, fetchData } = useTodoData(date);
   const [assigningTodoId, setAssigningTodo] = useState<number | null>(null);
@@ -35,8 +34,6 @@ export default function HomePage() {
           <TodoTable
             todos={todos}
             categories={categories}
-            manualPercents={manualPercents}
-            setManualPercents={setManualPercents}
             fetchData={() => fetchData(date)}
             date={date}
             assigningTodoId={assigningTodoId}

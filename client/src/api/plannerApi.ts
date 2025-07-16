@@ -1,4 +1,4 @@
-import { DailyPlannerResponse } from "@/types/planner";
+import { DailyPlannerResponse } from "@/types/daily-planner";
 import api from "./axios";
 
 export const fetchDailyPlanner = async (date: string): Promise<DailyPlannerResponse> => {

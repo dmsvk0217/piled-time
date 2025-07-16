@@ -1,7 +1,7 @@
-export interface Category {
+export interface Plan {
   id: number;
-  name: string;
-  color: string;
+  startAt: string;
+  duration: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;

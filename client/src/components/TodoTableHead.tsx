@@ -1,5 +1,5 @@
 import CategoryManager from "@/components/CategoryManager";
-import { Category } from "@/types/planner";
+import { Category } from "@/types/category";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Settings2 } from "lucide-react";
 

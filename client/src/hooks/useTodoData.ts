@@ -1,6 +1,7 @@
 import { fetchCategories } from "@/api/categoryApi";
 import { fetchDailyPlanner } from "@/api/plannerApi";
-import { Category, Todo } from "@/types/planner";
+import { Category } from "@/types/category";
+import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
 
 export function useTodoData(date: string) {
