@@ -117,6 +117,7 @@ export default function TodoTableBody({
         const isEditing = editId === todo.id;
         return (
           <tr key={todo.id} className="group">
+            {/* 카테고리 */}
             <td className="border px-4 py-2">
               <span
                 style={{
@@ -131,6 +132,7 @@ export default function TodoTableBody({
               />
               {todo.category.name}
             </td>
+            {/* 배치 */}
             <td className="border px-1 py-2 text-center align-middle">
               <input
                 type="checkbox"
@@ -139,6 +141,7 @@ export default function TodoTableBody({
                 style={{ width: 16, height: 16 }}
               />
             </td>
+            {/* 세부내용 */}
             <td className="border px-4 py-2">
               {isEditing ? (
                 <input
@@ -163,6 +166,7 @@ export default function TodoTableBody({
                 todo.content
               )}
             </td>
+            {/* 달성률 */}
             <td className="border px-2 py-2">
               <div
                 className="w-full h-6 rounded cursor-pointer flex items-center justify-center select-none"
@@ -188,6 +192,7 @@ export default function TodoTableBody({
                 {percent}%
               </div>
             </td>
+            {/* buttons */}
             <td className="border px-2 py-2">
               <div
                 className={`flex gap-1 justify-center items-center ${

@@ -1,12 +1,9 @@
-import { fetchCategories } from "@/api/categoryApi";
 import { fetchDailyPlanner } from "@/api/plannerApi";
-import { Category } from "@/types/category";
 import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
 
-export function useTodoData(date: string) {
+export function useTodoDetail(date: string) {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -14,9 +11,7 @@ export function useTodoData(date: string) {
     try {
       const queryDate = targetDate || date;
       const { todos } = await fetchDailyPlanner(queryDate);
-      const data = await fetchCategories();
       setTodos(todos);
-      setCategories(data);
       setError(null);
     } catch (err) {
       console.error(err);
@@ -28,8 +23,7 @@ export function useTodoData(date: string) {
 
   useEffect(() => {
     fetchData(date);
-    // eslint-disable-next-line
   }, [date]);
 
-  return { todos, categories, error, isLoading, fetchData };
+  return { todos, error, isLoading, fetchData };
 }
