@@ -98,7 +98,7 @@ export default function TodoTableBody({
     );
   }
 
-  const MAX_ROWS = 20;
+  const MAX_ROWS = 15;
   const rows = Array.from({ length: MAX_ROWS }, (_, i) => todos[i] || null);
 
   return (
