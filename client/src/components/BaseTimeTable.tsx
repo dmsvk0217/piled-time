@@ -1,3 +1,5 @@
+import { deleteAction, updateAction } from "@/api/actionApi";
+import { deletePlan, updatePlan } from "@/api/planApi";
 import { Action } from "@/types/action";
 import { Category } from "@/types/category";
 import { Plan } from "@/types/plan";
@@ -43,6 +45,13 @@ export default function BaseTimeTable<K extends keyof ItemMap>({
   const [dragStart, setDragStart] = useState<number | null>(null);
   const [dragEnd, setDragEnd] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<
+    (T & { todo: Todo; category: Category | undefined }) | null
+  >(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editDragStart, setEditDragStart] = useState<number | null>(null);
+  const [editDragEnd, setEditDragEnd] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   // 모든 item(actions/plans) 합치기
   const allItems: (T & { todo: Todo; category: Category | undefined })[] = [];
@@ -76,41 +85,99 @@ export default function BaseTimeTable<K extends keyof ItemMap>({
     setDragStart(null);
     setDragEnd(null);
     setIsDragging(false);
+    setEditMode(false);
+    setEditDragStart(null);
+    setEditDragEnd(null);
   };
 
   const handleMouseDown = (hour: number, min: number) => {
-    if (!assigningTodoId) return;
-    const idx = getCellIndex(hour, min);
-    setDragStart(idx);
-    setDragEnd(idx);
-    setIsDragging(true);
+    if (assigningTodoId) {
+      const idx = getCellIndex(hour, min);
+      setDragStart(idx);
+      setDragEnd(idx);
+      setIsDragging(true);
+    }
+  };
+
+  const handleCellClick = (idx: number) => {
+    const item = cellItemMap[idx];
+    if (item) {
+      setSelectedItem(item);
+      resetDrag();
+    }
   };
 
   const handleMouseEnter = (hour: number, min: number) => {
-    if (!isDragging) return;
-    if (dragStart === null) return;
+    if (!isDragging && !editMode) return;
     const idx = getCellIndex(hour, min);
-    if (idx === dragStart) return;
-    let limitIdx = idx;
-    if (idx > dragStart) {
-      for (let i = dragStart + 1; i <= idx; i++) {
-        if (cellItemMap[i]) {
-          limitIdx = i - 1;
-          break;
+    if (editMode) {
+      if (editDragStart === null) return;
+      if (idx === editDragStart) return;
+      let limitIdx = idx;
+      if (idx > editDragStart) {
+        for (let i = editDragStart + 1; i <= idx; i++) {
+          if (cellItemMap[i] && cellItemMap[i].id !== selectedItem?.id) {
+            limitIdx = i - 1;
+            break;
+          }
+        }
+      } else {
+        for (let i = editDragStart - 1; i >= idx; i--) {
+          if (cellItemMap[i] && cellItemMap[i].id !== selectedItem?.id) {
+            limitIdx = i + 1;
+            break;
+          }
         }
       }
+      setEditDragEnd(limitIdx);
     } else {
-      for (let i = dragStart - 1; i >= idx; i--) {
-        if (cellItemMap[i]) {
-          limitIdx = i + 1;
-          break;
+      if (dragStart === null) return;
+      if (idx === dragStart) return;
+      let limitIdx = idx;
+      if (idx > dragStart) {
+        for (let i = dragStart + 1; i <= idx; i++) {
+          if (cellItemMap[i]) {
+            limitIdx = i - 1;
+            break;
+          }
+        }
+      } else {
+        for (let i = dragStart - 1; i >= idx; i--) {
+          if (cellItemMap[i]) {
+            limitIdx = i + 1;
+            break;
+          }
         }
       }
+      setDragEnd(limitIdx);
     }
-    setDragEnd(limitIdx);
   };
 
   const handleMouseUp = () => {
+    if (editMode) {
+      if (
+        selectedItem &&
+        editDragStart !== null &&
+        editDragEnd !== null &&
+        editDragEnd !== editDragStart
+      ) {
+        const { hour: startHour, min: startMin } = getTimeByCellIndex(
+          editDragStart < editDragEnd ? editDragStart : editDragEnd
+        );
+        const startAt = new Date();
+        startAt.setHours(startHour, startMin, 0, 0);
+        const duration = (Math.abs(editDragEnd - editDragStart) + 1) * 10;
+        setLoading(true);
+        const updateFn = itemKey === "actions" ? updateAction : updatePlan;
+        updateFn(selectedItem.id, { startAt: startAt.toISOString(), duration })
+          .then(() => window.location.reload())
+          .finally(() => setLoading(false));
+      }
+      setEditMode(false);
+      setSelectedItem(null);
+      resetDrag();
+      return;
+    }
     if (assigningTodoId && dragStart !== null && dragEnd !== null && dragEnd !== dragStart) {
       const { hour: startHour, min: startMin } = getTimeByCellIndex(
         dragStart < dragEnd ? dragStart : dragEnd
@@ -124,14 +191,131 @@ export default function BaseTimeTable<K extends keyof ItemMap>({
   };
 
   const isSelected = (idx: number) => {
+    if (editMode) {
+      if (editDragStart === null || editDragEnd === null) return false;
+      const minIdx = Math.min(editDragStart, editDragEnd);
+      const maxIdx = Math.max(editDragStart, editDragEnd);
+      return idx >= minIdx && idx <= maxIdx;
+    }
     if (dragStart === null || dragEnd === null) return false;
     const minIdx = Math.min(dragStart, dragEnd);
     const maxIdx = Math.max(dragStart, dragEnd);
     return idx >= minIdx && idx <= maxIdx;
   };
 
+  // 모달 렌더링
+  const renderItemModal = () => {
+    if (!selectedItem) return null;
+    const start = new Date(selectedItem.startAt);
+    const end = new Date(start.getTime() + selectedItem.duration * 60000);
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 50,
+          background: "rgba(0,0,0,0.2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onClick={() => {
+          setSelectedItem(null);
+          resetDrag();
+        }}>
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            minWidth: 280,
+            minHeight: 120,
+            padding: 24,
+            boxShadow: "0 2px 16px #0002",
+            position: "relative",
+          }}
+          onClick={(e) => e.stopPropagation()}>
+          <div style={{ marginBottom: 12 }}>
+            <b>할 일:</b> {selectedItem.todo?.content}
+            <br />
+            <b>카테고리:</b> {selectedItem.category?.name}
+            <br />
+            <b>시간:</b> {start.getHours().toString().padStart(2, "0")}:
+            {start.getMinutes().toString().padStart(2, "0")} ~{" "}
+            {end.getHours().toString().padStart(2, "0")}:
+            {end.getMinutes().toString().padStart(2, "0")}
+          </div>
+          <button
+            onClick={() => {
+              setEditMode(true);
+              setEditDragStart(getCellIndex(start.getHours(), start.getMinutes()));
+              setEditDragEnd(
+                getCellIndex(start.getHours(), start.getMinutes()) +
+                  Math.ceil(selectedItem.duration / 10) -
+                  1
+              );
+              setSelectedItem(null); // 모달 닫기
+              setTimeout(() => {
+                setIsDragging(true);
+              }, 0);
+            }}
+            disabled={editMode || loading}
+            style={{
+              marginRight: 8,
+              background: "#2563eb",
+              color: "#fff",
+              border: 0,
+              borderRadius: 4,
+              padding: "6px 12px",
+              cursor: "pointer",
+            }}>
+            시간대 수정
+          </button>
+          <button
+            onClick={async () => {
+              setLoading(true);
+              const deleteFn = itemKey === "actions" ? deleteAction : deletePlan;
+              await deleteFn(selectedItem.id);
+              window.location.reload();
+            }}
+            disabled={loading}
+            style={{
+              background: "#dc2626",
+              color: "#fff",
+              border: 0,
+              borderRadius: 4,
+              padding: "6px 12px",
+              cursor: "pointer",
+            }}>
+            삭제
+          </button>
+          <button
+            onClick={() => {
+              setSelectedItem(null);
+              resetDrag();
+            }}
+            style={{
+              marginLeft: 8,
+              background: "#e5e7eb",
+              color: "#222",
+              border: 0,
+              borderRadius: 4,
+              padding: "6px 12px",
+              cursor: "pointer",
+            }}>
+            닫기
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="overflow-x-auto min-w-[320px] max-w-[420px] w-full mt-0">
+    <div
+      className="overflow-x-auto"
+      style={{ minWidth: 320, maxWidth: 420, width: "100%", marginTop: 0 }}>
       <div className="font-bold mb-1">{typeLabel} Time Table</div>
       <table className="border text-xs select-none table-fixed w-full" style={{ width: "100%" }}>
         <thead>
@@ -160,6 +344,7 @@ export default function BaseTimeTable<K extends keyof ItemMap>({
                     className={`border w-8 h-8 cursor-pointer`}
                     style={{ backgroundColor: bgColor, opacity: item ? 0.7 : 1 }}
                     onMouseDown={item ? undefined : () => handleMouseDown(hour, min)}
+                    onClick={item ? () => handleCellClick(idx) : undefined}
                     onMouseEnter={() => handleMouseEnter(hour, min)}
                     onMouseUp={handleMouseUp}
                     title={item ? item.todo?.content : undefined}></td>
@@ -169,6 +354,7 @@ export default function BaseTimeTable<K extends keyof ItemMap>({
           ))}
         </tbody>
       </table>
+      {renderItemModal()}
     </div>
   );
 }
