@@ -6,8 +6,10 @@ interface Props {
   todos: Todo[];
   onUpdate: (todo: Todo, data: Partial<Todo>) => Promise<void>;
   onDelete: (todo: Todo) => Promise<void>;
-  assigningTodoId: number | null;
-  setAssigningTodo: (id: number | null) => void;
+  assigningActionTodoId: number | null;
+  setAssigningActionTodo: (id: number | null) => void;
+  assigningPlanTodoId: number | null;
+  setAssigningPlanTodo: (id: number | null) => void;
 }
 
 function EditButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
@@ -62,13 +64,26 @@ function CancelButton({ onClick, disabled }: { onClick: () => void; disabled?: b
   );
 }
 
-function AssignButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+function AssignActionIcon({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
   return (
     <button
       className="p-1 hover:bg-green-100 rounded transition"
       onClick={onClick}
       disabled={disabled}
-      title="타임테이블에 배치"
+      title="액션 할당"
+      type="button">
+      <FiPlusSquare size={18} color="#22c55e" />
+    </button>
+  );
+}
+
+function AssignPlanIcon({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      className="p-1 hover:bg-green-100 rounded transition"
+      onClick={onClick}
+      disabled={disabled}
+      title="플랜 할당"
       type="button">
       <FiPlusSquare size={18} color="#22c55e" />
     </button>
@@ -79,8 +94,10 @@ export default function TodoTableBody({
   todos,
   onUpdate,
   onDelete,
-  assigningTodoId,
-  setAssigningTodo,
+  assigningActionTodoId,
+  setAssigningActionTodo,
+  assigningPlanTodoId,
+  setAssigningPlanTodo,
 }: Props) {
   const [editId, setEditId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState("");
@@ -228,9 +245,13 @@ export default function TodoTableBody({
                     />
                   </>
                 )}
-                <AssignButton
-                  onClick={() => setAssigningTodo(todo.id)}
-                  disabled={isEditing || assigningTodoId === todo.id}
+                <AssignActionIcon
+                  onClick={() => setAssigningActionTodo(todo.id)}
+                  disabled={isEditing || assigningActionTodoId === todo.id}
+                />
+                <AssignPlanIcon
+                  onClick={() => setAssigningPlanTodo(todo.id)}
+                  disabled={isEditing || assigningPlanTodoId === todo.id}
                 />
               </span>
             </td>

@@ -10,8 +10,10 @@ interface TodoTableProps {
   categories: Category[];
   fetchData: () => Promise<void>;
   date: string;
-  assigningTodoId: number | null;
-  setAssigningTodo: (id: number | null) => void;
+  assigningActionTodoId: number | null;
+  setAssigningActionTodo: (id: number | null) => void;
+  assigningPlanTodoId: number | null;
+  setAssigningPlanTodo: (id: number | null) => void;
 }
 
 export default function TodoTable({
@@ -19,8 +21,10 @@ export default function TodoTable({
   categories,
   fetchData,
   date,
-  assigningTodoId,
-  setAssigningTodo,
+  assigningActionTodoId,
+  setAssigningActionTodo,
+  assigningPlanTodoId,
+  setAssigningPlanTodo,
 }: TodoTableProps) {
   const [categoryId, setCategoryId] = useState<number>(0);
   const [content, setContent] = useState<string>("");
@@ -66,7 +70,7 @@ export default function TodoTable({
   };
 
   return (
-    <div className="overflow-x-auto" style={{ minWidth: 320, maxWidth: 700, width: "100%" }}>
+    <div className="overflow-x-auto min-w-[600px] max-w-[700px] w-full">
       {/* 등록 폼 */}
       <form onSubmit={handleSubmit} className="flex gap-2 mb-4 items-end">
         <div>
@@ -106,13 +110,13 @@ export default function TodoTable({
         <colgroup>
           <col style={{ width: "25%" }} />
           {/* 카테고리 */}
-          <col style={{ width: "11%" }} />
+          <col style={{ width: "14%" }} />
           {/* 배치(체크박스) */}
           <col style={{ width: "50%" }} />
           {/* 세부내용 */}
-          <col style={{ width: "15%" }} />
+          <col style={{ width: "16%" }} />
           {/* 달성률 */}
-          <col style={{ width: "17%" }} />
+          <col style={{ width: "26%" }} />
           {/* 수정/삭제/배치 */}
         </colgroup>
         <TodoTableHead categories={categories} fetchData={fetchData} />
@@ -120,8 +124,10 @@ export default function TodoTable({
           todos={todos}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
-          assigningTodoId={assigningTodoId}
-          setAssigningTodo={setAssigningTodo}
+          assigningActionTodoId={assigningActionTodoId}
+          setAssigningActionTodo={setAssigningActionTodo}
+          assigningPlanTodoId={assigningPlanTodoId}
+          setAssigningPlanTodo={setAssigningPlanTodo}
         />
       </table>
     </div>
