@@ -104,15 +104,15 @@ export default function TodoTable({
         className="min-w-full border border-gray-400 text-sm text-center"
         style={{ tableLayout: "fixed", width: "100%" }}>
         <colgroup>
-          <col style={{ width: "28%" }} />
+          <col style={{ width: "25%" }} />
           {/* 카테고리 */}
-          <col style={{ width: 40 }} />
+          <col style={{ width: "11%" }} />
           {/* 배치(체크박스) */}
-          <col style={{ width: "42%" }} />
+          <col style={{ width: "50%" }} />
           {/* 세부내용 */}
-          <col style={{ width: "20%" }} />
+          <col style={{ width: "15%" }} />
           {/* 달성률 */}
-          <col style={{ width: "10%" }} />
+          <col style={{ width: "17%" }} />
           {/* 수정/삭제/배치 */}
         </colgroup>
         <TodoTableHead categories={categories} fetchData={fetchData} />

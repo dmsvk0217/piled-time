@@ -193,11 +193,8 @@ export default function TodoTableBody({
               </div>
             </td>
             {/* buttons */}
-            <td className="border px-2 py-2">
-              <div
-                className={`flex gap-1 justify-center items-center ${
-                  isEditing ? "" : "hidden group-hover:flex"
-                }`}>
+            <td className="min-w-[80px] text-center relative whitespace-nowrap overflow-x-visible">
+              <span className="hidden group-hover:inline-flex gap-1 items-center overflow-x-visible">
                 {isEditing ? (
                   <>
                     <SaveButton
@@ -235,7 +232,7 @@ export default function TodoTableBody({
                   onClick={() => setAssigningTodo(todo.id)}
                   disabled={isEditing || assigningTodoId === todo.id}
                 />
-              </div>
+              </span>
             </td>
           </tr>
         );
