@@ -24,4 +24,7 @@ export class Todo extends BaseEntity {
 
   @Column({ type: "varchar" })
   content: string;
+
+  @Column({ type: "int", default: 0 })
+  percent?: number;
 }

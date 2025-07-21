@@ -5,7 +5,7 @@ import { Todo } from "src/module/todo/entities/todo.entity";
 
 export class TodoResponse extends IntersectionType(
   OmitType(Todo, ["user", "category", "plans", "actions"] as const),
-  BaseResponseDto,
+  BaseResponseDto
 ) {
   @ApiProperty({ example: "2025-01-01", description: "할 일 작성 날짜" })
   @Expose()
@@ -14,4 +14,14 @@ export class TodoResponse extends IntersectionType(
   @ApiProperty({ example: "this is content", description: "할 일  내용" })
   @Expose()
   content: string;
+
+  @ApiProperty({ example: 0, description: "달성률(0~100)" })
+  @Expose()
+  percent: number;
+
+  constructor(partial: Partial<TodoResponse>) {
+    super(partial);
+    Object.assign(this, partial);
+    if (this.percent === undefined) this.percent = 0;
+  }
 }

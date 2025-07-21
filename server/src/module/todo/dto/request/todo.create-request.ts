@@ -1,6 +1,15 @@
 import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsDate, IsInt, IsNotEmpty, IsString } from "class-validator";
+import {
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from "class-validator";
 import { Todo } from "src/module/todo/entities/todo.entity";
 
 export class TodoCreateRequest extends OmitType(Todo, [
@@ -28,4 +37,11 @@ export class TodoCreateRequest extends OmitType(Todo, [
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @ApiProperty({ example: 0, description: "달성률(0~100)", required: false })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  percent?: number;
 }
