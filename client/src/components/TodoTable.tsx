@@ -1,9 +1,10 @@
 import { createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
+import TodoForm from "@/components/TodoForm";
 import TodoTableBody from "@/components/TodoTableBody";
 import TodoTableHead from "@/components/TodoTableHead";
 import { Category } from "@/types/category";
 import { Todo } from "@/types/todo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface TodoTableProps {
   todos: Todo[];
@@ -26,23 +27,12 @@ export default function TodoTable({
   assigningPlanTodoId,
   setAssigningPlanTodo,
 }: TodoTableProps) {
-  const [categoryId, setCategoryId] = useState<number>(0);
-  const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (categories.length > 0) {
-      setCategoryId(categories[0].id);
-    }
-  }, [categories]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!categoryId || !content) return;
+  const handleFormSubmit = async (categoryId: number, content: string) => {
     setLoading(true);
     try {
       await createTodo(categoryId, date, content);
-      setContent("");
       await fetchData();
     } finally {
       setLoading(false);
@@ -72,37 +62,7 @@ export default function TodoTable({
   return (
     <div className="overflow-x-auto min-w-[600px] max-w-[700px] w-full">
       {/* 등록 폼 */}
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-4 items-end">
-        <div>
-          <label className="block text-xs mb-1">카테고리</label>
-          <select
-            value={categoryId}
-            onChange={(e) => setCategoryId(Number(e.target.value))}
-            className="border px-2 py-1 rounded">
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id} style={{ color: cat.color }}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs mb-1">내용</label>
-          <input
-            type="text"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="border px-2 py-1 rounded w-60"
-            placeholder="할 일 내용을 입력하세요"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-          disabled={loading || !content}>
-          {loading ? "등록 중..." : "할 일 등록"}
-        </button>
-      </form>
+      <TodoForm categories={categories} onSubmit={handleFormSubmit} loading={loading} />
       {/* 기존 테이블 */}
       <table
         className="min-w-full border border-gray-400 text-sm text-center"
