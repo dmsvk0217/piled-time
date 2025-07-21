@@ -1,7 +1,7 @@
 import Layout from "@/layouts/Layout";
+import MonthlyStatsPage from "@/pages/MonthlyStatsPage";
+import WeeklyStatsPage from "@/pages/WeeklyStatsPage";
 import { Route, Routes } from "react-router-dom";
-import AboutPage from "./pages/AboutPage";
-import DemoPage from "./pages/DemoPage";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import OauthCallback from "./pages/OauthCallback";
@@ -20,8 +20,8 @@ function App() {
           </PrivateRoute>
         }>
         <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/demo" element={<DemoPage />} />
+        <Route path="/stats/weekly" element={<WeeklyStatsPage />} />
+        <Route path="/stats/monthly" element={<MonthlyStatsPage />} />
         <Route path="/*" element={<HomePage />} />
       </Route>
     </Routes>
