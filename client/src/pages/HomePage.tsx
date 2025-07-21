@@ -1,5 +1,3 @@
-import { createAction } from "@/api/actionApi";
-import { createPlan } from "@/api/planApi";
 import { ActionTimeTable } from "@/components/ActionTimeTable";
 import FeedbackDailyBox from "@/components/FeedbackDailyBox";
 import { PlanTimeTable } from "@/components/PlanTimeTable";
@@ -15,32 +13,6 @@ export default function HomePage() {
   const { categories } = useCategory();
   const [assigningActionTodoId, setAssigningActionTodo] = useState<number | null>(null);
   const [assigningPlanTodoId, setAssigningPlanTodo] = useState<number | null>(null);
-
-  // action 생성 및 목록 갱신
-  const handleAssignAction = async (
-    todoId: number,
-    startAt: Date,
-    duration: number,
-    resetDrag: () => void
-  ) => {
-    await createAction(todoId, startAt.toISOString(), duration);
-    setAssigningActionTodo(null);
-    await fetchData(date);
-    resetDrag();
-  };
-
-  // plan 생성 및 목록 갱신
-  const handleAssignPlan = async (
-    todoId: number,
-    startAt: Date,
-    duration: number,
-    resetDrag: () => void
-  ) => {
-    await createPlan(todoId, startAt.toISOString(), duration);
-    setAssigningPlanTodo(null);
-    await fetchData(date);
-    resetDrag();
-  };
 
   return (
     <div className="flex flex-col w-full">
@@ -82,7 +54,6 @@ export default function HomePage() {
         <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
           <PlanTimeTable
             assigningTodoId={assigningPlanTodoId}
-            onAssign={handleAssignPlan}
             todos={todos}
             categories={categories}
           />
@@ -90,8 +61,7 @@ export default function HomePage() {
         {/* 액션 시간표 */}
         <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
           <ActionTimeTable
-            assigningTodoId={assigningPlanTodoId}
-            onAssign={handleAssignAction}
+            assigningTodoId={assigningActionTodoId}
             todos={todos}
             categories={categories}
           />
