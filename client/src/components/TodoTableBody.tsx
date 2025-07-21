@@ -130,7 +130,7 @@ export default function TodoTableBody({
             </tr>
           );
         }
-        const percent = 0;
+        const percent = todo.percent ?? 0;
         const isEditing = editId === todo.id;
         return (
           <tr key={todo.id} className="group">
@@ -203,8 +203,11 @@ export default function TodoTableBody({
                   color: percent === 0 ? "#888" : "#fff",
                   transition: "background 0.2s",
                 }}
-                onClick={() => {
-                  alert("달성률 변경은 추후 서버 연동 예정입니다.");
+                onClick={async () => {
+                  const percentSteps = [0, 25, 50, 75, 100];
+                  const currentIdx = percentSteps.indexOf(percent);
+                  const nextPercent = percentSteps[(currentIdx + 1) % percentSteps.length];
+                  await onUpdate(todo, { percent: nextPercent });
                 }}>
                 {percent}%
               </div>

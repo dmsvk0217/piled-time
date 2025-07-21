@@ -21,7 +21,7 @@ export const createTodo = async (
 
 export const updateTodo = async (
   id: number,
-  data: Partial<{ date: string; content: string }>
+  data: Partial<{ date: string; content: string; percent: number }>
 ): Promise<Todo> => {
   const res = await api.patch<Todo>(`/api/todos/${id}`, data);
   return res.data;

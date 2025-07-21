@@ -10,4 +10,5 @@ export interface Todo {
   plans: Plan[];
   createdAt: string;
   updatedAt: string;
+  percent: number;
 }
