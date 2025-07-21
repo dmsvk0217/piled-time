@@ -248,13 +248,13 @@ export default function TodoTableBody({
                     />
                   </>
                 )}
-                <AssignActionIcon
-                  onClick={() => setAssigningActionTodo(todo.id)}
-                  disabled={isEditing || assigningActionTodoId === todo.id}
-                />
                 <AssignPlanIcon
                   onClick={() => setAssigningPlanTodo(todo.id)}
                   disabled={isEditing || assigningPlanTodoId === todo.id}
+                />
+                <AssignActionIcon
+                  onClick={() => setAssigningActionTodo(todo.id)}
+                  disabled={isEditing || assigningActionTodoId === todo.id}
                 />
               </span>
             </td>
