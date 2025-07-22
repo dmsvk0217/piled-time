@@ -1,0 +1,11 @@
+
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="32" fill="#FFFFFF"/>
+  <g transform="translate(100, 100) rotate(90) translate(-50, -40)">
+    <rect x="0" y="0" width="10" height="80" rx="2" fill="#333333" transform="rotate(-10 0 0)"/>
+    <rect x="15" y="0" width="10" height="80" rx="2" fill="#444444" transform="rotate(-8 15 0)"/>
+    <rect x="30" y="0" width="10" height="80" rx="2" fill="#555555" transform="rotate(-6 30 0)"/>
+    <rect x="45" y="0" width="10" height="80" rx="2" fill="#666666" transform="rotate(-4 45 0)"/>
+    <rect x="60" y="0" width="10" height="80" rx="2" fill="#777777" transform="rotate(-2 60 0)"/>
+  </g>
+</svg>
