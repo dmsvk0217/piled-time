@@ -9,8 +9,8 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
-  const { todos, fetchData } = useTodoDetail(date);
-  const { categories } = useCategory();
+  const { todos, fetchTodoDetail } = useTodoDetail(date);
+  const { categories, fetchCategory } = useCategory();
   const [assigningActionTodoId, setAssigningActionTodo] = useState<number | null>(null);
   const [assigningPlanTodoId, setAssigningPlanTodo] = useState<number | null>(null);
 
@@ -29,10 +29,11 @@ export default function HomePage() {
             />
           </div>
           <TodoTable
-            todos={todos}
-            categories={categories}
-            fetchData={() => fetchData(date)}
             date={date}
+            todos={todos}
+            fetchTodoDetail={() => fetchTodoDetail(date)}
+            categories={categories}
+            fetchCategory={fetchCategory}
             assigningActionTodoId={assigningActionTodoId}
             setAssigningActionTodo={setAssigningActionTodo}
             assigningPlanTodoId={assigningPlanTodoId}

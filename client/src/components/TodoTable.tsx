@@ -7,10 +7,11 @@ import { Todo } from "@/types/todo";
 import { useState } from "react";
 
 interface TodoTableProps {
-  todos: Todo[];
-  categories: Category[];
-  fetchData: () => Promise<void>;
   date: string;
+  todos: Todo[];
+  fetchTodoDetail: () => Promise<void>;
+  categories: Category[];
+  fetchCategory: () => Promise<void>;
   assigningActionTodoId: number | null;
   setAssigningActionTodo: (id: number | null) => void;
   assigningPlanTodoId: number | null;
@@ -18,10 +19,11 @@ interface TodoTableProps {
 }
 
 export default function TodoTable({
-  todos,
-  categories,
-  fetchData,
   date,
+  todos,
+  fetchTodoDetail,
+  categories,
+  fetchCategory,
   assigningActionTodoId,
   setAssigningActionTodo,
   assigningPlanTodoId,
@@ -33,7 +35,7 @@ export default function TodoTable({
     setLoading(true);
     try {
       await createTodo(categoryId, date, content);
-      await fetchData();
+      await fetchTodoDetail();
     } finally {
       setLoading(false);
     }
@@ -43,7 +45,7 @@ export default function TodoTable({
     setLoading(true);
     try {
       await updateTodo(todo.id, data);
-      await fetchData();
+      await fetchTodoDetail();
     } finally {
       setLoading(false);
     }
@@ -53,7 +55,7 @@ export default function TodoTable({
     setLoading(true);
     try {
       await deleteTodo(todo.id);
-      await fetchData();
+      await fetchTodoDetail();
     } finally {
       setLoading(false);
     }
@@ -79,7 +81,7 @@ export default function TodoTable({
           <col style={{ width: "26%" }} />
           {/* 수정/삭제/배치 */}
         </colgroup>
-        <TodoTableHead categories={categories} fetchData={fetchData} />
+        <TodoTableHead categories={categories} fetchCategory={fetchCategory} />
         <TodoTableBody
           todos={todos}
           onUpdate={handleUpdate}

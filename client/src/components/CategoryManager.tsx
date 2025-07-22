@@ -6,10 +6,10 @@ import CategoryColorBox from "./CategoryColorBox";
 
 interface Props {
   categories: Category[];
-  fetchData: () => Promise<void>;
+  fetchCategory: () => Promise<void>;
 }
 
-export default function CategoryManager({ categories, fetchData }: Props) {
+export default function CategoryManager({ categories, fetchCategory }: Props) {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [colorPicker, setColorPicker] = useState("#000000");
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -23,7 +23,7 @@ export default function CategoryManager({ categories, fetchData }: Props) {
     });
     setNewCategoryName("");
     setColorPicker("#000000");
-    await fetchData();
+    await fetchCategory();
   };
 
   const startEdit = (cat: Category) => {
@@ -37,12 +37,12 @@ export default function CategoryManager({ categories, fetchData }: Props) {
     setEditCategoryId(null);
     setEditCategoryName("");
     setColorPicker("#000000");
-    await fetchData();
+    await fetchCategory();
   };
 
   const deleteCategory = async (id: number) => {
     await api.delete(`/api/categories/${id}`);
-    await fetchData();
+    await fetchCategory();
   };
 
   return (

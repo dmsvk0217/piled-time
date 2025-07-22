@@ -7,7 +7,7 @@ export function useCategory() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchCategory = async () => {
     try {
       const data = await fetchCategories();
       setCategories(data);
@@ -21,8 +21,8 @@ export function useCategory() {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchCategory();
   }, []);
 
-  return { categories, error, isLoading, fetchData };
+  return { categories, error, isLoading, fetchCategory };
 }

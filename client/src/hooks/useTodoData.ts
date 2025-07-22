@@ -7,7 +7,7 @@ export function useTodoDetail(date: string) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async (targetDate?: string) => {
+  const fetchTodoDetail = async (targetDate?: string) => {
     try {
       const queryDate = targetDate || date;
       const { todos } = await fetchDailyPlanner(queryDate);
@@ -22,8 +22,8 @@ export function useTodoDetail(date: string) {
   };
 
   useEffect(() => {
-    fetchData(date);
+    fetchTodoDetail(date);
   }, [date]);
 
-  return { todos, error, isLoading, fetchData };
+  return { todos, error, isLoading, fetchTodoDetail };
 }
