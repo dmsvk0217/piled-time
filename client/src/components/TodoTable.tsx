@@ -62,7 +62,7 @@ export default function TodoTable({
   };
 
   return (
-    <div className="overflow-x-auto min-w-[600px] max-w-[700px] w-full">
+    <div className="overflow-x-auto min-w-[600px] max-w-[700px] min-h-[400px] w-full">
       {/* 등록 폼 */}
       <TodoForm categories={categories} onSubmit={handleFormSubmit} loading={loading} />
       {/* 기존 테이블 */}

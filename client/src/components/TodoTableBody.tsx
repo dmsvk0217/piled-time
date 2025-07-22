@@ -115,12 +115,9 @@ export default function TodoTableBody({
     );
   }
 
-  const MAX_ROWS = 15;
-  const rows = Array.from({ length: MAX_ROWS }, (_, i) => todos[i] || null);
-
   return (
     <tbody>
-      {rows.map((todo, idx) => {
+      {todos.map((todo, idx) => {
         if (!todo) {
           return (
             <tr key={"empty-" + idx} className="bg-gray-50 text-gray-300">
