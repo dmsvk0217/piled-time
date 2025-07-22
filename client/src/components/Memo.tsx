@@ -63,13 +63,13 @@ export default function Memo({ date }: MemoProps) {
 
       {editing ? (
         <textarea
-          className="w-full border rounded p-2 h-32 focus:outline-blue-400 resize-none"
+          className="w-full border rounded p-2 h-20 focus:outline-blue-400 resize-none"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           disabled={loading}
         />
       ) : (
-        <p className="text-gray-700 whitespace-pre-line min-h-[6rem]">
+        <p className="overflow-y-auto max-h-[6rem] whitespace-pre-line text-gray-700">
           {memo?.content || "메모가 없습니다."}
         </p>
       )}
