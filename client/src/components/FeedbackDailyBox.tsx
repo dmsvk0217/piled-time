@@ -1,10 +1,10 @@
 import {
   createDailyFeedback,
   deleteDailyFeedback,
-  Feedback,
   fetchDailyFeedback,
   updateDailyFeedback,
 } from "@/api/feedbackApi";
+import { Feedback } from "@/types/feedback";
 import { useEffect, useState } from "react";
 
 interface Props {
