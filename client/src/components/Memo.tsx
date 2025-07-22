@@ -49,7 +49,7 @@ export default function Memo({ date }: MemoProps) {
   }, [date]);
 
   return (
-    <div className="mt-6 border rounded p-4 bg-white shadow-sm">
+    <div className="h-[150px] border rounded p-4 bg-white shadow-sm">
       <div className="flex justify-between items-center mb-2">
         <h3 className="font-semibold text-gray-800">📒 오늘의 메모</h3>
         {!editing && (

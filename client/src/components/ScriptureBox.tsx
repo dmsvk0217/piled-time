@@ -7,8 +7,8 @@ interface ScriptureBoxProps {
 
 export default function ScriptureBox({ verses, reference }: ScriptureBoxProps) {
   return (
-    <div className="mt-8 flex justify-center">
-      <div className="px-4 py-6 border rounded-lg bg-gray-50 shadow-sm text-sm leading-relaxed text-gray-700 space-y-2 w-full max-w-xl">
+    <div className="h-[150px] flex justify-center">
+      <div className="px-4 py-6 border rounded-lg bg-gray-50 shadow-sm text-xs leading-relaxed text-gray-700 space-y-2 w-full max-w-xl">
         {verses.map((verse, i) => (
           <p key={i}>
             <span className="font-semibold">{i + 1}.</span> {verse}

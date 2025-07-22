@@ -41,20 +41,23 @@ export default function HomePage() {
             setAssigningPlanTodo={setAssigningPlanTodo}
           />
 
-          {/* 메모 */}
-          <Memo date={date} />
+          <div className="flex gap-2 items-center mt-5">
+            <div className="flex-[2] ">
+              <Memo date={date} />
+            </div>
+            <div className="flex-[3]">
+              <ScriptureBox
+                verses={[
+                  "여호와께서 집을 세우지 아니하시면 세우는 자의 수고가 헛되며 여호와께서 성을 지키지 아니하시면 파수꾼의 깨어 있음이 헛되도다",
+                  "너희가 일찍이 일어나고 늦게 누우며 수고의 떡을 먹음이 헛되도다 그러므로 여호와께서 그의 사랑하시는 자에게는 잠을 주시는도다",
+                ]}
+                reference="시편 127편 1-2절"
+              />
+            </div>
+          </div>
 
           {/* 피드백 */}
           <FeedbackDailyBox date={date} />
-
-          {/* 말씀 묵상 구절 */}
-          <ScriptureBox
-            verses={[
-              "여호와께서 집을 세우지 아니하시면 세우는 자의 수고가 헛되며 여호와께서 성을 지키지 아니하시면 파수꾼의 깨어 있음이 헛되도다",
-              "너희가 일찍이 일어나고 늦게 누우며 수고의 떡을 먹음이 헛되도다 그러므로 여호와께서 그의 사랑하시는 자에게는 잠을 주시는도다",
-            ]}
-            reference="시편 127편 1-2절"
-          />
         </div>
         {/* 플랜 시간표 */}
         <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
