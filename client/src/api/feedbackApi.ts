@@ -1,23 +1,5 @@
+import { Feedback, FeedbackCreateRequest } from "@/types/feedback";
 import api from "./axios";
-
-export interface Feedback {
-  id: number;
-  type: "DAILY" | "WEEKLY" | "MONTHLY";
-  date: string;
-  goodPoint: string;
-  badPoint: string;
-  comment: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface FeedbackCreateRequest {
-  type: "DAILY";
-  date: string;
-  goodPoint: string;
-  badPoint: string;
-  comment: string;
-}
 
 export const fetchDailyFeedback = async (date: string): Promise<Feedback | null> => {
   const res = await api.get<Feedback[]>("/api/feedbacks", {

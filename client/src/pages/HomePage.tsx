@@ -1,10 +1,11 @@
 import { ActionTimeTable } from "@/components/ActionTimeTable";
 import FeedbackDailyBox from "@/components/FeedbackDailyBox";
+import Memo from "@/components/Memo";
 import { PlanTimeTable } from "@/components/PlanTimeTable";
 import ScriptureBox from "@/components/ScriptureBox";
 import TodoTable from "@/components/TodoTable";
 import { useCategory } from "@/hooks/useCategory";
-import { useTodoDetail } from "@/hooks/useTodoData";
+import { useTodoDetail } from "@/hooks/useTodoDetail";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -39,6 +40,10 @@ export default function HomePage() {
             assigningPlanTodoId={assigningPlanTodoId}
             setAssigningPlanTodo={setAssigningPlanTodo}
           />
+
+          {/* 메모 */}
+          <Memo date={date} />
+
           {/* 피드백 */}
           <FeedbackDailyBox date={date} />
 
