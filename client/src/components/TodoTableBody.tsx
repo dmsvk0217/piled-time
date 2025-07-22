@@ -186,30 +186,31 @@ export default function TodoTableBody({
             {/* 달성률 */}
             <td className="border px-2 py-2">
               <div
-                className="w-full h-6 rounded cursor-pointer flex items-center justify-center select-none"
+                className="w-full h-6 rounded cursor-pointer flex items-center justify-center select-none border hover:shadow transition"
                 style={{
                   background:
                     percent === 0
-                      ? "#e5e7eb"
+                      ? "#fff" // 0%: 흰색
                       : percent === 25
-                      ? "#60a5fa"
+                      ? "#f3f4f6" // 25%: 아주 연한 회색
                       : percent === 50
-                      ? "#38bdf8"
+                      ? "#d1d5db" // 50%: 연회색
                       : percent === 75
-                      ? "#34d399"
+                      ? "#9ca3af" // 75%: 중간회색
                       : percent === 100
-                      ? "#22c55e"
-                      : "#e5e7eb",
-                  color: percent === 0 ? "#888" : "#fff",
+                      ? "#6b7280" // 100%: 진한회색
+                      : "#fff",
+                  color: percent < 75 ? "#222" : "#fff",
                   transition: "background 0.2s",
                 }}
+                title="클릭해서 달성률을 변경할 수 있습니다"
                 onClick={async () => {
                   const percentSteps = [0, 25, 50, 75, 100];
                   const currentIdx = percentSteps.indexOf(percent);
                   const nextPercent = percentSteps[(currentIdx + 1) % percentSteps.length];
                   await onUpdate(todo, { percent: nextPercent });
                 }}>
-                {percent}%
+                <span className="mr-1">{percent}%</span>
               </div>
             </td>
             {/* buttons */}
