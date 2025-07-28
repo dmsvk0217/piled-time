@@ -20,7 +20,15 @@ export class AuthController {
   @UseGuards(AuthGuard("google"))
   async googleRedirect(@Req() req, @Res() res) {
     const jwt = this.authService.login(req.user);
+
+    res.cookie("access_token", jwt, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 1000 * 60 * 60 * 2,
+    });
+
     const callbackUrl = this.configService.get<string>("OAUTH_CALLBACK_URL");
-    return res.redirect(`${callbackUrl}?token=${jwt}`);
+    return res.redirect(callbackUrl);
   }
 }

@@ -1,4 +1,3 @@
-import { getToken, removeToken } from "@/utils/auth";
 import axios from "axios";
 
 const api = axios.create({
@@ -6,21 +5,15 @@ const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
-      removeToken();
+    const isLoginPage = window.location.pathname === "/login";
+
+    if (err.response?.status === 401 && !isLoginPage) {
       window.location.href = "/login";
     }
+
     return Promise.reject(err);
   }
 );

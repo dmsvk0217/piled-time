@@ -1,5 +1,6 @@
 import { ClassSerializerInterceptor, INestApplication } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
+import * as cookieParser from "cookie-parser";
 import { LoggingInterceptor } from "src/common/logging/logger.interceptor";
 import { setUpSwagger } from "src/common/swagger/swagger.setup";
 import { GlobalExceptionFilter } from "src/errors/filters/global-exception.filter";
@@ -14,6 +15,8 @@ export function setupApp(app: INestApplication) {
   }
 
   setUpSwagger(app);
+
+  app.use(cookieParser());
 
   app.setGlobalPrefix("api");
 
