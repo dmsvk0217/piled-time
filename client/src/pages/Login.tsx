@@ -1,11 +1,28 @@
 import Logo from "@/assets/piled-time-logo.svg?react";
+import { isAuthenticated } from "@/utils/auth";
+import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
+  const [auth, setAuth] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    isAuthenticated().then((auth) => {
+      setAuth(auth);
+      setChecking(false);
+    });
+  }, []);
+
   const handleGoogleLogin = () => {
     const apiUrl = new URL("/api/auth/google", import.meta.env.VITE_API_SERVER_URL);
     window.location.href = apiUrl.href;
   };
+
+  if (checking) return <div>인증 확인 중...</div>;
+
+  if (auth) return <Navigate to="/" />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 flex flex-col justify-between">
