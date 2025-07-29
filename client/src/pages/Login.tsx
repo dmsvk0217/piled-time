@@ -1,19 +1,10 @@
 import Logo from "@/assets/piled-time-logo.svg?react";
-import { isAuthenticated } from "@/utils/auth";
-import { useEffect, useState } from "react";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
 import { FcGoogle } from "react-icons/fc";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const [auth, setAuth] = useState(false);
-  const [checking, setChecking] = useState(true);
-
-  useEffect(() => {
-    isAuthenticated().then((auth) => {
-      setAuth(auth);
-      setChecking(false);
-    });
-  }, []);
+  const { auth, checking } = useAuthCheck();
 
   const handleGoogleLogin = () => {
     const apiUrl = new URL("/api/auth/google", import.meta.env.VITE_API_SERVER_URL);
