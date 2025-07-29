@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
@@ -40,7 +40,7 @@ export class AuthController {
     return { ok: true };
   }
 
-  @Get("logout")
+  @Post("logout")
   async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = req.cookies["refresh_token"];
     if (refreshToken) {

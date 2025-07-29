@@ -7,6 +7,6 @@ export const fetchUserProfile = async (): Promise<User> => {
 };
 
 export const logout = async (): Promise<void> => {
-  const res = await api.get<void>("/api/auth/logout");
+  const res = await api.post<void>("/api/auth/logout");
   return res.data;
 };
