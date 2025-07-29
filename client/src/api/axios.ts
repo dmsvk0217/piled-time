@@ -1,5 +1,5 @@
 import { getCsrfToken } from "@/utils/auth";
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_SERVER_URL,
@@ -15,17 +15,21 @@ api.interceptors.request.use((config) => {
 });
 
 let isRefreshing = false;
-let failedQueue: Array<() => void> = [];
+let failedQueue: Array<(error?: AxiosError) => void> = [];
 
-const processQueue = () => {
-  failedQueue.forEach((cb) => cb());
+const processQueue = (error?: AxiosError) => {
+  failedQueue.forEach((cb) => cb(error));
   failedQueue = [];
 };
 
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+      _csrfRetry?: boolean;
+    };
+
     const isLoginPage = window.location.pathname === "/login";
 
     if (error.response?.status === 403 && !originalRequest._csrfRetry) {
@@ -43,10 +47,12 @@ api.interceptors.response.use(
 
       if (!isRefreshing) {
         isRefreshing = true;
+
         try {
           await api.get("/auth/refresh");
           processQueue();
         } catch (refreshError) {
+          processQueue(error);
           window.location.href = "/login";
           return Promise.reject(refreshError);
         } finally {
@@ -54,8 +60,14 @@ api.interceptors.response.use(
         }
       }
 
-      return new Promise((resolve) => {
-        failedQueue.push(() => resolve(api(originalRequest)));
+      return new Promise((resolve, reject) => {
+        failedQueue.push((err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(api(originalRequest));
+          }
+        });
       });
     }
 
