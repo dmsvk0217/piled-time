@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Response } from "express";
+import { randomBytes } from "node:crypto";
 import { User } from "src/module/user/entities/user.entity";
 import { UserException } from "src/module/user/errors/user.exception";
 import { Repository } from "typeorm";
@@ -29,7 +30,9 @@ export class AuthService {
 
     this.saveRefreshToken(user.id, refreshToken);
 
-    return { accessToken, refreshToken };
+    const csrfToken = this.generateCsrfToken();
+
+    return { accessToken, refreshToken, csrfToken };
   }
 
   async saveRefreshToken(userId: number, token: string) {
@@ -40,26 +43,40 @@ export class AuthService {
     await this.userRepository.update(userId, { refreshToken: null });
   }
 
-  setAuthCookies(res: Response, accessToken?: string, refreshToken?: string) {
-    const secure = process.env.NODE_ENV === "production";
-    const sameSite = secure ? "none" : "lax";
+  private readonly secure = process.env.NODE_ENV === "production";
+  private readonly sameSite = this.secure ? "none" : "lax";
 
-    if (accessToken) {
-      res.cookie("access_token", accessToken, {
-        httpOnly: true,
-        secure,
-        sameSite,
-        maxAge: 1000 * 60 * 15,
-      });
-    }
-    if (refreshToken) {
-      res.cookie("refresh_token", refreshToken, {
-        httpOnly: true,
-        secure,
-        sameSite,
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-      });
-    }
+  setAccessTokenCookie(res: Response, token: string) {
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: this.secure,
+      sameSite: this.sameSite,
+      maxAge: 1000 * 60 * 15, // 15분
+    });
+  }
+
+  setRefreshTokenCookie(res: Response, token: string) {
+    res.cookie("refresh_token", token, {
+      httpOnly: true,
+      secure: this.secure,
+      sameSite: this.sameSite,
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+    });
+  }
+
+  setCsrfTokenCookie(res: Response, token: string) {
+    res.cookie("csrf_token", token, {
+      httpOnly: false,
+      secure: this.secure,
+      sameSite: this.sameSite,
+      maxAge: 1000 * 60 * 15, // 15분
+    });
+  }
+
+  setAuthCookies(res: Response, accessToken?: string, refreshToken?: string, csrfToken?: string) {
+    if (accessToken) this.setAccessTokenCookie(res, accessToken);
+    if (refreshToken) this.setRefreshTokenCookie(res, refreshToken);
+    if (csrfToken) this.setCsrfTokenCookie(res, csrfToken);
   }
 
   async refreshAccessToken(refreshToken: string): Promise<string> {
@@ -102,5 +119,9 @@ export class AuthService {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) throw UserException.NOT_EXISTS;
     return user;
+  }
+
+  generateCsrfToken(): string {
+    return randomBytes(32).toString("hex");
   }
 }

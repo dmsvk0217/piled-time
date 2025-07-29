@@ -20,9 +20,9 @@ export class AuthController {
   @Get("google/redirect")
   @UseGuards(AuthGuard("google"))
   async googleRedirect(@Req() req, @Res() res: Response) {
-    const { accessToken, refreshToken } = this.authService.login(req.user);
+    const { accessToken, refreshToken, csrfToken } = this.authService.login(req.user);
 
-    this.authService.setAuthCookies(res, accessToken, refreshToken);
+    this.authService.setAuthCookies(res, accessToken, refreshToken, csrfToken);
 
     const callbackUrl = this.configService.get<string>("OAUTH_CALLBACK_URL");
     return res.redirect(callbackUrl);
@@ -35,7 +35,7 @@ export class AuthController {
 
     const newAccessToken = await this.authService.refreshAccessToken(refreshToken);
 
-    this.authService.setAuthCookies(res, newAccessToken);
+    this.authService.setAccessTokenCookie(res, newAccessToken);
 
     return { ok: true };
   }
@@ -51,5 +51,13 @@ export class AuthController {
     res.clearCookie("refresh_token");
 
     return { message: "Logged out" };
+  }
+
+  @Get("csrf-token")
+  getCsrfToken(@Res({ passthrough: true }) res: Response) {
+    const csrfToken = this.authService.generateCsrfToken();
+    this.authService.setCsrfTokenCookie(res, csrfToken);
+
+    return { csrfToken };
   }
 }

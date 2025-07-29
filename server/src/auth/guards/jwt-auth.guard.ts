@@ -1,6 +1,7 @@
 import { ExecutionContext, Injectable, Logger } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "src/auth/auth.service";
+import { UserException } from "src/module/user/errors/user.exception";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
@@ -19,14 +20,15 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     try {
       const { email } = request.user;
       const user = await this.authService.findByEmail(email);
+      if (!user) throw UserException.NOT_EXISTS;
       request.user = user;
       this.logger.log(
-        `✅ JWT 인증 성공 | ${method} ${originalUrl} | userId=${user?.id}, email=${user?.email}, ip=${ip}`,
+        `✅ JWT 인증 성공 | ${method} ${originalUrl} | userId=${user?.id}, email=${user?.email}, ip=${ip}`
       );
       return result;
     } catch (err) {
       this.logger.warn(
-        `❌ JWT 인증 실패 | ${method} ${originalUrl} | ip=${ip} | reason=${err?.message}`,
+        `❌ JWT 인증 실패 | ${method} ${originalUrl} | ip=${ip} | reason=${err?.message}`
       );
       throw err;
     }
