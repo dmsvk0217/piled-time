@@ -35,7 +35,7 @@ api.interceptors.response.use(
     if (error.response?.status === 403 && !originalRequest._csrfRetry) {
       originalRequest._csrfRetry = true;
       try {
-        await api.get("/auth/csrf-token");
+        await api.get("/api/auth/csrf-token");
         return api(originalRequest);
       } catch {
         return Promise.reject(error);
@@ -49,8 +49,9 @@ api.interceptors.response.use(
         isRefreshing = true;
 
         try {
-          await api.get("/auth/refresh");
+          await api.get("/api/auth/refresh");
           processQueue();
+          return api(originalRequest);
         } catch (refreshError) {
           processQueue(error);
           window.location.href = "/login";

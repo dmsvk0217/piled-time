@@ -19,5 +19,7 @@ export function useAuthCheck() {
     checkAuth();
   }, []);
 
+  console.log("checking:", checking, "auth:", auth);
+
   return { auth, checking };
 }
