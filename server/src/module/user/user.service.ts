@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
+import { CategoryService } from "src/module/category/category.service";
 import { UserResponse, UserUpdateRequest } from "src/module/user/dto";
 import { User } from "src/module/user/entities/user.entity";
 import { UserException } from "src/module/user/errors/user.exception";
@@ -10,12 +11,16 @@ import { Repository } from "typeorm";
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+
+    private readonly categoryService: CategoryService
   ) {}
 
   async create(data: Partial<User>): Promise<User> {
     const user = this.userRepository.create(data);
-    return await this.userRepository.save(user);
+    const result = await this.userRepository.save(user);
+    await this.categoryService.createDefaultCategories(result);
+    return result;
   }
 
   async findByEmail(email: string): Promise<User | null> {
