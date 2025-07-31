@@ -1,11 +1,11 @@
-import { useAuthCheck } from "@/hooks/useAuthCheck";
+import { useAuthStore } from "@/store/auth";
 import { JSX } from "react";
 import { Navigate } from "react-router-dom";
 
 export default function PrivateRoute({ children }: { children: JSX.Element }) {
-  const { auth, checking } = useAuthCheck();
+  const { user, loading } = useAuthStore();
 
-  if (checking) return <div>로딩 중...</div>;
+  if (loading) return <div>로딩 중...</div>;
 
-  return auth ? children : <Navigate to="login" />;
+  return user ? children : <Navigate to="login" />;
 }

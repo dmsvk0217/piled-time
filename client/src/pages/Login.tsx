@@ -1,19 +1,15 @@
 import Logo from "@/assets/piled-time-logo.svg?react";
-import { useAuthCheck } from "@/hooks/useAuthCheck";
+import { useAuthStore } from "@/store/auth";
 import { FcGoogle } from "react-icons/fc";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { auth, checking } = useAuthCheck();
+  const { user, loading } = useAuthStore();
+  const { login } = useAuthStore();
 
-  const handleGoogleLogin = () => {
-    const apiUrl = new URL("/api/auth/google", import.meta.env.VITE_API_SERVER_URL);
-    window.location.href = apiUrl.href;
-  };
+  if (loading) return <div>인증 확인 중...</div>;
 
-  if (checking) return <div>인증 확인 중...</div>;
-
-  if (auth) return <Navigate to="/" />;
+  if (user) return <Navigate to="/" />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 flex flex-col justify-between">
@@ -30,7 +26,7 @@ const Login = () => {
           </p>
           <br />
           <button
-            onClick={handleGoogleLogin}
+            onClick={login}
             className="flex items-center gap-2 w-full justify-center bg-gray-100 hover:bg-gray-200 transition-colors duration-200 border border-gray-300 rounded-lg py-2 px-4 font-semibold text-gray-700 shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="구글로 로그인">
             <FcGoogle size={20} />

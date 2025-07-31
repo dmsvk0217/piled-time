@@ -1,9 +1,9 @@
 import axios from "@/api/axios";
 
-export const isAuthenticated = async (): Promise<boolean> => {
+export const getUserProfile = async (): Promise<boolean> => {
   try {
-    await axios.get("/api/users/profile");
-    return true;
+    const res = await axios.get("/api/users/profile");
+    return res.data;
   } catch {
     return false;
   }

@@ -45,16 +45,24 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry && !isLoginPage) {
       originalRequest._retry = true;
 
+      const isRefreshCall = originalRequest.url?.includes("/api/auth/refresh");
+      if (isRefreshCall) {
+        window.location.href = "/login";
+        return Promise.reject(error);
+      }
+
       if (!isRefreshing) {
         isRefreshing = true;
-
         try {
+          console.log("/api/auth/refresh start");
           await api.get("/api/auth/refresh");
+          console.log("/api/auth/refresh end");
           processQueue();
           return api(originalRequest);
         } catch (refreshError) {
           processQueue(error);
-          window.location.href = "/login";
+          console.log("/api/auth/refresh error");
+          // window.location.href = "/login"; //?
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;

@@ -1,8 +1,9 @@
-import { logout } from "@/api/userApi";
+import { useAuthStore } from "@/store/auth";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export default function Layout() {
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
 
   const handleLogout = async () => {
     try {

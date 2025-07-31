@@ -1,3 +1,4 @@
+import { useAuthInit } from "@/hooks/useAuthInit";
 import Layout from "@/layouts/Layout";
 import MonthlyStatsPage from "@/pages/MonthlyStatsPage";
 import WeeklyStatsPage from "@/pages/WeeklyStatsPage";
@@ -8,6 +9,8 @@ import OauthCallback from "./pages/OauthCallback";
 import PrivateRoute from "./router/PrivateRoute";
 
 function App() {
+  useAuthInit();
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
