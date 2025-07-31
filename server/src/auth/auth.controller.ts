@@ -49,6 +49,7 @@ export class AuthController {
 
     res.clearCookie("access_token");
     res.clearCookie("refresh_token");
+    res.clearCookie("csrf_token");
 
     return { message: "Logged out" };
   }
