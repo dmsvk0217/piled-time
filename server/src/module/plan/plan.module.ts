@@ -5,10 +5,9 @@ import { Plan } from "src/module/plan/entities/plan.entity";
 import { PlanController } from "src/module/plan/plan.controller";
 import { PlanService } from "src/module/plan/plan.service";
 import { TodoModule } from "src/module/todo/todo.module";
-import { User } from "src/module/user/entities/user.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Plan, User]), AuthModule, TodoModule],
+  imports: [TypeOrmModule.forFeature([Plan]), AuthModule, TodoModule],
   controllers: [PlanController],
   providers: [PlanService],
 })
