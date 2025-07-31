@@ -1,21 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
-import {
-  MemoCreateRequest,
-  MemoResponse,
-  MemoUpdateRequest,
-} from "src/module/memo/dto";
+import { MemoCreateRequest, MemoResponse, MemoUpdateRequest } from "src/module/memo/dto";
 import { Memo } from "src/module/memo/entities/memo.entity";
 import { MemoException } from "src/module/memo/errors/memo.exception";
 import { User } from "src/module/user/entities/user.entity";
-import { Repository } from "typeorm";
+import { Between, Repository } from "typeorm";
 
 @Injectable()
 export class MemoService {
   constructor(
     @InjectRepository(Memo)
-    private readonly memoRepository: Repository<Memo>,
+    private readonly memoRepository: Repository<Memo>
   ) {}
 
   async create(request: MemoCreateRequest, user: User): Promise<MemoResponse> {
@@ -24,10 +20,16 @@ export class MemoService {
     return plainToInstance(MemoResponse, result);
   }
 
-  async findAll(user: User): Promise<MemoResponse[]> {
-    const memos = await this.memoRepository.find({
-      where: { user: { id: user.id } },
-    });
+  async findAll(user: User, date?: string): Promise<MemoResponse[]> {
+    const where: any = { user: { id: user.id } };
+    if (date) {
+      const start = new Date(date);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(date);
+      end.setHours(23, 59, 59, 999);
+      where.date = Between(start, end);
+    }
+    const memos = await this.memoRepository.find({ where });
     return memos.map((Memo) => plainToInstance(MemoResponse, Memo));
   }
 
@@ -36,11 +38,7 @@ export class MemoService {
     return plainToInstance(MemoResponse, result);
   }
 
-  async update(
-    id: number,
-    request: MemoUpdateRequest,
-    user: User,
-  ): Promise<MemoResponse> {
+  async update(id: number, request: MemoUpdateRequest, user: User): Promise<MemoResponse> {
     const memo = await this.findById(id, user);
     this.memoRepository.merge(memo, request);
     const result = await this.memoRepository.save(memo);
