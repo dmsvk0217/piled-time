@@ -1,8 +1,8 @@
 import { ActionTimeTable } from "@/components/ActionTimeTable";
+import AdviceCard from "@/components/AdviceCard";
 import FeedbackDailyBox from "@/components/FeedbackDailyBox";
 import Memo from "@/components/Memo";
 import { PlanTimeTable } from "@/components/PlanTimeTable";
-import ScriptureBox from "@/components/ScriptureBox";
 import TodoTable from "@/components/TodoTable";
 import { useCategory } from "@/hooks/useCategory";
 import { useTodoDetail } from "@/hooks/useTodoDetail";
@@ -46,13 +46,14 @@ export default function HomePage() {
               <Memo date={date} />
             </div>
             <div className="flex-[3]">
-              <ScriptureBox
+              {/* <ScriptureBox
                 verses={[
                   "여호와께서 집을 세우지 아니하시면 세우는 자의 수고가 헛되며 여호와께서 성을 지키지 아니하시면 파수꾼의 깨어 있음이 헛되도다",
                   "너희가 일찍이 일어나고 늦게 누우며 수고의 떡을 먹음이 헛되도다 그러므로 여호와께서 그의 사랑하시는 자에게는 잠을 주시는도다",
                 ]}
                 reference="시편 127편 1-2절"
-              />
+              /> */}
+              <AdviceCard />
             </div>
           </div>
 
