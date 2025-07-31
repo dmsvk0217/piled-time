@@ -1,4 +1,4 @@
-import { fetchDailyPlanner } from "@/api/plannerApi";
+import { fetchDailyPlanner } from "@/api/planner";
 import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
 

@@ -1,4 +1,4 @@
-import { fetchCategories } from "@/api/categoryApi";
+import { fetchCategories } from "@/api/category";
 import { Category } from "@/types/category";
 import { useEffect, useState } from "react";
 

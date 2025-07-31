@@ -1,4 +1,4 @@
-import { createMemo, deleteMemo, fetchMemo, updateMemo } from "@/api/memoApi";
+import { createMemo, deleteMemo, fetchMemo, updateMemo } from "@/api/memo";
 import { Memo as MemoType } from "@/types/memo";
 import { useEffect, useState } from "react";
 

@@ -1,5 +1,5 @@
-import { createAction, deleteAction, updateAction } from "@/api/actionApi";
-import { createPlan, deletePlan, updatePlan } from "@/api/planApi";
+import { createAction, deleteAction, updateAction } from "@/api/action";
+import { createPlan, deletePlan, updatePlan } from "@/api/plan";
 import { Action } from "@/types/action";
 import { Category } from "@/types/category";
 import { Plan } from "@/types/plan";

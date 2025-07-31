@@ -146,31 +146,6 @@ export default function TodoTableBody({
               />
               {todo.category.name}
             </td>
-            {/* 배치 */}
-            <td className="border px-1 py-2 text-center align-middle bg-white">
-              <span
-                className={
-                  `inline-block w-4 h-4 rounded border border-gray-300 align-middle ` +
-                  (!!(todo.plans?.length || todo.actions?.length) ? "bg-gray-300" : "bg-white")
-                }
-                style={{ position: "relative", pointerEvents: "none" }}>
-                {!!(todo.plans?.length || todo.actions?.length) && (
-                  <svg
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-3 h-3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <path
-                      d="M4 8.5L7 11.5L12 5.5"
-                      stroke="#444"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </span>
-            </td>
             {/* 세부내용 */}
             <td className="border px-4 py-2">
               {isEditing ? (
@@ -196,6 +171,32 @@ export default function TodoTableBody({
                 todo.content
               )}
             </td>
+            {/* 배치 */}
+            <td className="border px-1 py-2 text-center align-middle bg-white">
+              <span
+                className={
+                  `inline-block w-4 h-4 rounded border border-gray-300 align-middle ` +
+                  (!!(todo.plans?.length || todo.actions?.length) ? "bg-gray-300" : "bg-white")
+                }
+                style={{ position: "relative", pointerEvents: "none" }}>
+                {!!(todo.plans?.length || todo.actions?.length) && (
+                  <svg
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-3 h-3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <path
+                      d="M4 8.5L7 11.5L12 5.5"
+                      stroke="#444"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </span>
+            </td>
+
             {/* 달성률 */}
             <td className="border px-2 py-2">
               <div

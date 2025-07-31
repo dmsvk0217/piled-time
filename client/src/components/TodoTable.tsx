@@ -1,4 +1,4 @@
-import { createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
+import { createTodo, deleteTodo, updateTodo } from "@/api/todo";
 import TodoForm from "@/components/TodoForm";
 import TodoTableBody from "@/components/TodoTableBody";
 import TodoTableHead from "@/components/TodoTableHead";
@@ -72,9 +72,9 @@ export default function TodoTable({
         <colgroup>
           <col style={{ width: "25%" }} />
           {/* 카테고리 */}
-          <col style={{ width: "14%" }} />
-          {/* 배치(체크박스) */}
           <col style={{ width: "50%" }} />
+          {/* 배치(체크박스) */}
+          <col style={{ width: "14%" }} />
           {/* 세부내용 */}
           <col style={{ width: "16%" }} />
           {/* 달성률 */}
