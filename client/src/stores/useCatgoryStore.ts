@@ -1,4 +1,4 @@
-import { fetchCategories } from "@/api/category";
+import { fetchCategories } from "@/api/categoryApi";
 import { Category } from "@/types/category";
 import { create } from "zustand";
 

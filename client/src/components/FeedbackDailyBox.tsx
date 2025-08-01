@@ -3,7 +3,7 @@ import {
   deleteDailyFeedback,
   fetchDailyFeedback,
   updateDailyFeedback,
-} from "@/api/feedback";
+} from "@/api/feedbackApi";
 import { Feedback } from "@/types/feedback";
 import { useEffect, useState } from "react";
 

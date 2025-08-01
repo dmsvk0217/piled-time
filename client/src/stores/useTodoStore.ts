@@ -1,4 +1,4 @@
-import { fetchDailyPlanner } from "@/api/planner";
+import { fetchDailyPlanner } from "@/api/plannerApi";
 import { Todo } from "@/types/todo";
 import { create } from "zustand";
 

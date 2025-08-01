@@ -1,5 +1,5 @@
 import { Category } from "@/types/category";
-import api from "./axios";
+import api from "./axiosApi";
 
 export const fetchCategories = async (): Promise<Category[]> => {
   const res = await api.get<Category[]>("/api/categories");

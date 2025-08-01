@@ -1,8 +1,8 @@
-import { createPlan, deletePlan, updatePlan } from "@/api/plan";
+import { createPlan, deletePlan, updatePlan } from "@/api/planApi";
 import TimeTableItemModal from "@/components/TimeTableItemModal";
 import { useTimeTableLogic } from "@/hooks/useTimeTableLogin";
-import { useTodoStore } from "@/stores/todo";
 import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useTodoStore } from "@/stores/useTodoStore";
 import { TimeTableEntry } from "@/types/timetable";
 
 export default function PlanTimeTable() {

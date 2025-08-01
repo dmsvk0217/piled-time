@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { JSX } from "react";
 import { Navigate } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import { Plan } from "@/types/plan";
-import api from "./axios";
+import api from "./axiosApi";
 
 export const fetchPlans = async (date: string): Promise<Plan[]> => {
   const res = await api.get<Plan[]>("/api/plans", { params: { date } });

@@ -1,5 +1,5 @@
 import { Feedback, FeedbackCreateRequest } from "@/types/feedback";
-import api from "./axios";
+import api from "./axiosApi";
 
 export const fetchDailyFeedback = async (date: string): Promise<Feedback | null> => {
   const res = await api.get<Feedback[]>("/api/feedbacks", {

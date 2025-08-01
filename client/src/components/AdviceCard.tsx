@@ -1,4 +1,4 @@
-import { Advice, fetchAdvice } from "@/api/advice";
+import { Advice, fetchAdvice } from "@/api/adviceApi";
 import { useEffect, useState } from "react";
 
 export default function AdviceCard() {

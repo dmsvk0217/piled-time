@@ -6,8 +6,8 @@ import {
   EditButton,
   SaveButton,
 } from "@/components/TodoTableButtons";
-import { useTodoStore } from "@/stores/todo";
 import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useTodoStore } from "@/stores/useTodoStore";
 import { Todo } from "@/types/todo";
 import { useState } from "react";
 

@@ -1,5 +1,5 @@
 import { Todo } from "@/types/todo";
-import api from "./axios";
+import api from "./axiosApi";
 
 export const fetchTodos = async (): Promise<Todo[]> => {
   const res = await api.get<Todo[]>("/api/todos");

@@ -1,4 +1,4 @@
-import { getCsrfToken } from "@/utils/auth";
+import { getCsrfToken } from "@/utils/authUtils";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const api = axios.create({

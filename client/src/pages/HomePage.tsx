@@ -4,9 +4,9 @@ import FeedbackDailyBox from "@/components/FeedbackDailyBox";
 import Memo from "@/components/Memo";
 import PlanTimeTable from "@/components/PlanTimeTable";
 import TodoTable from "@/components/TodoTable";
-import { useCategoryStore } from "@/stores/catgory";
-import { useTodoStore } from "@/stores/todo";
+import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useTodoStore } from "@/stores/useTodoStore";
 import { useEffect } from "react";
 
 export default function HomePage() {

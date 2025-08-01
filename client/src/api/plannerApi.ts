@@ -1,5 +1,5 @@
 import { DailyPlannerResponse } from "@/types/daily-planner";
-import api from "./axios";
+import api from "./axiosApi";
 
 export const fetchDailyPlanner = async (date: string): Promise<DailyPlannerResponse> => {
   const res = await api.get<DailyPlannerResponse>("/api/planner/daily", {

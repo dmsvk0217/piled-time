@@ -1,5 +1,5 @@
-import api from "@/api/axios";
-import { useCategoryStore } from "@/stores/catgory";
+import api from "@/api/axiosApi";
+import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { Category } from "@/types/category";
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";

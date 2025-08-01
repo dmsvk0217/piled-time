@@ -1,9 +1,9 @@
-import { createTodo, deleteTodo, updateTodo } from "@/api/todo";
+import { createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
 import TodoForm from "@/components/TodoForm";
 import TodoTableBody from "@/components/TodoTableBody";
 import TodoTableHead from "@/components/TodoTableHead";
-import { useTodoStore } from "@/stores/todo";
 import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useTodoStore } from "@/stores/useTodoStore";
 import { Todo } from "@/types/todo";
 import { useState } from "react";
 

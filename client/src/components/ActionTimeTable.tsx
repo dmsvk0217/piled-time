@@ -1,7 +1,7 @@
-import { createAction, deleteAction, updateAction } from "@/api/action";
+import { createAction, deleteAction, updateAction } from "@/api/actionApi";
 import { useTimeTableLogic } from "@/hooks/useTimeTableLogin";
-import { useTodoStore } from "@/stores/todo";
 import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useTodoStore } from "@/stores/useTodoStore";
 import { TimeTableEntry } from "@/types/timetable";
 import TimeTableItemModal from "./TimeTableItemModal";
 

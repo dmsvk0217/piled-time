@@ -1,4 +1,4 @@
-import { useCategoryStore } from "@/stores/catgory";
+import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { useEffect, useState } from "react";
 
 interface TodoFormProps {

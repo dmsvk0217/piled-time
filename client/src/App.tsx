@@ -4,8 +4,8 @@ import MonthlyStatsPage from "@/pages/MonthlyStatsPage";
 import WeeklyStatsPage from "@/pages/WeeklyStatsPage";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import Login from "./pages/Login";
-import OauthCallback from "./pages/OauthCallback";
+import Login from "./pages/LoginPage";
+import OauthCallback from "./router/OauthCallback";
 import PrivateRoute from "./router/PrivateRoute";
 
 function App() {

@@ -1,5 +1,5 @@
 import { Action } from "@/types/action";
-import api from "./axios";
+import api from "./axiosApi";
 
 export const fetchActions = async (date: string): Promise<Action[]> => {
   const res = await api.get<Action[]>("/api/actions", { params: { date } });
