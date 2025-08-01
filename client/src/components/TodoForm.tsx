@@ -1,13 +1,13 @@
-import { Category } from "@/types/category";
+import { useCategoryStore } from "@/stores/catgory";
 import { useEffect, useState } from "react";
 
 interface TodoFormProps {
-  categories: Category[];
   onSubmit: (categoryId: number, content: string) => Promise<void>;
   loading: boolean;
 }
 
-export default function TodoForm({ categories, onSubmit, loading }: TodoFormProps) {
+export default function TodoForm({ onSubmit, loading }: TodoFormProps) {
+  const categories = useCategoryStore((s) => s.categories);
   const [categoryId, setCategoryId] = useState<number>(0);
   const [content, setContent] = useState<string>("");
 

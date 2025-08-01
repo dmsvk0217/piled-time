@@ -1,14 +1,8 @@
 import CategoryManager from "@/components/CategoryManager";
-import { Category } from "@/types/category";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Settings2 } from "lucide-react";
 
-interface Props {
-  categories: Category[];
-  fetchCategory: () => Promise<void>;
-}
-
-export default function TodoTableHead({ categories, fetchCategory }: Props) {
+export default function TodoTableHead() {
   return (
     <thead>
       <tr className="bg-gray-100">
@@ -25,7 +19,7 @@ export default function TodoTableHead({ categories, fetchCategory }: Props) {
                 <Dialog.Overlay className="fixed inset-0 bg-black/50" />
                 <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow-lg w-full max-w-md">
                   <Dialog.Title className="text-lg font-bold mb-4">카테고리 관리</Dialog.Title>
-                  <CategoryManager categories={categories} fetchCategory={fetchCategory} />
+                  <CategoryManager />
                   <Dialog.Close className="absolute top-2 right-2 text-gray-500 hover:text-black">
                     ✕
                   </Dialog.Close>

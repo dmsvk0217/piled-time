@@ -1,19 +1,28 @@
-import { ActionTimeTable } from "@/components/ActionTimeTable";
+import ActionTimeTable from "@/components/ActionTimeTable";
 import AdviceCard from "@/components/AdviceCard";
 import FeedbackDailyBox from "@/components/FeedbackDailyBox";
 import Memo from "@/components/Memo";
-import { PlanTimeTable } from "@/components/PlanTimeTable";
+import PlanTimeTable from "@/components/PlanTimeTable";
 import TodoTable from "@/components/TodoTable";
-import { useCategory } from "@/hooks/useCategory";
-import { useTodoDetail } from "@/hooks/useTodoDetail";
-import { useState } from "react";
+import { useCategoryStore } from "@/stores/catgory";
+import { useTodoStore } from "@/stores/todo";
+import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useEffect } from "react";
 
 export default function HomePage() {
-  const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
-  const { todos, fetchTodoDetail } = useTodoDetail(date);
-  const { categories, fetchCategory } = useCategory();
-  const [assigningActionTodoId, setAssigningActionTodo] = useState<number | null>(null);
-  const [assigningPlanTodoId, setAssigningPlanTodo] = useState<number | null>(null);
+  const fetchCategories = useCategoryStore((s) => s.fetchCategories);
+  const fetchTododetail = useTodoStore((s) => s.fetchTododetails);
+
+  const date = useHomePageStore((s) => s.date);
+  const setDate = useHomePageStore((s) => s.setDate);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    fetchTododetail(date);
+  }, [date]);
 
   return (
     <div className="flex flex-col w-full">
@@ -29,30 +38,13 @@ export default function HomePage() {
               className="border px-2 py-1 rounded"
             />
           </div>
-          <TodoTable
-            date={date}
-            todos={todos}
-            fetchTodoDetail={() => fetchTodoDetail(date)}
-            categories={categories}
-            fetchCategory={fetchCategory}
-            assigningActionTodoId={assigningActionTodoId}
-            setAssigningActionTodo={setAssigningActionTodo}
-            assigningPlanTodoId={assigningPlanTodoId}
-            setAssigningPlanTodo={setAssigningPlanTodo}
-          />
+          <TodoTable />
 
           <div className="flex gap-2 items-center mt-5">
             <div className="flex-[2] ">
-              <Memo date={date} />
+              <Memo />
             </div>
             <div className="flex-[3]">
-              {/* <ScriptureBox
-                verses={[
-                  "여호와께서 집을 세우지 아니하시면 세우는 자의 수고가 헛되며 여호와께서 성을 지키지 아니하시면 파수꾼의 깨어 있음이 헛되도다",
-                  "너희가 일찍이 일어나고 늦게 누우며 수고의 떡을 먹음이 헛되도다 그러므로 여호와께서 그의 사랑하시는 자에게는 잠을 주시는도다",
-                ]}
-                reference="시편 127편 1-2절"
-              /> */}
               <AdviceCard />
             </div>
           </div>
@@ -62,19 +54,11 @@ export default function HomePage() {
         </div>
         {/* 플랜 시간표 */}
         <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
-          <PlanTimeTable
-            assigningTodoId={assigningPlanTodoId}
-            todos={todos}
-            categories={categories}
-          />
+          <PlanTimeTable />
         </div>
         {/* 액션 시간표 */}
         <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
-          <ActionTimeTable
-            assigningTodoId={assigningActionTodoId}
-            todos={todos}
-            categories={categories}
-          />
+          <ActionTimeTable />
         </div>
       </div>
     </div>

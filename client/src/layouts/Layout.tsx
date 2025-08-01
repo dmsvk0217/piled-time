@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/store/auth";
+import { useAuthStore } from "@/stores/auth";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export default function Layout() {

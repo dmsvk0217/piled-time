@@ -1,12 +1,10 @@
 import { createMemo, deleteMemo, fetchMemo, updateMemo } from "@/api/memo";
+import { useHomePageStore } from "@/stores/useHomePageStore";
 import { Memo as MemoType } from "@/types/memo";
 import { useEffect, useState } from "react";
 
-interface MemoProps {
-  date: string;
-}
-
-export default function Memo({ date }: MemoProps) {
+export default function Memo() {
+  const date = useHomePageStore((s) => s.date);
   const [memo, setMemo] = useState<MemoType | null>(null);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);

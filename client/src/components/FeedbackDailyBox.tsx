@@ -32,7 +32,6 @@ export default function FeedbackDailyBox({ date }: Props) {
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line
   }, [date]);
 
   const handleSave = async () => {

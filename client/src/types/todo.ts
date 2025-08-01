@@ -6,8 +6,8 @@ export interface Todo {
   id: number;
   content: string;
   category: Category;
-  actions: Action[];
-  plans: Plan[];
+  action: Action;
+  plan: Plan;
   createdAt: string;
   updatedAt: string;
   percent: number;

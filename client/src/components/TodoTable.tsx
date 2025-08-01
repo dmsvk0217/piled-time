@@ -2,40 +2,22 @@ import { createTodo, deleteTodo, updateTodo } from "@/api/todo";
 import TodoForm from "@/components/TodoForm";
 import TodoTableBody from "@/components/TodoTableBody";
 import TodoTableHead from "@/components/TodoTableHead";
-import { Category } from "@/types/category";
+import { useTodoStore } from "@/stores/todo";
+import { useHomePageStore } from "@/stores/useHomePageStore";
 import { Todo } from "@/types/todo";
 import { useState } from "react";
 
-interface TodoTableProps {
-  date: string;
-  todos: Todo[];
-  fetchTodoDetail: () => Promise<void>;
-  categories: Category[];
-  fetchCategory: () => Promise<void>;
-  assigningActionTodoId: number | null;
-  setAssigningActionTodo: (id: number | null) => void;
-  assigningPlanTodoId: number | null;
-  setAssigningPlanTodo: (id: number | null) => void;
-}
-
-export default function TodoTable({
-  date,
-  todos,
-  fetchTodoDetail,
-  categories,
-  fetchCategory,
-  assigningActionTodoId,
-  setAssigningActionTodo,
-  assigningPlanTodoId,
-  setAssigningPlanTodo,
-}: TodoTableProps) {
+export default function TodoTable() {
   const [loading, setLoading] = useState(false);
+
+  const date = useHomePageStore((s) => s.date);
+  const fetchTododetail = useTodoStore((s) => s.fetchTododetails);
 
   const handleFormSubmit = async (categoryId: number, content: string) => {
     setLoading(true);
     try {
       await createTodo(categoryId, date, content);
-      await fetchTodoDetail();
+      await fetchTododetail(date);
     } finally {
       setLoading(false);
     }
@@ -45,7 +27,7 @@ export default function TodoTable({
     setLoading(true);
     try {
       await updateTodo(todo.id, data);
-      await fetchTodoDetail();
+      await fetchTododetail(date);
     } finally {
       setLoading(false);
     }
@@ -55,7 +37,7 @@ export default function TodoTable({
     setLoading(true);
     try {
       await deleteTodo(todo.id);
-      await fetchTodoDetail();
+      await fetchTododetail(date);
     } finally {
       setLoading(false);
     }
@@ -64,7 +46,7 @@ export default function TodoTable({
   return (
     <div className="overflow-x-auto min-w-[600px] max-w-[700px] min-h-[400px] w-full">
       {/* 등록 폼 */}
-      <TodoForm categories={categories} onSubmit={handleFormSubmit} loading={loading} />
+      <TodoForm onSubmit={handleFormSubmit} loading={loading} />
       {/* 기존 테이블 */}
       <table
         className="min-w-full border border-gray-400 text-sm text-center"
@@ -81,16 +63,8 @@ export default function TodoTable({
           <col style={{ width: "26%" }} />
           {/* 수정/삭제/배치 */}
         </colgroup>
-        <TodoTableHead categories={categories} fetchCategory={fetchCategory} />
-        <TodoTableBody
-          todos={todos}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-          assigningActionTodoId={assigningActionTodoId}
-          setAssigningActionTodo={setAssigningActionTodo}
-          assigningPlanTodoId={assigningPlanTodoId}
-          setAssigningPlanTodo={setAssigningPlanTodo}
-        />
+        <TodoTableHead />
+        <TodoTableBody onUpdate={handleUpdate} onDelete={handleDelete} />
       </table>
     </div>
   );

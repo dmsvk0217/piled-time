@@ -1,5 +1,5 @@
 import Logo from "@/assets/piled-time-logo.svg?react";
-import { useAuthStore } from "@/store/auth";
+import { useAuthStore } from "@/stores/auth";
 import { FcGoogle } from "react-icons/fc";
 import { Navigate } from "react-router-dom";
 

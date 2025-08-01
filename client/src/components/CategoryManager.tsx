@@ -1,15 +1,12 @@
 import api from "@/api/axios";
+import { useCategoryStore } from "@/stores/catgory";
 import { Category } from "@/types/category";
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import CategoryColorBox from "./CategoryColorBox";
 
-interface Props {
-  categories: Category[];
-  fetchCategory: () => Promise<void>;
-}
-
-export default function CategoryManager({ categories, fetchCategory }: Props) {
+export default function CategoryManager() {
+  const { categories, fetchCategories } = useCategoryStore();
   const [newCategoryName, setNewCategoryName] = useState("");
   const [colorPicker, setColorPicker] = useState("#000000");
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -23,7 +20,7 @@ export default function CategoryManager({ categories, fetchCategory }: Props) {
     });
     setNewCategoryName("");
     setColorPicker("#000000");
-    await fetchCategory();
+    await fetchCategories();
   };
 
   const startEdit = (cat: Category) => {
@@ -37,12 +34,12 @@ export default function CategoryManager({ categories, fetchCategory }: Props) {
     setEditCategoryId(null);
     setEditCategoryName("");
     setColorPicker("#000000");
-    await fetchCategory();
+    await fetchCategories();
   };
 
   const deleteCategory = async (id: number) => {
     await api.delete(`/api/categories/${id}`);
-    await fetchCategory();
+    await fetchCategories();
   };
 
   return (
