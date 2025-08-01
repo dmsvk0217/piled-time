@@ -1,109 +1,31 @@
+import {
+  AssignActionIcon,
+  AssignPlanIcon,
+  CancelButton,
+  DeleteButton,
+  EditButton,
+  SaveButton,
+} from "@/components/TimeTableButtons";
+import { useTodoStore } from "@/stores/todo";
+import { useHomePageStore } from "@/stores/useHomePageStore";
 import { Todo } from "@/types/todo";
 import { useState } from "react";
-import { FiCheck, FiEdit2, FiPlusSquare, FiTrash2, FiX } from "react-icons/fi";
 
 interface Props {
-  todos: Todo[];
   onUpdate: (todo: Todo, data: Partial<Todo>) => Promise<void>;
   onDelete: (todo: Todo) => Promise<void>;
-  assigningActionTodoId: number | null;
-  setAssigningActionTodo: (id: number | null) => void;
-  assigningPlanTodoId: number | null;
-  setAssigningPlanTodo: (id: number | null) => void;
 }
 
-function EditButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      className="p-1 hover:bg-blue-100 rounded transition"
-      onClick={onClick}
-      disabled={disabled}
-      title="수정"
-      type="button">
-      <FiEdit2 size={18} color="#2563eb" />
-    </button>
-  );
-}
+export default function TodoTableBody({ onUpdate, onDelete }: Props) {
+  const assigningPlanTodoId = useHomePageStore((s) => s.assigningPlanTodoId);
+  const assigningActionTodoId = useHomePageStore((s) => s.assigningActionTodoId);
+  const todoDetails = useTodoStore((s) => s.todoDetails);
 
-function DeleteButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      className="p-1 hover:bg-red-100 rounded transition"
-      onClick={onClick}
-      disabled={disabled}
-      title="삭제"
-      type="button">
-      <FiTrash2 size={18} color="#ef4444" />
-    </button>
-  );
-}
-
-function SaveButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      className="p-1 hover:bg-green-100 rounded transition"
-      onClick={onClick}
-      disabled={disabled}
-      title="저장"
-      type="button">
-      <FiCheck size={18} color="#16a34a" />
-    </button>
-  );
-}
-
-function CancelButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      className="p-1 hover:bg-gray-100 rounded transition"
-      onClick={onClick}
-      disabled={disabled}
-      title="취소"
-      type="button">
-      <FiX size={18} color="#6b7280" />
-    </button>
-  );
-}
-
-function AssignActionIcon({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      className="p-1 hover:bg-green-100 rounded transition"
-      onClick={onClick}
-      disabled={disabled}
-      title="액션 할당"
-      type="button">
-      <FiPlusSquare size={18} color="#22c55e" />
-    </button>
-  );
-}
-
-function AssignPlanIcon({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      className="p-1 hover:bg-green-100 rounded transition"
-      onClick={onClick}
-      disabled={disabled}
-      title="플랜 할당"
-      type="button">
-      <FiPlusSquare size={18} color="#22c55e" />
-    </button>
-  );
-}
-
-export default function TodoTableBody({
-  todos,
-  onUpdate,
-  onDelete,
-  assigningActionTodoId,
-  setAssigningActionTodo,
-  assigningPlanTodoId,
-  setAssigningPlanTodo,
-}: Props) {
   const [editId, setEditId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState("");
   const [editLoading, setEditLoading] = useState(false);
 
-  if (todos.length === 0) {
+  if (todoDetails.length === 0) {
     return (
       <tbody>
         <tr>
@@ -117,7 +39,7 @@ export default function TodoTableBody({
 
   return (
     <tbody>
-      {todos.map((todo, idx) => {
+      {todoDetails.map((todo, idx) => {
         if (!todo) {
           return (
             <tr key={"empty-" + idx} className="bg-gray-50 text-gray-300">
@@ -176,10 +98,10 @@ export default function TodoTableBody({
               <span
                 className={
                   `inline-block w-4 h-4 rounded border border-gray-300 align-middle ` +
-                  (!!(todo.plans?.length || todo.actions?.length) ? "bg-gray-300" : "bg-white")
+                  (!!(todo.plan || todo.action) ? "bg-gray-300" : "bg-white")
                 }
                 style={{ position: "relative", pointerEvents: "none" }}>
-                {!!(todo.plans?.length || todo.actions?.length) && (
+                {!!(todo.plan || todo.action) && (
                   <svg
                     viewBox="0 0 16 16"
                     fill="none"
@@ -229,7 +151,7 @@ export default function TodoTableBody({
             </td>
             {/* buttons */}
             <td className="min-w-[80px] text-center relative whitespace-nowrap overflow-x-visible">
-              <span className="hidden group-hover:inline-flex gap-1 items-center overflow-x-visible">
+              <span className="gap-1 items-center overflow-x-visible">
                 {isEditing ? (
                   <>
                     <SaveButton
@@ -264,11 +186,11 @@ export default function TodoTableBody({
                   </>
                 )}
                 <AssignPlanIcon
-                  onClick={() => setAssigningPlanTodo(todo.id)}
+                  todoId={todo.id}
                   disabled={isEditing || assigningPlanTodoId === todo.id}
                 />
                 <AssignActionIcon
-                  onClick={() => setAssigningActionTodo(todo.id)}
+                  todoId={todo.id}
                   disabled={isEditing || assigningActionTodoId === todo.id}
                 />
               </span>
