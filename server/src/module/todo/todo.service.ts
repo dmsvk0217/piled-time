@@ -65,7 +65,7 @@ export class TodoService {
   async findDetailById(id: number, user: User): Promise<Todo> {
     const todo = await this.todoRepository.findOne({
       where: { id, user: { id: user.id } },
-      relations: ["plans", "actions"],
+      relations: ["plan", "action"],
     });
     if (!todo) throw TodoException.NOT_EXISTS;
     return todo;

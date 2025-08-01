@@ -11,13 +11,13 @@ export class TodoDetailResponse extends TodoResponse {
   @Type(() => CategoryResponse)
   category: CategoryResponse;
 
-  @ApiProperty({ description: "실행 정보", type: () => [ActionResponse] })
+  @ApiProperty({ description: "실행 정보", type: () => ActionResponse })
   @Expose()
   @Type(() => ActionResponse)
-  actions: ActionResponse[];
+  action: ActionResponse;
 
-  @ApiProperty({ description: "계획 정보", type: () => [PlanResponse] })
+  @ApiProperty({ description: "계획 정보", type: () => PlanResponse })
   @Expose()
   @Type(() => PlanResponse)
-  plans: PlanResponse[];
+  plan: PlanResponse;
 }

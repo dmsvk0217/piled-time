@@ -18,12 +18,9 @@ import { Todo } from "../todo/entities/todo.entity";
 export class PlannerService {
   constructor(
     @InjectRepository(Todo)
-    private readonly todoRepository: Repository<Todo>,
+    private readonly todoRepository: Repository<Todo>
   ) {}
-  async getDailyPlanner(
-    user: User,
-    query: DailyPlannerQueryDto,
-  ): Promise<PlannerResponse> {
+  async getDailyPlanner(user: User, query: DailyPlannerQueryDto): Promise<PlannerResponse> {
     const startDate = new Date(query.date);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 1);
@@ -35,8 +32,8 @@ export class PlannerService {
       },
       relations: {
         category: true,
-        plans: true,
-        actions: true,
+        plan: true,
+        action: true,
       },
     });
 
@@ -45,10 +42,7 @@ export class PlannerService {
     });
   }
 
-  async getWeeklyPlanner(
-    user: User,
-    query: WeeklyPlannerQueryDto,
-  ): Promise<PlannerWeekResponse> {
+  async getWeeklyPlanner(user: User, query: WeeklyPlannerQueryDto): Promise<PlannerWeekResponse> {
     const startDate = new Date(query.start);
     const endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6);
@@ -56,8 +50,8 @@ export class PlannerService {
       where: { user: { id: user.id }, date: Between(startDate, endDate) },
       relations: {
         category: true,
-        plans: true,
-        actions: true,
+        plan: true,
+        action: true,
       },
     });
     return plainToInstance(PlannerWeekResponse, {
@@ -69,7 +63,7 @@ export class PlannerService {
 
   async getWeekdayPlanner(
     user: User,
-    query: WeekdayPlannerQueryDto,
+    query: WeekdayPlannerQueryDto
   ): Promise<PlannerWeekdayResponse> {
     const weekday = query.weekday;
     const weekdayIndex = this.getWeekdayIndex(weekday);
@@ -78,11 +72,10 @@ export class PlannerService {
       .where("todo.user_id = :userId", { userId: user.id })
       .andWhere("WEEKDAY(todo.date) = :weekdayIndex", { weekdayIndex })
       .leftJoinAndSelect("todo.category", "category")
-      .leftJoinAndSelect("todo.plans", "plans")
-      .leftJoinAndSelect("todo.actions", "actions")
+      .leftJoinAndSelect("todo.plan", "plan")
+      .leftJoinAndSelect("todo.action", "action")
       .getMany();
 
-    console.log("🚀 ~ PlannerService ~ todos:", todos);
     return plainToInstance(PlannerWeekdayResponse, { weekday, todos });
   }
 

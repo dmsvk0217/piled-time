@@ -3,7 +3,7 @@ import { Action } from "src/module/action/entities/action.entity";
 import { Category } from "src/module/category/entities/category.entity";
 import { Plan } from "src/module/plan/entities/plan.entity";
 import { User } from "src/module/user/entities/user.entity";
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 
 @Entity()
 export class Todo extends BaseEntity {
@@ -13,11 +13,13 @@ export class Todo extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.todos)
   category: Category;
 
-  @OneToMany(() => Plan, (plan) => plan.todo)
-  plans: Plan[];
+  @OneToOne(() => Plan, (plan) => plan.todo)
+  @JoinColumn()
+  plan: Plan;
 
-  @OneToMany(() => Action, (action) => action.todo)
-  actions: Action[];
+  @OneToOne(() => Action, (action) => action.todo)
+  @JoinColumn()
+  action: Action;
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   date: Date;

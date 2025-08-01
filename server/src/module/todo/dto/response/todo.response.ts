@@ -4,7 +4,7 @@ import { BaseResponseDto } from "src/common/database/dto/base-response.dto";
 import { Todo } from "src/module/todo/entities/todo.entity";
 
 export class TodoResponse extends IntersectionType(
-  OmitType(Todo, ["user", "category", "plans", "actions"] as const),
+  OmitType(Todo, ["user", "category", "plan", "action"] as const),
   BaseResponseDto
 ) {
   @ApiProperty({ example: "2025-01-01", description: "할 일 작성 날짜" })

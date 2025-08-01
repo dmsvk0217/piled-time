@@ -15,8 +15,8 @@ import { Todo } from "src/module/todo/entities/todo.entity";
 export class TodoCreateRequest extends OmitType(Todo, [
   "user",
   "category",
-  "plans",
-  "actions",
+  "plan",
+  "action",
   "id",
   "createdAt",
   "updatedAt",
