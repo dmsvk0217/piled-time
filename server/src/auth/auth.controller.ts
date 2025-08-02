@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+  UseFilters,
+  UseGuards,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
+import { OAuthExceptionFilter } from "src/auth/filters/auth.filter";
 import { AuthService } from "./auth.service";
 
 @ApiTags("Auth")
@@ -19,9 +29,9 @@ export class AuthController {
 
   @Get("google/redirect")
   @UseGuards(AuthGuard("google"))
+  @UseFilters(OAuthExceptionFilter)
   async googleRedirect(@Req() req, @Res() res: Response) {
     const { accessToken, refreshToken, csrfToken } = this.authService.login(req.user);
-
     this.authService.setAuthCookies(res, accessToken, refreshToken, csrfToken);
 
     const callbackUrl = this.configService.get<string>("OAUTH_CALLBACK_URL");
