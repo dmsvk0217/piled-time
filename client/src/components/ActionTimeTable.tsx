@@ -3,6 +3,7 @@ import { useTimeTableLogic } from "@/hooks/useTimeTableLogin";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { TimeTableEntry } from "@/types/timetable";
+import { getCellIndex } from "@/utils/timeTableUtils";
 import TimeTableItemModal from "./TimeTableItemModal";
 
 export default function ActionTimeTable() {
@@ -35,6 +36,12 @@ export default function ActionTimeTable() {
     remove: deleteAction,
   });
 
+  for (let i = 1; i < HOURS.length * MINUTES.length - 1; i++) {
+    const curEntry = cellItemMap[i];
+    const prevEntry = cellItemMap[i - 1];
+    const nextEntry = cellItemMap[i + 1];
+  }
+
   return (
     <div className="overflow-x-auto" style={{ minWidth: 320, maxWidth: 420 }}>
       <div className="flex">
@@ -62,8 +69,9 @@ export default function ActionTimeTable() {
                 {hour.toString().padStart(2, "0")}
               </td>
               {MINUTES.map((min) => {
-                const idx = (hour - 6) * 6 + min / 10;
+                const idx = getCellIndex(hour, min);
                 const timeTableEntry = cellItemMap[idx];
+
                 const isSelected =
                   dragStart !== null &&
                   dragEnd !== null &&

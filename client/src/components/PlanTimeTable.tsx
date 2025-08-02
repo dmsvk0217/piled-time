@@ -4,6 +4,7 @@ import { useTimeTableLogic } from "@/hooks/useTimeTableLogin";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { TimeTableEntry } from "@/types/timetable";
+import { getCellIndex } from "@/utils/timeTableUtils";
 
 export default function PlanTimeTable() {
   const assigningPlanTodoId = useHomePageStore((s) => s.assigningPlanTodoId);
@@ -62,7 +63,7 @@ export default function PlanTimeTable() {
                 {hour.toString().padStart(2, "0")}
               </td>
               {MINUTES.map((min) => {
-                const idx = (hour - 6) * 6 + min / 10;
+                const idx = getCellIndex(hour, min);
                 const timeTableEntry = cellItemMap[idx];
                 const isSelected =
                   dragStart !== null &&
