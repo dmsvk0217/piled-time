@@ -1,12 +1,34 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
+    // 🧱 빌드 관련
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "incremental": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "useDefineForClassFields": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    // 🔎 경로 설정
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
+
+    // 🧹 코드 품질
     "strict": true,
-    "target": "esnext"
-  }
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    // 🧩 기타
+    "skipLibCheck": true
+  },
+  "include": ["src"]
 }
