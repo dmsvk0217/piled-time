@@ -1,10 +1,12 @@
 import { createPlan, deletePlan, updatePlan } from "@/api/planApi";
-import TimeTableItemModal from "@/components/TimeTableItemModal";
 import { useTimeTableLogic } from "@/hooks/useTimeTableLogin";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { TimeTableEntry } from "@/types/timetable";
+import { getBorderClass } from "@/utils/borderUtil";
+import { createBlockInfoMap } from "@/utils/createBlockInfoMap";
 import { getCellIndex } from "@/utils/timeTableUtils";
+import TimeTableItemModal from "./TimeTableItemModal";
 
 export default function PlanTimeTable() {
   const assigningPlanTodoId = useHomePageStore((s) => s.assigningPlanTodoId);
@@ -21,13 +23,13 @@ export default function PlanTimeTable() {
     cellItemMap,
     dragStart,
     dragEnd,
-    selectedItem: selectedEntry,
+    selectedItem,
     loading,
     handleMouseDown,
     handleMouseEnter,
     handleMouseUp,
     handleDelete,
-    setSelectedItem: setSelectedEntry,
+    setSelectedItem,
     resetDrag,
     dragMode,
   } = useTimeTableLogic(assigningPlanTodoId, setAssigningPlanTodoId, planEntries, {
@@ -36,13 +38,61 @@ export default function PlanTimeTable() {
     remove: deletePlan,
   });
 
+  const totalCells = HOURS.length * MINUTES.length;
+  const blockInfoMap = createBlockInfoMap(cellItemMap, totalCells);
+
+  const isSelectedCell = (idx: number) =>
+    dragStart !== null &&
+    dragEnd !== null &&
+    idx >= Math.min(dragStart, dragEnd) &&
+    idx <= Math.max(dragStart, dragEnd);
+
+  const getCellProps = (idx: number) => {
+    const entry = cellItemMap[idx];
+    const todoId = entry?.todoDetail?.id;
+    const blockInfo = blockInfoMap[todoId ?? -1];
+
+    return {
+      entry,
+      bgColor: entry?.todoDetail?.category?.color || (isSelectedCell(idx) ? "#bfdbfe" : "#fff"),
+      borderClass: blockInfo
+        ? getBorderClass(idx, blockInfo.startIdx, blockInfo.endIdx, MINUTES.length)
+        : "",
+    };
+  };
+
+  const renderCell = (hour: number, min: number) => {
+    const idx = getCellIndex(hour, min);
+    const { entry, bgColor, borderClass } = getCellProps(idx);
+
+    return (
+      <td
+        key={idx}
+        className={`border w-8 h-8 cursor-pointer ${borderClass}`}
+        style={{ backgroundColor: bgColor, opacity: entry ? 0.7 : 1 }}
+        title={entry?.todoDetail?.content}
+        onMouseDown={!entry ? () => handleMouseDown(hour, min) : undefined}
+        onMouseEnter={() => handleMouseEnter(hour, min)}
+        onMouseUp={handleMouseUp}
+        onClick={
+          entry
+            ? () => {
+                setSelectedItem(entry);
+                resetDrag();
+              }
+            : () => console.log(idx)
+        }
+      />
+    );
+  };
+
   return (
     <div className="overflow-x-auto" style={{ minWidth: 320, maxWidth: 420 }}>
-      <div className="flex">
-        <div className="font-bold mb-1">Plan Time Table</div>
-        <p className={`font-semibold ${assigningPlanTodoId ? "text-blue-600 animate-pulse" : ""}`}>
-          {assigningPlanTodoId ? "📝 계획을 여기에 할당하세요!" : ""}
-        </p>
+      <div className="flex items-center gap-2 mb-1">
+        <span className="font-bold">Plan Time Table</span>
+        {assigningPlanTodoId && (
+          <p className="font-semibold text-blue-600 animate-pulse">📝 실행을 여기에 할당하세요!</p>
+        )}
       </div>
 
       <table className="border text-xs select-none table-fixed w-full">
@@ -62,50 +112,20 @@ export default function PlanTimeTable() {
               <td className="border px-2 py-1 font-bold bg-gray-50">
                 {hour.toString().padStart(2, "0")}
               </td>
-              {MINUTES.map((min) => {
-                const idx = getCellIndex(hour, min);
-                const timeTableEntry = cellItemMap[idx];
-                const isSelected =
-                  dragStart !== null &&
-                  dragEnd !== null &&
-                  idx >= Math.min(dragStart, dragEnd) &&
-                  idx <= Math.max(dragStart, dragEnd);
-                const bgColor =
-                  timeTableEntry?.todoDetail?.category?.color || (isSelected ? "#bfdbfe" : "#fff");
-
-                return (
-                  <td
-                    key={idx}
-                    className="border w-8 h-8 cursor-pointer"
-                    style={{ backgroundColor: bgColor, opacity: timeTableEntry ? 0.7 : 1 }}
-                    onMouseDown={!timeTableEntry ? () => handleMouseDown(hour, min) : undefined}
-                    onClick={
-                      timeTableEntry
-                        ? () => {
-                            setSelectedEntry(timeTableEntry);
-                            resetDrag();
-                          }
-                        : undefined
-                    }
-                    onMouseEnter={() => handleMouseEnter(hour, min)}
-                    onMouseUp={handleMouseUp}
-                    title={timeTableEntry?.todoDetail?.content}
-                  />
-                );
-              })}
+              {MINUTES.map((min) => renderCell(hour, min))}
             </tr>
           ))}
         </tbody>
       </table>
 
-      {selectedEntry && dragMode !== "edit" && (
+      {selectedItem && dragMode !== "edit" && (
         <TimeTableItemModal
-          open={!!selectedEntry}
-          selectedEntry={selectedEntry}
+          open={!!selectedItem}
+          selectedEntry={selectedItem}
           loading={loading}
           onDelete={handleDelete}
           onClose={() => {
-            setSelectedEntry(null);
+            setSelectedItem(null);
             resetDrag();
           }}
         />
