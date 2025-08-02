@@ -12,8 +12,8 @@ import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
+import { AuthService } from "src/auth/auth.service";
 import { OAuthExceptionFilter } from "src/auth/filters/auth.filter";
-import { AuthService } from "./auth.service";
 
 @ApiTags("Auth")
 @Controller("auth")
