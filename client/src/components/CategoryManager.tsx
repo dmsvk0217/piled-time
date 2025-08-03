@@ -3,6 +3,7 @@ import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { Category } from "@/types/category";
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import { toast } from "react-toastify";
 import CategoryColorBox from "./CategoryColorBox";
 
 export default function CategoryManager() {
@@ -38,8 +39,18 @@ export default function CategoryManager() {
   };
 
   const deleteCategory = async (id: number) => {
-    await api.delete(`/api/categories/${id}`);
-    await fetchCategories();
+    try {
+      await api.delete(`/api/categories/${id}`);
+      toast.success("카테고리가 삭제되었습니다.");
+      await fetchCategories();
+    } catch (error: any) {
+      const message = error?.response?.data?.errors[0]?.message;
+      if (message) {
+        toast.error(message);
+      } else {
+        toast.error("카테고리 삭제 중 오류가 발생했습니다.");
+      }
+    }
   };
 
   return (
