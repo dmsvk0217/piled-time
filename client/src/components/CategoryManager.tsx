@@ -1,5 +1,7 @@
 import api from "@/api/axiosApi";
 import { useCategoryStore } from "@/stores/useCatgoryStore";
+import { useHomePageStore } from "@/stores/useHomePageStore";
+import { useTodoStore } from "@/stores/useTodoStore";
 import { Category } from "@/types/category";
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -8,6 +10,8 @@ import CategoryColorBox from "./CategoryColorBox";
 
 export default function CategoryManager() {
   const { categories, fetchCategories } = useCategoryStore();
+  const date = useHomePageStore((s) => s.date);
+  const fetchTododetails = useTodoStore((s) => s.fetchTododetails);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [colorPicker, setColorPicker] = useState("#000000");
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -36,6 +40,7 @@ export default function CategoryManager() {
     setEditCategoryName("");
     setColorPicker("#000000");
     await fetchCategories();
+    await fetchTododetails(date);
   };
 
   const deleteCategory = async (id: number) => {
