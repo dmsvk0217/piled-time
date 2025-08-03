@@ -1,6 +1,7 @@
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { FiCheck, FiEdit2, FiPlusSquare, FiTrash2, FiX } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export function EditButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
   return (
@@ -64,7 +65,7 @@ export function AssignActionIcon({ todoId, disabled }: { todoId: number; disable
       className="p-1 hover:bg-green-100 rounded transition"
       onClick={() => {
         if (exists) {
-          alert("이미 할당된 액션이 있습니다.");
+          toast.error("이미 할당된 액션이 있습니다.");
         } else {
           setAssigningActionTodo(todoId);
         }
@@ -87,7 +88,7 @@ export function AssignPlanIcon({ todoId, disabled }: { todoId: number; disabled?
       className="p-1 hover:bg-green-100 rounded transition"
       onClick={() => {
         if (exists) {
-          alert("이미 할당된 플랜이 있습니다.");
+          toast.error("이미 할당된 플랜이 있습니다.");
         } else {
           setAssigningPlanTodo(todoId);
         }
