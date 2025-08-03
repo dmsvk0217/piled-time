@@ -44,7 +44,22 @@ export class CategoryService {
   }
 
   async remove(id: number, user: User): Promise<void> {
-    const category = await this.findById(id, user);
+    const category = await this.categoryRepository.findOne({
+      where: {
+        id,
+        user: { id: user.id },
+      },
+      relations: ["todos"],
+    });
+
+    if (!category) {
+      throw CategoryException.NOT_EXISTS;
+    }
+
+    if (category.todos && category.todos.length > 0) {
+      throw CategoryException.HAS_TODOS;
+    }
+
     await this.categoryRepository.softRemove(category);
   }
 
