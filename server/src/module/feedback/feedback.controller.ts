@@ -31,10 +31,7 @@ export class FeedbackController {
 
   @CrudDocs.create(FeedbackDocs.create)
   @Post()
-  create(
-    @Body() request: FeedbackCreateRequest,
-    @GetUser() user: User,
-  ): Promise<FeedbackResponse> {
+  create(@Body() request: FeedbackCreateRequest, @GetUser() user: User): Promise<FeedbackResponse> {
     return this.feedbackService.create(request, user);
   }
 
@@ -43,17 +40,32 @@ export class FeedbackController {
   findAll(
     @GetUser() user: User,
     @Query("type") type?: string,
-    @Query("date") date?: string,
+    @Query("date") date?: string
   ): Promise<FeedbackResponse[]> {
     return this.feedbackService.findAll(user, type, date);
   }
 
+  @Get("daily")
+  getDaily(@GetUser() user: User, @Query("date") date: string): Promise<FeedbackResponse> {
+    return this.feedbackService.findDailyByDate(user, date);
+  }
+
+  @Get("weekly")
+  getWeekly(@GetUser() user: User, @Query("date") date: string): Promise<FeedbackResponse> {
+    return this.feedbackService.findWeeklyByDate(user, date);
+  }
+
+  @Get("daily/weekly")
+  getDailyFeedbacksOfWeek(
+    @GetUser() user: User,
+    @Query("date") date: string
+  ): Promise<FeedbackResponse[]> {
+    return this.feedbackService.findDailyFeedbacksInWeek(user, date);
+  }
+
   @CrudDocs.findOne(FeedbackDocs.findOne)
   @Get(":id")
-  findOne(
-    @Param("id") id: number,
-    @GetUser() user: User,
-  ): Promise<FeedbackResponse> {
+  findOne(@Param("id") id: number, @GetUser() user: User): Promise<FeedbackResponse> {
     return this.feedbackService.findOne(id, user);
   }
 
@@ -62,7 +74,7 @@ export class FeedbackController {
   update(
     @Param("id") id: number,
     @Body() request: FeedbackUpdateRequest,
-    @GetUser() user: User,
+    @GetUser() user: User
   ): Promise<FeedbackResponse> {
     return this.feedbackService.update(id, request, user);
   }

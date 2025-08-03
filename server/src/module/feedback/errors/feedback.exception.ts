@@ -10,6 +10,17 @@ export class FeedbackException {
         httpStatus: HttpStatus.NOT_FOUND,
       },
     ],
-    HttpStatus.NOT_FOUND,
+    HttpStatus.NOT_FOUND
+  );
+
+  static readonly ALREADY_EXISTS = new PTException(
+    [
+      {
+        code: "plied-time.feedback.already-exists",
+        message: "피드백이 이미 존재합니다.",
+        httpStatus: HttpStatus.BAD_REQUEST,
+      },
+    ],
+    HttpStatus.BAD_REQUEST
   );
 }
