@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
+import { getDayRange } from "src/common/utils/date.utils";
 import {
   DailyPlannerQueryDto,
   PlannerResponse,
@@ -21,20 +22,22 @@ export class PlannerService {
     private readonly todoRepository: Repository<Todo>
   ) {}
   async getDailyPlanner(user: User, query: DailyPlannerQueryDto): Promise<PlannerResponse> {
-    const startDate = new Date(query.date);
-    const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 1);
+    const { start, end } = getDayRange(query.date);
 
     const todos = await this.todoRepository.find({
       where: {
         user: { id: user.id },
-        date: Between(startDate, endDate),
+        date: Between(start, end),
       },
       relations: {
         category: true,
         plan: true,
         action: true,
       },
+    });
+
+    todos.forEach((todo) => {
+      console.log(todo.content, todo.date, todo.createdAt);
     });
 
     return plainToInstance(PlannerResponse, {
