@@ -5,6 +5,7 @@ import { Plan } from "@/types/plan";
 export interface Todo {
   id: number;
   content: string;
+  date: string;
   category: Category;
   action: Action;
   plan: Plan;
