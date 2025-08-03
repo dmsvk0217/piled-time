@@ -21,16 +21,16 @@ export function getBorderClass(
   const classes: string[] = [];
 
   if (isLeftOfBlock || isStartOfBlock) {
-    classes.push("border-l-gray-300", "border-l-2");
+    classes.push("border-l-gray-500", "border-l-2");
   }
   if (isRightOfBlock || isEndOfBlock) {
-    classes.push("border-r-gray-300", "border-r-2");
+    classes.push("border-r-gray-500", "border-r-2");
   }
   if (isTopOfBlock || isStartOfBlock) {
-    classes.push("border-t-gray-300", "border-t-2");
+    classes.push("border-t-gray-500", "border-t-2");
   }
   if (isBottomOfBlock || isEndOfBlock) {
-    classes.push("border-b-gray-300", "border-b-2");
+    classes.push("border-b-gray-500", "border-b-2");
   }
 
   return classes.join(" ");
