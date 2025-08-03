@@ -1,10 +1,10 @@
 import {
   createDailyFeedback,
   deleteDailyFeedback,
-  fetchDailyFeedback,
+  fetchDailyFeedbackByDate,
   updateDailyFeedback,
 } from "@/api/feedbackApi";
-import { Feedback } from "@/types/feedback";
+import { Feedback, FeedbackType } from "@/types/feedback";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -21,7 +21,7 @@ export default function FeedbackDailyBox({ date }: Props) {
 
   const load = async () => {
     setLoading(true);
-    const fb = await fetchDailyFeedback(date);
+    const fb = await fetchDailyFeedbackByDate(date);
     setFeedback(fb);
     setEditMode(!fb);
     setGoodPoint(fb?.goodPoint || "");
@@ -41,7 +41,7 @@ export default function FeedbackDailyBox({ date }: Props) {
       setFeedback(updated);
     } else {
       const created = await createDailyFeedback({
-        type: "DAILY",
+        type: FeedbackType.DAILY,
         date,
         goodPoint,
         badPoint,

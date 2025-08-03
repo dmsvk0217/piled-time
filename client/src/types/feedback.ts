@@ -1,6 +1,6 @@
 export interface Feedback {
   id: number;
-  type: "DAILY" | "WEEKLY" | "MONTHLY";
+  type: FeedbackType;
   date: string;
   goodPoint: string;
   badPoint: string;
@@ -9,8 +9,14 @@ export interface Feedback {
   updatedAt: string;
 }
 
+export enum FeedbackType {
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY",
+  MONTHLY = "MONTHLY",
+}
+
 export interface FeedbackCreateRequest {
-  type: "DAILY";
+  type: FeedbackType;
   date: string;
   goodPoint: string;
   badPoint: string;
