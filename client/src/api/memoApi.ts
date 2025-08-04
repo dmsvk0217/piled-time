@@ -1,8 +1,8 @@
 import { Memo, MemoCreateRequest } from "@/types/memo";
 import api from "./axiosApi";
 
-export const fetchMemo = async (date: string): Promise<Memo | null> => {
-  const res = await api.get<Memo[]>("/api/memos", { params: { date } });
+export const fetchMemo = async (date: Date): Promise<Memo | null> => {
+  const res = await api.get<Memo[]>("/api/memos", { params: { date: date.toISOString() } });
   return res.data.length > 0 ? res.data[0] : null;
 };
 

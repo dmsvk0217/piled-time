@@ -7,6 +7,7 @@ import TodoTable from "@/components/TodoTable";
 import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
+import { format } from "date-fns";
 import { useEffect } from "react";
 
 export default function HomePage() {
@@ -33,8 +34,8 @@ export default function HomePage() {
           <div className="mb-2 flex gap-2 items-center">
             <input
               type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={format(date, "yyyy-MM-dd")}
+              onChange={(e) => setDate(new Date(e.target.value))}
               className="border px-2 py-1 rounded"
             />
           </div>

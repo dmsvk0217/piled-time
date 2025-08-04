@@ -8,12 +8,12 @@ export const fetchTodos = async (): Promise<Todo[]> => {
 
 export const createTodo = async (
   categoryId: number,
-  date: string,
+  date: Date,
   content: string
 ): Promise<Todo> => {
   const res = await api.post<Todo>("/api/todos", {
     categoryId,
-    date,
+    date: date.toISOString(),
     content,
   });
   return res.data;
@@ -21,7 +21,7 @@ export const createTodo = async (
 
 export const updateTodo = async (
   id: number,
-  data: Partial<{ date: string; content: string; percent: number }>
+  data: Partial<{ date: Date; content: string; percent: number }>
 ): Promise<Todo> => {
   const res = await api.patch<Todo>(`/api/todos/${id}`, data);
   return res.data;

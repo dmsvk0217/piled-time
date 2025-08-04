@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 interface HomePageState {
-  date: string;
-  setDate: (date: string) => void;
+  date: Date;
+  setDate: (date: Date) => void;
 
   assigningActionTodoId: number | null;
   setAssigningActionTodo: (id: number | null) => void;
@@ -12,7 +12,7 @@ interface HomePageState {
 }
 
 export const useHomePageStore = create<HomePageState>((set) => ({
-  date: new Date().toISOString().slice(0, 10),
+  date: new Date(),
   setDate: (date) => set({ date }),
 
   assigningActionTodoId: null,

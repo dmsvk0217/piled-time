@@ -24,7 +24,7 @@ export default function Memo() {
       const updated = await updateMemo(memo.id, { content });
       setMemo(updated);
     } else {
-      const created = await createMemo({ date, content });
+      const created = await createMemo({ date: date.toISOString(), content });
       setMemo(created);
     }
     setEditing(false);

@@ -11,8 +11,9 @@ import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
 
 const WeeklyStatsPage = () => {
-  const fetchWeeklyPlannerData = useWeeklyStatsStore((s) => s.fetchWeeklyPlannerData);
+  const date = useWeeklyStatsStore((s) => s.date);
   const weeklyData = useWeeklyStatsStore((s) => s.weeklyData);
+  const fetchWeeklyPlannerData = useWeeklyStatsStore((s) => s.fetchWeeklyPlannerData);
 
   const [loading, setLoading] = useState(true);
   const [timeTableData, setTimeTableData] = useState<{
@@ -27,7 +28,7 @@ const WeeklyStatsPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        await fetchWeeklyPlannerData("2025-08-01");
+        await fetchWeeklyPlannerData(date);
 
         const allTodos: Todo[] = weeklyData.flatMap((day: DailyData) => day.todos);
 
@@ -43,7 +44,7 @@ const WeeklyStatsPage = () => {
         }
 
         for (const todo of allTodos) {
-          const day = todo.date.slice(0, 10);
+          const day = todo.date.toISOString().slice(0, 10);
 
           if (todo.plan) {
             const start = new Date(todo.plan.startAt);
@@ -82,7 +83,7 @@ const WeeklyStatsPage = () => {
 
         for (const todo of allTodos) {
           const key = todo.category?.name;
-          const date = todo.date.slice(5, 10);
+          const date = todo.date.toISOString().slice(5, 10);
 
           if (!key) continue;
 

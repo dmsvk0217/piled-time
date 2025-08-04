@@ -8,7 +8,7 @@ import { Feedback, FeedbackType } from "@/types/feedback";
 import { useEffect, useState } from "react";
 
 interface Props {
-  date: string; // yyyy-mm-dd
+  date: Date;
 }
 
 export default function FeedbackDailyBox({ date }: Props) {
@@ -42,7 +42,7 @@ export default function FeedbackDailyBox({ date }: Props) {
     } else {
       const created = await createDailyFeedback({
         type: FeedbackType.DAILY,
-        date,
+        date: date.toISOString(),
         goodPoint,
         badPoint,
         comment,
