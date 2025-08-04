@@ -122,23 +122,14 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
             {/* 달성률 */}
             <td className="border px-2 py-2">
               <div
-                className="w-full h-6 rounded cursor-pointer flex items-center justify-center select-none border hover:shadow transition"
-                style={{
-                  background:
-                    percent === 0
-                      ? "#fff" // 0%: 흰색
-                      : percent === 25
-                      ? "#f3f4f6" // 25%: 아주 연한 회색
-                      : percent === 50
-                      ? "#d1d5db" // 50%: 연회색
-                      : percent === 75
-                      ? "#9ca3af" // 75%: 중간회색
-                      : percent === 100
-                      ? "#6b7280" // 100%: 진한회색
-                      : "#fff",
-                  color: percent < 75 ? "#222" : "#fff",
-                  transition: "background 0.2s",
-                }}
+                className={`
+                  w-full h-6 rounded cursor-pointer flex items-center justify-center select-none border hover:shadow transition
+                  ${percent === 0 ? "bg-white text-gray-800" : ""}
+                  ${percent === 25 ? "bg-gray-100 text-gray-800" : ""}
+                  ${percent === 50 ? "bg-gray-300 text-gray-800" : ""}
+                  ${percent === 75 ? "bg-gray-500 text-white" : ""}
+                  ${percent === 100 ? "bg-gray-700 text-white" : ""}
+                `}
                 title="클릭해서 달성률을 변경할 수 있습니다"
                 onClick={async () => {
                   const percentSteps = [0, 25, 50, 75, 100];
@@ -149,9 +140,10 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
                 <span className="mr-1">{percent}%</span>
               </div>
             </td>
+
             {/* buttons */}
             <td className="min-w-[80px] text-center relative whitespace-nowrap overflow-x-visible">
-              <span className="gap-1 items-center overflow-x-visible">
+              <span className="flex gap-1 items-center overflow-x-visible">
                 {isEditing ? (
                   <>
                     <SaveButton

@@ -1,6 +1,7 @@
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
-import { FiCheck, FiEdit2, FiPlusSquare, FiTrash2, FiX } from "react-icons/fi";
+import { cn } from "@/utils/cn";
+import { FiCheck, FiCheckCircle, FiEdit2, FiTrash2, FiX } from "react-icons/fi";
 import { toast } from "react-toastify";
 
 export function EditButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
@@ -32,7 +33,7 @@ export function DeleteButton({ onClick, disabled }: { onClick: () => void; disab
 export function SaveButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
   return (
     <button
-      className="p-1 hover:bg-green-100 rounded transition"
+      className="hover:bg-green-100 rounded transition"
       onClick={onClick}
       disabled={disabled}
       title="저장"
@@ -45,35 +46,12 @@ export function SaveButton({ onClick, disabled }: { onClick: () => void; disable
 export function CancelButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
   return (
     <button
-      className="p-1 hover:bg-gray-100 rounded transition"
+      className="hover:bg-gray-100 rounded transition"
       onClick={onClick}
       disabled={disabled}
       title="취소"
       type="button">
       <FiX size={18} color="#6b7280" />
-    </button>
-  );
-}
-
-export function AssignActionIcon({ todoId, disabled }: { todoId: number; disabled?: boolean }) {
-  const setAssigningActionTodo = useHomePageStore((s) => s.setAssigningActionTodo);
-  const todoDetails = useTodoStore((s) => s.todoDetails);
-  const exists = todoDetails.some((todo) => todo.action && todo.id === todoId);
-
-  return (
-    <button
-      className="p-1 hover:bg-green-100 rounded transition"
-      onClick={() => {
-        if (exists) {
-          toast.error("이미 할당된 액션이 있습니다.");
-        } else {
-          setAssigningActionTodo(todoId);
-        }
-      }}
-      disabled={disabled}
-      title="액션 할당"
-      type="button">
-      <FiPlusSquare size={18} color="#22c55e" />
     </button>
   );
 }
@@ -85,7 +63,12 @@ export function AssignPlanIcon({ todoId, disabled }: { todoId: number; disabled?
 
   return (
     <button
-      className="p-1 hover:bg-green-100 rounded transition"
+      className={cn(
+        "p-1 rounded border transition flex items-center justify-center text-sm font-bold w-6 h-6",
+        exists
+          ? "bg-green-200 text-green-800 border-green-300"
+          : "hover:bg-green-100 text-green-600"
+      )}
       onClick={() => {
         if (exists) {
           toast.error("이미 할당된 플랜이 있습니다.");
@@ -94,9 +77,35 @@ export function AssignPlanIcon({ todoId, disabled }: { todoId: number; disabled?
         }
       }}
       disabled={disabled}
-      title="플랜 할당"
+      title={exists ? "플랜이 이미 할당됨" : "플랜 할당"}
       type="button">
-      <FiPlusSquare size={18} color="#22c55e" />
+      {exists ? <FiCheckCircle size={16} /> : "P"}
+    </button>
+  );
+}
+
+export function AssignActionIcon({ todoId, disabled }: { todoId: number; disabled?: boolean }) {
+  const setAssigningActionTodo = useHomePageStore((s) => s.setAssigningActionTodo);
+  const todoDetails = useTodoStore((s) => s.todoDetails);
+  const exists = todoDetails.some((todo) => todo.action && todo.id === todoId);
+
+  return (
+    <button
+      className={cn(
+        "p-1 rounded border transition flex items-center justify-center text-sm font-bold w-6 h-6",
+        exists ? "bg-blue-200 text-blue-800 border-blue-300" : "hover:bg-blue-100 text-blue-600"
+      )}
+      onClick={() => {
+        if (exists) {
+          toast.error("이미 할당된 액션이 있습니다.");
+        } else {
+          setAssigningActionTodo(todoId);
+        }
+      }}
+      disabled={disabled}
+      title={exists ? "액션이 이미 할당됨" : "액션 할당"}
+      type="button">
+      {exists ? <FiCheckCircle size={16} /> : "A"}
     </button>
   );
 }
