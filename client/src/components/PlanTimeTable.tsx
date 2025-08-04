@@ -88,10 +88,12 @@ export default function PlanTimeTable() {
 
   return (
     <div className="overflow-x-auto" style={{ minWidth: 320, maxWidth: 420 }}>
-      <div className="flex items-center gap-2 mb-1">
+      <div className="flex items-center gap-2 mb-1 whitespace-nowrap">
         <span className="font-bold">Plan Time Table</span>
         {assigningPlanTodoId && (
-          <p className="font-semibold text-blue-600 animate-pulse">📝 실행을 여기에 할당하세요!</p>
+          <span className="font-semibold text-[13px] text-blue-600 animate-pulse">
+            📝 계획을 여기에 할당하세요!
+          </span>
         )}
       </div>
 

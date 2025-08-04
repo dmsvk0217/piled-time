@@ -91,7 +91,9 @@ export default function ActionTimeTable() {
       <div className="flex items-center gap-2 mb-1">
         <span className="font-bold">Action Time Table</span>
         {assigningActionTodoId && (
-          <p className="font-semibold text-blue-600 animate-pulse">📝 실행을 여기에 할당하세요!</p>
+          <p className="font-semibold text-[13px] text-blue-600 animate-pulse">
+            📝 실행을 여기에 할당하세요!
+          </p>
         )}
       </div>
 
