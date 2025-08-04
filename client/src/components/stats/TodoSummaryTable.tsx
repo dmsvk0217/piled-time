@@ -105,7 +105,16 @@ export default function TodoSummaryTable() {
                 <td className="px-4 py-2">
                   {Math.floor(actionMin / 60)}h {actionMin % 60}m
                 </td>
-                <td className="px-4 py-2">{todo.percent}%</td>
+                <td
+                  className={` px-4 py-2 w-full h-6 rounded flex items-center justify-center select-none border
+                    ${todo.percent === 0 ? "bg-white text-gray-800" : ""}
+                    ${todo.percent === 25 ? "bg-gray-100 text-gray-800" : ""}
+                    ${todo.percent === 50 ? "bg-gray-300 text-gray-800" : ""}
+                    ${todo.percent === 75 ? "bg-gray-500 text-white" : ""}
+                    ${todo.percent === 100 ? "bg-gray-700 text-white" : ""}
+                  `}>
+                  {todo.percent}%
+                </td>
               </tr>
             );
           })}
