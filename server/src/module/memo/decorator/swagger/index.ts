@@ -1,1 +1,1 @@
-export * from "./memo.docs";
+export * from "./memo-crud.docs";

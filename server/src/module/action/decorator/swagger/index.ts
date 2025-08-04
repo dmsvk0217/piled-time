@@ -1,1 +1,1 @@
-export * from "./action.docs";
+export * from "./action-crud.docs";

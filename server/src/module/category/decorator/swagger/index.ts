@@ -1,1 +1,1 @@
-export * from "./category.docs";
+export * from "./category-crud.docs";

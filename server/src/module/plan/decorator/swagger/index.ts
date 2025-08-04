@@ -1,1 +1,1 @@
-export * from "./plan.docs";
+export * from "./plan-crud.docs";
