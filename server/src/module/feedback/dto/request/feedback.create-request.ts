@@ -23,17 +23,14 @@ export class FeedbackCreateRequest extends OmitType(Feedback, [
   date: Date;
 
   @ApiProperty({ example: "this is good point", description: "좋았던 점" })
-  @IsNotEmpty()
   @IsString()
   goodPoint: string;
 
   @ApiProperty({ example: "this is badpoint", description: "나빴던 점" })
-  @IsNotEmpty()
   @IsString()
   badPoint: string;
 
   @ApiProperty({ example: "this is comment", description: "기타 사항" })
-  @IsNotEmpty()
   @IsString()
   comment: string;
 }
