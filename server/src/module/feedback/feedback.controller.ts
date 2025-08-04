@@ -14,7 +14,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUser } from "src/common/decorators/user.decorator";
 import { CrudDocs } from "src/common/docs/crud-docs.decorator";
-import { FeedbackDocs } from "src/module/feedback/decorator/swagger";
+import { FeedbackDocs, FeedbackDocsOptions } from "src/module/feedback/decorator/swagger";
 import {
   FeedbackCreateRequest,
   FeedbackResponse,
@@ -29,13 +29,13 @@ import { User } from "src/module/user/entities/user.entity";
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
-  @CrudDocs.create(FeedbackDocs.create)
+  @CrudDocs.create(FeedbackDocsOptions.create)
   @Post()
   create(@Body() request: FeedbackCreateRequest, @GetUser() user: User): Promise<FeedbackResponse> {
     return this.feedbackService.create(request, user);
   }
 
-  @CrudDocs.findAll(FeedbackDocs.findAll)
+  @CrudDocs.findAll(FeedbackDocsOptions.findAll)
   @Get()
   findAll(
     @GetUser() user: User,
@@ -45,16 +45,19 @@ export class FeedbackController {
     return this.feedbackService.findAll(user, type, date);
   }
 
+  @FeedbackDocs.getDaily()
   @Get("daily")
   getDaily(@GetUser() user: User, @Query("date") date: string): Promise<FeedbackResponse> {
     return this.feedbackService.findDailyByDate(user, date);
   }
 
+  @FeedbackDocs.getWeekly()
   @Get("weekly")
   getWeekly(@GetUser() user: User, @Query("date") date: string): Promise<FeedbackResponse> {
     return this.feedbackService.findWeeklyByDate(user, date);
   }
 
+  @FeedbackDocs.getDailyOfWeek()
   @Get("daily/weekly")
   getDailyFeedbacksOfWeek(
     @GetUser() user: User,
@@ -63,13 +66,13 @@ export class FeedbackController {
     return this.feedbackService.findDailyFeedbacksInWeek(user, date);
   }
 
-  @CrudDocs.findOne(FeedbackDocs.findOne)
+  @CrudDocs.findOne(FeedbackDocsOptions.findOne)
   @Get(":id")
   findOne(@Param("id") id: number, @GetUser() user: User): Promise<FeedbackResponse> {
     return this.feedbackService.findOne(id, user);
   }
 
-  @CrudDocs.update(FeedbackDocs.update)
+  @CrudDocs.update(FeedbackDocsOptions.update)
   @Patch(":id")
   update(
     @Param("id") id: number,
@@ -80,7 +83,7 @@ export class FeedbackController {
   }
 
   @HttpCode(204)
-  @CrudDocs.remove(FeedbackDocs.remove)
+  @CrudDocs.remove(FeedbackDocsOptions.remove)
   @Delete(":id")
   remove(@Param("id") id: number, @GetUser() user: User): Promise<void> {
     return this.feedbackService.remove(id, user);
