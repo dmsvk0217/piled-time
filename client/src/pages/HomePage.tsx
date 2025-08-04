@@ -1,9 +1,9 @@
-import ActionTimeTable from "@/components/ActionTimeTable";
 import AdviceCard from "@/components/AdviceCard";
-import FeedbackBox from "@/components/FeedbackBox";
+import FeedbackBox from "@/components/common/FeedbackBox";
 import Memo from "@/components/Memo";
-import PlanTimeTable from "@/components/PlanTimeTable";
-import TodoTable from "@/components/TodoTable";
+import ActionTimeTable from "@/components/timetable/ActionTimeTable";
+import PlanTimeTable from "@/components/timetable/PlanTimeTable";
+import TodoTable from "@/components/todo/TodoTable";
 import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";

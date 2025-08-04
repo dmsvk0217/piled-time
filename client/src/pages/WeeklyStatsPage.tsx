@@ -1,10 +1,10 @@
-import FeedbackBox from "@/components/FeedbackBox";
+import FeedbackBox from "@/components/common/FeedbackBox";
 import CategoryStats from "@/components/stats/CategoryStats";
 import TodoSummaryTable from "@/components/stats/TodoSummaryTable";
 import WeeklyDailyFeedbackList from "@/components/stats/WeeklyDailyFeedbackList";
 import WeeklySelector from "@/components/stats/WeeklySelector";
+import WeeklySummary from "@/components/stats/WeeklySummary";
 import WeeklyTimeTable from "@/components/stats/WeeklyTimeTable";
-import WeeklySummary from "@/components/WeeklySummary";
 import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
 import { FeedbackType } from "@/types/feedback";
 import { DailyData } from "@/types/stats.type";
@@ -45,7 +45,7 @@ const WeeklyStatsPage = () => {
         }
 
         for (const todo of allTodos) {
-          const day = todo.date.toISOString().slice(0, 10);
+          const day = todo.date.slice(0, 10);
 
           if (todo.plan) {
             const start = new Date(todo.plan.startAt);
@@ -84,7 +84,7 @@ const WeeklyStatsPage = () => {
 
         for (const todo of allTodos) {
           const key = todo.category?.name;
-          const date = todo.date.toISOString().slice(5, 10);
+          const date = todo.date.slice(5, 10);
 
           if (!key) continue;
 

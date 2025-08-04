@@ -5,7 +5,7 @@ import {
   DeleteButton,
   EditButton,
   SaveButton,
-} from "@/components/TodoTableButtons";
+} from "@/components/todo/TodoTableButtons";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { Todo } from "@/types/todo";

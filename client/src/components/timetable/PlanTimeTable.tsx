@@ -1,4 +1,5 @@
 import { createPlan, deletePlan, updatePlan } from "@/api/planApi";
+import TimeTableItemModal from "@/components/timetable/TimeTableItemModal";
 import { useTimeTableLogic } from "@/hooks/useTimeTableLogin";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
@@ -6,7 +7,6 @@ import { TimeTableEntry } from "@/types/timetable";
 import { getBorderClass } from "@/utils/borderUtil";
 import { createBlockInfoMap } from "@/utils/createBlockInfoMap";
 import { getCellIndex } from "@/utils/timeTableUtils";
-import TimeTableItemModal from "./TimeTableItemModal";
 
 export default function PlanTimeTable() {
   const assigningPlanTodoId = useHomePageStore((s) => s.assigningPlanTodoId);

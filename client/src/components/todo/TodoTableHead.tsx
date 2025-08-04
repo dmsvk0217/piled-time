@@ -1,4 +1,4 @@
-import CategoryManager from "@/components/CategoryManager";
+import CategoryManager from "@/components/category/CategoryManager";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Settings2 } from "lucide-react";
 

@@ -1,7 +1,7 @@
 import { createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
-import TodoForm from "@/components/TodoForm";
-import TodoTableBody from "@/components/TodoTableBody";
-import TodoTableHead from "@/components/TodoTableHead";
+import TodoForm from "@/components/todo/TodoForm";
+import TodoTableBody from "@/components/todo/TodoTableBody";
+import TodoTableHead from "@/components/todo/TodoTableHead";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { Todo } from "@/types/todo";
