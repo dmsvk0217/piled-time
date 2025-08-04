@@ -16,13 +16,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export default function WeeklySelector() {
+  const date = useWeeklyStatsStore((s) => s.date);
+  const setDate = useWeeklyStatsStore((s) => s.setDate);
   const fetchWeeklyPlannerData = useWeeklyStatsStore((s) => s.fetchWeeklyPlannerData);
 
-  const today = new Date();
-  const [date, setDate] = useState(today);
   const [direction, setDirection] = useState(0);
-  const prevDateRef = useRef(today);
+  const prevDateRef = useRef(date);
 
+  const today = new Date();
   const weekStart = startOfWeek(date, { weekStartsOn: 0 });
   const weekEnd = endOfWeek(date, { weekStartsOn: 0 });
   const isCurrentWeek = isThisWeek(date, { weekStartsOn: 0 });
@@ -42,7 +43,7 @@ export default function WeeklySelector() {
   }, [date]);
 
   useEffect(() => {
-    fetchWeeklyPlannerData(date.toISOString());
+    fetchWeeklyPlannerData(date);
   }, [date]);
 
   const handlePrevWeek = () => {

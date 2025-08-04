@@ -1,22 +1,25 @@
 import { fetchDailyFeedbacksOfWeek } from "@/api/feedbackApi";
+import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
 import { Feedback } from "@/types/feedback";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useEffect, useState } from "react";
 
 export default function WeeklyDailyFeedbackList() {
+  const date = useWeeklyStatsStore((s) => s.date);
+
   const [dailyFeedbacks, setDailyFeedbacks] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadFeedbacksOfWeek = async () => {
       setLoading(true);
-      const feedbacks = await fetchDailyFeedbacksOfWeek("2025-08-03");
+      const feedbacks = await fetchDailyFeedbacksOfWeek(date);
       setDailyFeedbacks(feedbacks);
       setLoading(false);
     };
     loadFeedbacksOfWeek();
-  }, []);
+  }, [date]);
 
   if (loading) return <div>로딩 중 ...</div>;
 
