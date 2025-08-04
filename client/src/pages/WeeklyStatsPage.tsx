@@ -1,21 +1,20 @@
-import { fetchWeeklyPlannerData } from "@/api/statsApi";
 import CategoryStats from "@/components/stats/CategoryStats";
 import TodoSummaryTable from "@/components/stats/TodoSummaryTable";
 import WeeklyDailyFeedbackList from "@/components/stats/WeeklyDailyFeedbackList";
 import WeeklyFeedbackForm from "@/components/stats/WeeklyFeedbackForm";
+import WeeklySelector from "@/components/stats/WeeklySelector";
 import WeeklyTimeTable from "@/components/stats/WeeklyTimeTable";
-import WeeklySummary, { WeeklySummaryProps } from "@/components/WeeklySummary";
+import WeeklySummary from "@/components/WeeklySummary";
+import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
 import { DailyData } from "@/types/stats.type";
 import { Todo } from "@/types/todo";
-import { format, getWeek, parseISO } from "date-fns";
-import { ko } from "date-fns/locale";
 import { useEffect, useState } from "react";
 
 const WeeklyStatsPage = () => {
+  const fetchWeeklyPlannerData = useWeeklyStatsStore((s) => s.fetchWeeklyPlannerData);
+  const weeklyData = useWeeklyStatsStore((s) => s.weeklyData);
+
   const [loading, setLoading] = useState(true);
-  const [summary, setSummary] = useState<WeeklySummaryProps | null>(null);
-  const [weekRange, setWeekRange] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [timeTableData, setTimeTableData] = useState<{
     plan: Record<string, number[]>;
     action: Record<string, number[]>;
@@ -28,55 +27,9 @@ const WeeklyStatsPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const weeklyData = await fetchWeeklyPlannerData("2025-07-28");
+        await fetchWeeklyPlannerData("2025-08-01");
 
         const allTodos: Todo[] = weeklyData.flatMap((day: DailyData) => day.todos);
-        setTodos(allTodos);
-
-        const totalTodos = allTodos.length;
-        const completedTodos = allTodos.filter((todo) => todo.percent >= 100).length;
-        const averageProgress = totalTodos
-          ? Math.round(allTodos.reduce((sum, t) => sum + t.percent, 0) / totalTodos)
-          : 0;
-
-        const totalPlannedMinutes = allTodos.reduce((sum, t) => sum + (t.plan?.duration || 0), 0);
-        const totalActionMinutes = allTodos.reduce((sum, t) => sum + (t.action?.duration || 0), 0);
-
-        const totalPlannedTimeText = `${Math.floor(totalPlannedMinutes / 60)}h ${
-          totalPlannedMinutes % 60
-        }m`;
-        const totalActionTimeText = `${Math.floor(totalActionMinutes / 60)}h ${
-          totalActionMinutes % 60
-        }m`;
-
-        const categoryCount: Record<string, number> = {};
-        for (const t of allTodos) {
-          const name = t.category?.name;
-          if (name) categoryCount[name] = (categoryCount[name] || 0) + 1;
-        }
-        const topCategory =
-          Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0]?.[0] || "-";
-
-        const start = parseISO(weeklyData[0].date);
-        const end = parseISO(weeklyData[weeklyData.length - 1].date);
-        const weekNumber = getWeek(start, {
-          weekStartsOn: 1,
-          locale: ko,
-        });
-        const weekRange = `${format(start, "yyyy.MM.dd")} ~ ${format(
-          end,
-          "yyyy.MM.dd"
-        )} (${weekNumber}주차)`;
-        setWeekRange(weekRange);
-
-        setSummary({
-          averageProgress,
-          totalPlannedTimeText,
-          totalActionTimeText,
-          completedTodos,
-          totalTodos,
-          topCategory,
-        });
 
         // 시간표 생성
         const emptySlots = () => new Array(48).fill(0);
@@ -176,28 +129,26 @@ const WeeklyStatsPage = () => {
   }, []);
 
   if (loading) return <div>로딩 중...</div>;
-  if (!summary) return <div>데이터가 없습니다.</div>;
+  if (!weeklyData) return <div>데이터가 없습니다.</div>;
 
   return (
     <>
       <div className="max-w-6xl mx-auto px-4 py-6 space-y-8">
-        <h1 className="text-2xl font-bold">📊 주간 통계 요약</h1>
-        <p className="text-sm text-gray-700">{weekRange}</p>
-
+        <h1 className="text-2xl font-bold text-center">📊 주간 통계 요약</h1>
+        <WeeklySelector />
         <section className="flex flex-col md:flex-row gap-6">
           {/* 왼쪽: 1/6 (📊 주간 통계 요약) */}
           <div className="md:basis-2/6 md:flex-shrink-0">
             <h2 className="text-xl font-semibold mb-4">주간 요약</h2>
-            <WeeklySummary {...summary} />
+            <WeeklySummary />
           </div>
 
           {/* 오른쪽: 5/6 (📋 할 일 요약) */}
           <div className="md:basis-4/6 w-full">
             <h2 className="text-xl font-semibold mb-4">📋 할 일 요약</h2>
-            <TodoSummaryTable todos={todos} />
+            <TodoSummaryTable />
           </div>
         </section>
-
         {/* 피드백 영역 */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -209,13 +160,11 @@ const WeeklyStatsPage = () => {
             <WeeklyDailyFeedbackList />
           </div>
         </section>
-
         {/* 시간표 요약 */}
         <section>
           <h2 className="text-xl font-semibold mb-4">⏰ 시간표 요약</h2>
           <WeeklyTimeTable plan={timeTableData.plan} action={timeTableData.action} />
         </section>
-
         {/* 카테고리 통계 */}
         <section>
           <h2 className="text-xl font-semibold mb-4">🏷️ 카테고리 통계</h2>

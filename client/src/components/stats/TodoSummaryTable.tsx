@@ -1,10 +1,12 @@
+import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
+import { DailyData } from "@/types/stats.type";
 import { Todo } from "@/types/todo";
 
-interface Props {
-  todos: Todo[];
-}
+export default function TodoSummaryTable() {
+  const weeklyData = useWeeklyStatsStore((s) => s.weeklyData);
 
-export default function TodoSummaryTable({ todos }: Props) {
+  const todos: Todo[] = weeklyData.flatMap((day: DailyData) => day.todos);
+
   return (
     <div className="overflow-auto rounded border border-gray-200">
       <table className="min-w-full table-auto text-sm">

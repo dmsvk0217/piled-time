@@ -1,19 +1,33 @@
-export interface WeeklySummaryProps {
-  averageProgress: number; // 0 ~ 100
-  totalPlannedTimeText: string; // 1시간 30분
-  totalActionTimeText: string; // 1시간 30분
-  completedTodos: number;
-  totalTodos: number;
-  topCategory: string;
-}
-export default function WeeklySummary({
-  averageProgress,
-  totalPlannedTimeText,
-  totalActionTimeText,
-  completedTodos,
-  totalTodos,
-  topCategory,
-}: WeeklySummaryProps) {
+import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
+import { DailyData } from "@/types/stats.type";
+import { Todo } from "@/types/todo";
+
+export default function WeeklySummary() {
+  const weeklyData = useWeeklyStatsStore((s) => s.weeklyData);
+
+  const allTodos: Todo[] = weeklyData.flatMap((day: DailyData) => day.todos);
+
+  const totalTodos = allTodos.length;
+  const completedTodos = allTodos.filter((todo) => todo.percent >= 100).length;
+  const averageProgress = totalTodos
+    ? Math.round(allTodos.reduce((sum, t) => sum + t.percent, 0) / totalTodos)
+    : 0;
+
+  const totalPlannedMinutes = allTodos.reduce((sum, t) => sum + (t.plan?.duration || 0), 0);
+  const totalActionMinutes = allTodos.reduce((sum, t) => sum + (t.action?.duration || 0), 0);
+
+  const totalPlannedTimeText = `${Math.floor(totalPlannedMinutes / 60)}h ${
+    totalPlannedMinutes % 60
+  }m`;
+  const totalActionTimeText = `${Math.floor(totalActionMinutes / 60)}h ${totalActionMinutes % 60}m`;
+
+  const categoryCount: Record<string, number> = {};
+  for (const t of allTodos) {
+    const name = t.category?.name;
+    if (name) categoryCount[name] = (categoryCount[name] || 0) + 1;
+  }
+  const topCategory = Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0]?.[0] || "-";
+
   return (
     <div className="flex flex-col gap-1">
       {/* 평균 달성률 */}
