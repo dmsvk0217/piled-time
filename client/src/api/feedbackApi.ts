@@ -1,14 +1,14 @@
-import { Feedback, FeedbackCreateRequest } from "@/types/feedback";
+import { Feedback, FeedbackCreateRequest, FeedbackType } from "@/types/feedback";
 import api from "./axiosApi";
 
-export const fetchFeedbacks = async (
-  type?: "DAILY" | "WEEKLY",
-  date?: Date
-): Promise<Feedback[]> => {
+export const fetchFeedbackByDateAndType = async (
+  date: Date,
+  type: FeedbackType
+): Promise<Feedback> => {
   const res = await api.get<Feedback[]>("/api/feedbacks", {
     params: { type, date },
   });
-  return res.data;
+  return res.data[0];
 };
 
 export const fetchDailyFeedbackByDate = async (date: Date): Promise<Feedback | null> => {
@@ -32,12 +32,12 @@ export const fetchDailyFeedbacksOfWeek = async (date: Date): Promise<Feedback[]>
   return res.data;
 };
 
-export const createDailyFeedback = async (data: FeedbackCreateRequest): Promise<Feedback> => {
+export const createFeedback = async (data: FeedbackCreateRequest): Promise<Feedback> => {
   const res = await api.post<Feedback>("/api/feedbacks", data);
   return res.data;
 };
 
-export const updateDailyFeedback = async (
+export const updateFeedback = async (
   id: number,
   data: Partial<FeedbackCreateRequest>
 ): Promise<Feedback> => {
@@ -45,6 +45,6 @@ export const updateDailyFeedback = async (
   return res.data;
 };
 
-export const deleteDailyFeedback = async (id: number): Promise<void> => {
+export const deleteFeedback = async (id: number): Promise<void> => {
   await api.delete(`/api/feedbacks/${id}`);
 };

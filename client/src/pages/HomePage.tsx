@@ -1,13 +1,14 @@
 import ActionTimeTable from "@/components/ActionTimeTable";
 import AdviceCard from "@/components/AdviceCard";
-import FeedbackDailyBox from "@/components/FeedbackDailyBox";
+import FeedbackBox from "@/components/FeedbackBox";
 import Memo from "@/components/Memo";
 import PlanTimeTable from "@/components/PlanTimeTable";
 import TodoTable from "@/components/TodoTable";
 import { useCategoryStore } from "@/stores/useCatgoryStore";
 import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
-import { format } from "date-fns";
+import { FeedbackType } from "@/types/feedback";
+import { addDays, format, isToday } from "date-fns";
 import { useEffect } from "react";
 
 export default function HomePage() {
@@ -31,13 +32,31 @@ export default function HomePage() {
         {/* 할일 테이블 */}
         <div className="flex-[2] min-w-[320px] max-w-[700px] w-full md:w-auto">
           {/* 날짜 선택 */}
-          <div className="mb-2 flex gap-2 items-center">
+          <div className="mb-2 flex items-center gap-2">
+            <button
+              className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200"
+              onClick={() => setDate(addDays(date, -1))}>
+              이전 날
+            </button>
+
             <input
               type="date"
               value={format(date, "yyyy-MM-dd")}
               onChange={(e) => setDate(new Date(e.target.value))}
               className="border px-2 py-1 rounded"
             />
+            <button
+              className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200"
+              onClick={() => setDate(addDays(date, 1))}>
+              다음 날
+            </button>
+            {!isToday(date) && (
+              <button
+                className="px-3 py-1 border rounded bg-blue-100 hover:bg-blue-200"
+                onClick={() => setDate(new Date())}>
+                오늘
+              </button>
+            )}
           </div>
           <TodoTable />
 
@@ -51,7 +70,7 @@ export default function HomePage() {
           </div>
 
           {/* 피드백 */}
-          <FeedbackDailyBox date={date} />
+          <FeedbackBox date={date} type={FeedbackType.DAILY} />
         </div>
         {/* 플랜 시간표 */}
         <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">

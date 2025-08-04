@@ -1,17 +1,18 @@
 import {
-  createDailyFeedback,
-  deleteDailyFeedback,
-  fetchDailyFeedbackByDate,
-  updateDailyFeedback,
+  createFeedback,
+  deleteFeedback,
+  fetchFeedbackByDateAndType,
+  updateFeedback,
 } from "@/api/feedbackApi";
 import { Feedback, FeedbackType } from "@/types/feedback";
 import { useEffect, useState } from "react";
 
 interface Props {
   date: Date;
+  type: FeedbackType;
 }
 
-export default function FeedbackDailyBox({ date }: Props) {
+export default function FeedbackBox({ date, type }: Props) {
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [goodPoint, setGoodPoint] = useState("");
@@ -19,29 +20,33 @@ export default function FeedbackDailyBox({ date }: Props) {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const load = async () => {
-    setLoading(true);
-    const fb = await fetchDailyFeedbackByDate(date);
-    setFeedback(fb);
-    setEditMode(!fb);
-    setGoodPoint(fb?.goodPoint || "");
-    setBadPoint(fb?.badPoint || "");
-    setComment(fb?.comment || "");
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      const feedback = await fetchFeedbackByDateAndType(date, type);
+      console.log("🚀 ~ load ~ feedback:", feedback);
+      setFeedback(feedback);
+      setEditMode(!feedback);
+      setGoodPoint(feedback?.goodPoint || "");
+      setBadPoint(feedback?.badPoint || "");
+      setComment(feedback?.comment || "");
+      setLoading(false);
+    };
     load();
-  }, [date]);
+  }, [date, type]);
 
   const handleSave = async () => {
     setLoading(true);
     if (feedback) {
-      const updated = await updateDailyFeedback(feedback.id, { goodPoint, badPoint, comment });
+      const updated = await updateFeedback(feedback.id, {
+        goodPoint,
+        badPoint,
+        comment,
+      });
       setFeedback(updated);
     } else {
-      const created = await createDailyFeedback({
-        type: FeedbackType.DAILY,
+      const created = await createFeedback({
+        type,
         date: date.toISOString(),
         goodPoint,
         badPoint,
@@ -56,7 +61,7 @@ export default function FeedbackDailyBox({ date }: Props) {
   const handleDelete = async () => {
     if (!feedback) return;
     setLoading(true);
-    await deleteDailyFeedback(feedback.id);
+    await deleteFeedback(feedback.id);
     setFeedback(null);
     setGoodPoint("");
     setBadPoint("");
@@ -65,11 +70,24 @@ export default function FeedbackDailyBox({ date }: Props) {
     setLoading(false);
   };
 
+  const getTitle = () => {
+    switch (type) {
+      case FeedbackType.DAILY:
+        return "오늘 하루 피드백";
+      case FeedbackType.WEEKLY:
+        return "이번 주 피드백";
+      case FeedbackType.MONTHLY:
+        return "이번 달 피드백";
+      default:
+        return "피드백";
+    }
+  };
+
   return (
     <div
       className="border rounded p-4 mt-6 bg-gray-50 mx-auto"
       style={{ maxWidth: 700, minWidth: 320, width: "100%" }}>
-      <h3 className="font-bold mb-2">오늘 하루 피드백</h3>
+      <h3 className="font-bold mb-2">{getTitle()}</h3>
       {editMode ? (
         <div className="flex flex-col gap-2">
           <textarea
