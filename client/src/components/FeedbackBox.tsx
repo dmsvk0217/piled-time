@@ -24,7 +24,6 @@ export default function FeedbackBox({ date, type }: Props) {
     const load = async () => {
       setLoading(true);
       const feedback = await fetchFeedbackByDateAndType(date, type);
-      console.log("🚀 ~ load ~ feedback:", feedback);
       setFeedback(feedback);
       setEditMode(!feedback);
       setGoodPoint(feedback?.goodPoint || "");
@@ -75,7 +74,7 @@ export default function FeedbackBox({ date, type }: Props) {
       case FeedbackType.DAILY:
         return "오늘 하루 피드백";
       case FeedbackType.WEEKLY:
-        return "이번 주 피드백";
+        return "";
       case FeedbackType.MONTHLY:
         return "이번 달 피드백";
       default:

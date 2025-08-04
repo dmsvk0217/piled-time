@@ -1,11 +1,12 @@
+import FeedbackBox from "@/components/FeedbackBox";
 import CategoryStats from "@/components/stats/CategoryStats";
 import TodoSummaryTable from "@/components/stats/TodoSummaryTable";
 import WeeklyDailyFeedbackList from "@/components/stats/WeeklyDailyFeedbackList";
-import WeeklyFeedbackForm from "@/components/stats/WeeklyFeedbackForm";
 import WeeklySelector from "@/components/stats/WeeklySelector";
 import WeeklyTimeTable from "@/components/stats/WeeklyTimeTable";
 import WeeklySummary from "@/components/WeeklySummary";
 import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
+import { FeedbackType } from "@/types/feedback";
 import { DailyData } from "@/types/stats.type";
 import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
@@ -154,7 +155,7 @@ const WeeklyStatsPage = () => {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h2 className="text-xl font-semibold mb-2">📝 주간 피드백</h2>
-            <WeeklyFeedbackForm value={{ good: "", bad: "", summary: "" }} onChange={() => {}} />
+            <FeedbackBox date={date} type={FeedbackType.WEEKLY} />
           </div>
           <div>
             <h2 className="text-xl font-semibold mb-2">📅 일간 피드백 모음</h2>
