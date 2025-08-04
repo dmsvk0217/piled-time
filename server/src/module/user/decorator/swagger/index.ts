@@ -1,2 +1,2 @@
 export * from "./profile.docs";
-export * from "./user.docs";
+export * from "./user-crud.docs";

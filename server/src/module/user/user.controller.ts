@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  Param,
-  Patch,
-  UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUser } from "src/common/decorators/user.decorator";
 import { CrudDocs } from "src/common/docs/crud-docs.decorator";
 import { ProfileDocs } from "src/module/user/decorator/swagger";
-import { UserDocs } from "src/module/user/decorator/swagger/user.docs";
+import { UserDocs } from "src/module/user/decorator/swagger/user-crud.docs";
 import { UserResponse, UserUpdateRequest } from "src/module/user/dto";
 import { User } from "src/module/user/entities/user.entity";
 import { UserService } from "src/module/user/user.service";
@@ -45,10 +36,7 @@ export class UserController {
 
   @CrudDocs.update(UserDocs.update)
   @Patch(":id")
-  update(
-    @Param("id") id: number,
-    @Body() request: UserUpdateRequest,
-  ): Promise<UserResponse> {
+  update(@Param("id") id: number, @Body() request: UserUpdateRequest): Promise<UserResponse> {
     return this.userService.update(id, request);
   }
 
