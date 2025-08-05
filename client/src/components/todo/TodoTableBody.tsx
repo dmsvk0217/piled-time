@@ -7,7 +7,6 @@ import {
   EditButton,
   SaveButton,
 } from "@/components/todo/TodoTableButtons";
-import { useHomePageStore } from "@/stores/useHomePageStore";
 import { useTodoStore } from "@/stores/useTodoStore";
 import { Todo } from "@/types/todo";
 import { useState } from "react";
@@ -18,8 +17,6 @@ interface Props {
 }
 
 export default function TodoTableBody({ onUpdate, onDelete }: Props) {
-  const assigningPlanTodoId = useHomePageStore((s) => s.assigningPlanTodoId);
-  const assigningActionTodoId = useHomePageStore((s) => s.assigningActionTodoId);
   const todoDetails = useTodoStore((s) => s.todoDetails);
 
   const [editId, setEditId] = useState<number | null>(null);
