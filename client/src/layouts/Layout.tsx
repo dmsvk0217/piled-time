@@ -52,7 +52,7 @@ export default function Layout() {
       </nav>
 
       {/* 콘텐츠 영역 */}
-      <main className="px-6 py-6 max-w-7xl mx-auto">
+      <main className="px-6 py-6 w-full mx-auto">
         <Outlet />
       </main>
     </div>

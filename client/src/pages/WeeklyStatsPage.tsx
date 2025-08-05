@@ -1,10 +1,11 @@
 import FeedbackBox from "@/components/common/FeedbackBox";
 import CategoryStats from "@/components/stats/CategoryStats";
 import TodoSummaryTable from "@/components/stats/TodoSummaryTable";
+import WeeklyActionTimeTable from "@/components/stats/WeeklyActionTimeTable";
 import WeeklyDailyFeedbackList from "@/components/stats/WeeklyDailyFeedbackList";
+import WeeklyPlanTimeTable from "@/components/stats/WeeklyPlanTimeTable";
 import WeeklySelector from "@/components/stats/WeeklySelector";
 import WeeklySummary from "@/components/stats/WeeklySummary";
-import WeeklyTimeTable from "@/components/stats/WeeklyTimeTable";
 import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
 import { FeedbackType } from "@/types/feedback";
 import { DailyData } from "@/types/stats.type";
@@ -17,13 +18,6 @@ const WeeklyStatsPage = () => {
   const fetchWeeklyPlannerData = useWeeklyStatsStore((s) => s.fetchWeeklyPlannerData);
 
   const [loading, setLoading] = useState(true);
-  const [timeTableData, setTimeTableData] = useState<{
-    plan: Record<string, number[]>;
-    action: Record<string, number[]>;
-  }>({
-    plan: {},
-    action: {},
-  });
   const [categoryStats, setCategoryStats] = useState<any[]>([]);
 
   useEffect(() => {
@@ -32,42 +26,6 @@ const WeeklyStatsPage = () => {
         await fetchWeeklyPlannerData(date);
 
         const allTodos: Todo[] = weeklyData.flatMap((day: DailyData) => day.todos);
-
-        // 시간표 생성
-        const emptySlots = () => new Array(48).fill(0);
-
-        const plan: Record<string, number[]> = {};
-        const action: Record<string, number[]> = {};
-
-        for (const { date } of weeklyData) {
-          plan[date] = emptySlots();
-          action[date] = emptySlots();
-        }
-
-        for (const todo of allTodos) {
-          const day = todo.date.slice(0, 10);
-
-          if (todo.plan) {
-            const start = new Date(todo.plan.startAt);
-            const idx = start.getHours() * 2 + (start.getMinutes() >= 30 ? 1 : 0);
-            for (let i = 0; i < Math.ceil(todo.plan.duration / 30); i++) {
-              if (plan[day] && plan[day][idx + i] !== undefined) plan[day][idx + i] += 1;
-            }
-          }
-
-          if (todo.action) {
-            const start = new Date(todo.action.startAt);
-            const idx = start.getHours() * 2 + (start.getMinutes() >= 30 ? 1 : 0);
-            for (let i = 0; i < Math.ceil(todo.action.duration / 30); i++) {
-              if (action[day] && action[day][idx + i] !== undefined) action[day][idx + i] += 1;
-            }
-          }
-        }
-
-        setTimeTableData({
-          plan,
-          action,
-        });
 
         const categoryMap: Record<
           string,
@@ -135,7 +93,7 @@ const WeeklyStatsPage = () => {
 
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 py-6 space-y-8">
+      <div className="w-full max-w-7xl mx-auto px-4 py-6 space-y-8">
         <h1 className="text-2xl font-bold text-center">📊 주간 통계 요약</h1>
         <WeeklySelector />
         <section className="flex flex-col md:flex-row gap-6">
@@ -162,16 +120,20 @@ const WeeklyStatsPage = () => {
             <WeeklyDailyFeedbackList />
           </div>
         </section>
-        {/* 시간표 요약 */}
-        <section>
-          <h2 className="text-xl font-semibold mb-4">⏰ 시간표 요약</h2>
-          <WeeklyTimeTable plan={timeTableData.plan} action={timeTableData.action} />
-        </section>
-        {/* 카테고리 통계 */}
-        <section>
-          <h2 className="text-xl font-semibold mb-4">🏷️ 카테고리 통계</h2>
-          <CategoryStats data={categoryStats} />
-        </section>
+      </div>
+      {/* 시간표 요약 */}
+      <div className="w-full overflow-x-auto px-28">
+        <h1 className="font-extrabold text-2xl text-center mt-14 mb-6">Plan</h1>
+        <WeeklyPlanTimeTable />
+      </div>
+      <div className="w-full overflow-x-auto px-28">
+        <h1 className="font-extrabold text-2xl text-center mt-14 mb-6">Action</h1>
+        <WeeklyActionTimeTable />
+      </div>
+      {/* 카테고리 통계 */}
+      <div>
+        <h2 className="text-xl font-semibold mb-4">🏷️ 카테고리 통계</h2>
+        <CategoryStats data={categoryStats} />
       </div>
     </>
   );

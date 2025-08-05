@@ -2,6 +2,7 @@ import { TimeTableEntry } from "@/types/timetable";
 
 export const HOURS = Array.from({ length: 24 }, (_, i) => (i + 6) % 24); // 6, 7, ... , 24, ... , 5
 export const MINUTES = [0, 10, 20, 30, 40, 50];
+export const DAY_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
 
 export function getCellIndex(hour: number, min: number): number {
   return HOURS.indexOf(hour) * MINUTES.length + MINUTES.indexOf(min);
