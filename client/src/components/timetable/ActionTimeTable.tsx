@@ -10,7 +10,7 @@ import TimeTableItemModal from "./TimeTableItemModal";
 
 export default function ActionTimeTable() {
   const assigningActionTodoId = useHomePageStore((s) => s.assigningActionTodoId);
-  const setAssigningActionTodoId = useHomePageStore((s) => s.setAssigningActionTodo);
+  const setAssigningActionTodoId = useHomePageStore((s) => s.setAssigningActionTodoId);
   const todoDetails = useTodoStore((s) => s.todoDetails);
 
   const actionEntries = todoDetails

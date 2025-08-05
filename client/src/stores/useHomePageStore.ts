@@ -5,10 +5,10 @@ interface HomePageState {
   setDate: (date: Date) => void;
 
   assigningActionTodoId: number | null;
-  setAssigningActionTodo: (id: number | null) => void;
+  setAssigningActionTodoId: (id: number | null) => void;
 
   assigningPlanTodoId: number | null;
-  setAssigningPlanTodo: (id: number | null) => void;
+  setAssigningPlanTodoId: (id: number | null) => void;
 }
 
 export const useHomePageStore = create<HomePageState>((set) => ({
@@ -16,8 +16,8 @@ export const useHomePageStore = create<HomePageState>((set) => ({
   setDate: (date) => set({ date }),
 
   assigningActionTodoId: null,
-  setAssigningActionTodo: (id) => set({ assigningActionTodoId: id }),
+  setAssigningActionTodoId: (id) => set({ assigningActionTodoId: id }),
 
   assigningPlanTodoId: null,
-  setAssigningPlanTodo: (id) => set({ assigningPlanTodoId: id }),
+  setAssigningPlanTodoId: (id) => set({ assigningPlanTodoId: id }),
 }));

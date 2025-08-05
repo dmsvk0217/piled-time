@@ -10,7 +10,7 @@ import { getCellIndex } from "@/utils/timeTableUtils";
 
 export default function PlanTimeTable() {
   const assigningPlanTodoId = useHomePageStore((s) => s.assigningPlanTodoId);
-  const setAssigningPlanTodoId = useHomePageStore((s) => s.setAssigningPlanTodo);
+  const setAssigningPlanTodoId = useHomePageStore((s) => s.setAssigningPlanTodoId);
   const todoDetails = useTodoStore((s) => s.todoDetails);
 
   const planEntries = todoDetails
