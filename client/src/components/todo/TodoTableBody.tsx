@@ -1,3 +1,4 @@
+import CheckSign from "@/components/common/CheckSign";
 import {
   AssignActionIcon,
   AssignPlanIcon,
@@ -56,18 +57,12 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
             {/* 카테고리 */}
             <td className="border px-4 py-2">
               <span
-                style={{
-                  display: "inline-block",
-                  width: 16,
-                  height: 16,
-                  backgroundColor: todo.category.color,
-                  borderRadius: 3,
-                  marginRight: 6,
-                  verticalAlign: "middle",
-                }}
+                className="inline-block w-4 h-4 rounded-sm mr-1.5 align-middle"
+                style={{ backgroundColor: todo.category.color }}
               />
-              {todo.category.name}
+              <span className="align-middle">{todo.category.name}</span>
             </td>
+
             {/* 세부내용 */}
             <td className="border px-4 py-2">
               {isEditing ? (
@@ -97,25 +92,10 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
             <td className="border px-1 py-2 text-center align-middle bg-white">
               <span
                 className={
-                  `inline-block w-4 h-4 rounded border border-gray-300 align-middle ` +
+                  `inline-block relative w-4 h-4 rounded border border-gray-300 align-middle ` +
                   (!!(todo.plan || todo.action) ? "bg-gray-300" : "bg-white")
-                }
-                style={{ position: "relative", pointerEvents: "none" }}>
-                {!!(todo.plan || todo.action) && (
-                  <svg
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-3 h-3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <path
-                      d="M4 8.5L7 11.5L12 5.5"
-                      stroke="#444"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
+                }>
+                {!!(todo.plan || todo.action) && <CheckSign />}
               </span>
             </td>
 
@@ -177,14 +157,8 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
                     />
                   </>
                 )}
-                <AssignPlanIcon
-                  todoId={todo.id}
-                  disabled={isEditing || assigningPlanTodoId === todo.id}
-                />
-                <AssignActionIcon
-                  todoId={todo.id}
-                  disabled={isEditing || assigningActionTodoId === todo.id}
-                />
+                <AssignPlanIcon todoId={todo.id} disabled={isEditing} />
+                <AssignActionIcon todoId={todo.id} disabled={isEditing} />
               </span>
             </td>
           </tr>
