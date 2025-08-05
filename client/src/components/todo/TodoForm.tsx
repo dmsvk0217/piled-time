@@ -51,7 +51,7 @@ export default function TodoForm({ onSubmit, loading }: TodoFormProps) {
       </div>
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+        className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
         disabled={loading || !content}>
         {loading ? "등록 중..." : "할 일 등록"}
       </button>
