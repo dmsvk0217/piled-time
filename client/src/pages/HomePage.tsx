@@ -28,9 +28,9 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col gap-8 px-5 mx-auto max-w-7xl md:flex-row items-start w-full">
+      <div className="flex flex-col gap-5 px-5 mx-auto max-w-7xl md:flex-row items-start w-full">
         {/* 할일 테이블 */}
-        <div className="flex-[2] min-w-[320px] max-w-[700px] w-full md:w-auto">
+        <div className="flex-[2] w-full md:w-auto">
           {/* 날짜 선택 */}
           <div className="mb-2 flex items-center gap-2">
             <button
@@ -73,11 +73,11 @@ export default function HomePage() {
           <FeedbackBox date={date} type={FeedbackType.DAILY} />
         </div>
         {/* 플랜 시간표 */}
-        <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
+        <div className="flex-[1] w-full md:w-auto">
           <PlanTimeTable />
         </div>
         {/* 액션 시간표 */}
-        <div className="flex-[1] min-w-[280px] max-w-[420px] w-full md:w-auto">
+        <div className="flex-[1] w-full md:w-auto">
           <ActionTimeTable />
         </div>
       </div>
