@@ -25,6 +25,7 @@ export default function WeeklyDailyFeedbackList() {
 
   return dailyFeedbacks.map((feedback) => (
     <div
+      key={feedback.date}
       className="border rounded p-4 mt-6 bg-gray-50 mx-auto"
       style={{ maxWidth: 700, minWidth: 320, width: "100%" }}>
       <div className="flex flex-col gap-2">
