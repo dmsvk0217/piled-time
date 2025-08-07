@@ -8,8 +8,6 @@ import WeeklySelector from "@/components/stats/WeeklySelector";
 import WeeklySummary from "@/components/stats/WeeklySummary";
 import { useWeeklyStatsStore } from "@/stores/useWeeklyStatsStore";
 import { FeedbackType } from "@/types/feedback";
-import { DailyData } from "@/types/stats.type";
-import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
 
 const WeeklyStatsPage = () => {
@@ -18,66 +16,11 @@ const WeeklyStatsPage = () => {
   const fetchWeeklyPlannerData = useWeeklyStatsStore((s) => s.fetchWeeklyPlannerData);
 
   const [loading, setLoading] = useState(true);
-  const [categoryStats, setCategoryStats] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         await fetchWeeklyPlannerData(date);
-
-        const allTodos: Todo[] = weeklyData.flatMap((day: DailyData) => day.todos);
-
-        const categoryMap: Record<
-          string,
-          {
-            name: string;
-            color: string;
-            totalPercent: number;
-            count: number;
-            totalPlan: number;
-            totalAction: number;
-            dailyTrend: Record<string, number>;
-          }
-        > = {};
-
-        for (const todo of allTodos) {
-          const key = todo.category?.name;
-          const date = todo.date.slice(5, 10);
-
-          if (!key) continue;
-
-          if (!categoryMap[key]) {
-            categoryMap[key] = {
-              name: key,
-              color: todo.category.color,
-              totalPercent: 0,
-              count: 0,
-              totalPlan: 0,
-              totalAction: 0,
-              dailyTrend: {},
-            };
-          }
-
-          const cat = categoryMap[key];
-          cat.totalPercent += todo.percent;
-          cat.count += 1;
-          cat.totalPlan += todo.plan?.duration || 0;
-          cat.totalAction += todo.action?.duration || 0;
-          cat.dailyTrend[date] = (cat.dailyTrend[date] || 0) + 1;
-        }
-
-        const categoryStatsData = Object.values(categoryMap).map((cat) => ({
-          name: cat.name,
-          averagePercent: Math.round(cat.totalPercent / cat.count),
-          totalPlan: cat.totalPlan,
-          totalAction: cat.totalAction,
-          dailyTrend: Object.entries(cat.dailyTrend).map(([day, value]) => ({
-            day,
-            value,
-          })),
-        }));
-
-        setCategoryStats(categoryStatsData);
       } catch (error) {
         console.error("주간 통계 데이터 로드 실패", error);
       } finally {
@@ -135,9 +78,9 @@ const WeeklyStatsPage = () => {
         </div>
       </div>
       {/* 카테고리 통계 */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">🏷️ 카테고리 통계</h2>
-        <CategoryStats data={categoryStats} />
+      <div className="mt-24">
+        <h1 className="text-2xl font-extrabold text-center mb-8">🏷️ 카테고리 통계</h1>
+        <CategoryStats />
       </div>
     </div>
   );
