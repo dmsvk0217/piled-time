@@ -27,7 +27,7 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
     return (
       <tbody>
         <tr>
-          <td colSpan={4} className="text-gray-500 py-6">
+          <td colSpan={4} className="text-gray-500 py-6 text-center">
             오늘 등록된 할 일이 없습니다.
           </td>
         </tr>
