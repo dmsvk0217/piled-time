@@ -1,4 +1,4 @@
-import Logo from "@/assets/piled-time-logo.svg?react";
+import Logo from "@/assets/piled-time-logo.png";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { FcGoogle } from "react-icons/fc";
 import { Navigate } from "react-router-dom";
@@ -17,10 +17,12 @@ const Login = () => {
         <div
           className="w-full max-w-md bg-white/90 rounded-2xl shadow-xl p-8 flex flex-col items-center animate-fadein"
           style={{ animation: "fadein 0.8s" }}>
-          <Logo className="w-32 h-32" />
+          <img src={Logo} alt="로고" className="w-24 h-24" />
+          <br />
+          <br />
           <p className="text-gray-500 mb-6 text-center text-sm">
-            시간 관리와 습관을 쌓아가는 <br />
-            <span className="font-semibold text-gray-700">Piled Time</span>에서
+            시간과 습관을 쌓아가는
+            <span className="font-semibold text-gray-700"> Piled Time</span>에서
             <br />
             나만의 목표를 실천해보세요!
           </p>

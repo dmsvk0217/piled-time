@@ -1,4 +1,4 @@
-import logo from "@/assets/piled-time-logo.svg"; // 경로 확인 필요
+import logo from "@/assets/piled-time-logo.png";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ export default function Layout() {
       <nav className="relative bg-white shadow px-6 flex items-center justify-between">
         {/* 로고 (좌측 고정) */}
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Piled Time" className="h-16 w-auto" />
+          <img src={logo} alt="Piled Time" className="h-10 w-auto my-2" />
         </Link>
 
         {/* 메뉴 (가운데 정렬) */}
