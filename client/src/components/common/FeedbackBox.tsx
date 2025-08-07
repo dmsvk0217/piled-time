@@ -1,7 +1,8 @@
 import {
   createFeedback,
   deleteFeedback,
-  fetchFeedbackByDateAndType,
+  fetchDailyFeedbackByDate,
+  fetchWeeklyFeedbackByDate,
   updateFeedback,
 } from "@/api/feedbackApi";
 import { Feedback, FeedbackType } from "@/types/feedback";
@@ -23,7 +24,7 @@ export default function FeedbackBox({ date, type }: Props) {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const feedback = await fetchFeedbackByDateAndType(date, type);
+      const feedback = await fetchFeedback();
       setFeedback(feedback);
       setEditMode(!feedback);
       setGoodPoint(feedback?.goodPoint || "");
@@ -79,6 +80,19 @@ export default function FeedbackBox({ date, type }: Props) {
         return "이번 달 피드백";
       default:
         return "피드백";
+    }
+  };
+
+  const fetchFeedback = async () => {
+    switch (type) {
+      case FeedbackType.DAILY:
+        return await fetchDailyFeedbackByDate(date);
+      case FeedbackType.WEEKLY:
+        return await fetchWeeklyFeedbackByDate(date);
+      case FeedbackType.MONTHLY:
+        return null;
+      default:
+        return null;
     }
   };
 
