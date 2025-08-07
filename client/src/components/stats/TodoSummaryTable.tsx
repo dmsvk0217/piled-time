@@ -96,17 +96,26 @@ export default function TodoSummaryTable() {
             const actionMin = todo.action?.duration || 0;
             return (
               <tr key={todo.id} className="border-t">
-                <td className="px-4 py-2">{todo.date.slice(5, 10).replace("-", "/")}</td>
-                <td className="px-4 py-2">{todo.category.name}</td>
+                <td className="px-4 py-2 text-center">
+                  {todo.date.slice(5, 10).replace("-", "/")}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  <span
+                    className="inline-block w-4 h-4 rounded-sm mr-1.5 align-middle"
+                    style={{ backgroundColor: todo.category.color }}
+                  />
+                  <span className="align-middle">{todo.category.name}</span>
+                </td>
+
                 <td className="px-4 py-2">{todo.content}</td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 text-center">
                   {Math.floor(planMin / 60)}h {planMin % 60}m
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 text-center">
                   {Math.floor(actionMin / 60)}h {actionMin % 60}m
                 </td>
                 <td
-                  className={` px-4 py-2 w-full h-6 rounded flex items-center justify-center select-none border
+                  className={`px-4 py-2 text-center w-full h-6 rounded flex items-center justify-center select-none border
                     ${todo.percent === 0 ? "bg-white text-gray-800" : ""}
                     ${todo.percent === 25 ? "bg-gray-100 text-gray-800" : ""}
                     ${todo.percent === 50 ? "bg-gray-300 text-gray-800" : ""}

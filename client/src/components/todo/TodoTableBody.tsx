@@ -40,7 +40,7 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
       {todoDetails.map((todo, idx) => {
         if (!todo) {
           return (
-            <tr key={"empty-" + idx} className="bg-gray-50 text-gray-300">
+            <tr key={"empty-" + idx} className="bg-gray-50 text-gray-300 text-center">
               <td className="border px-4 py-2" colSpan={4}>
                 &nbsp;
               </td>
@@ -52,7 +52,7 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
         return (
           <tr key={todo.id} className="group">
             {/* 카테고리 */}
-            <td className="border px-4 py-2">
+            <td className="border px-4 py-2 text-center">
               <span
                 className="inline-block w-4 h-4 rounded-sm mr-1.5 align-middle"
                 style={{ backgroundColor: todo.category.color }}
@@ -97,7 +97,7 @@ export default function TodoTableBody({ onUpdate, onDelete }: Props) {
             </td>
 
             {/* 달성률 */}
-            <td className="border px-2 py-2">
+            <td className="border px-2 py-2 ">
               <div
                 className={`
                   w-full h-6 rounded cursor-pointer flex items-center justify-center select-none border hover:shadow transition

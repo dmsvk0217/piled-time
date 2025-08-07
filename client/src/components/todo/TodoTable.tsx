@@ -49,7 +49,7 @@ export default function TodoTable() {
       <TodoForm onSubmit={handleFormSubmit} loading={loading} />
       {/* 기존 테이블 */}
       <table
-        className="min-w-full border border-gray-400 text-sm text-center"
+        className="min-w-full border border-gray-400 text-sm"
         style={{ tableLayout: "fixed", width: "100%" }}>
         <colgroup>
           <col style={{ width: "25%" }} />
