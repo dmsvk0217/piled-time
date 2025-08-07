@@ -92,7 +92,7 @@ const WeeklyStatsPage = () => {
   if (!weeklyData) return <div>데이터가 없습니다.</div>;
 
   return (
-    <>
+    <div className="inline-block origin-top scale-[0.8]">
       <div className="w-full max-w-7xl mx-auto px-4 py-6 space-y-8">
         <h1 className="text-2xl font-bold text-center">📊 주간 통계 요약</h1>
         <WeeklySelector />
@@ -139,7 +139,7 @@ const WeeklyStatsPage = () => {
         <h2 className="text-xl font-semibold mb-4">🏷️ 카테고리 통계</h2>
         <CategoryStats data={categoryStats} />
       </div>
-    </>
+    </div>
   );
 };
 

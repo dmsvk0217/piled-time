@@ -26,7 +26,7 @@ export default function HomePage() {
   }, [date]);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full origin-top scale-[0.8]">
       <div className="flex flex-col gap-5 px-5 mx-auto max-w-7xl md:flex-row items-start w-full">
         <div className="flex-[2] w-full md:w-auto">
           <DateSelector />
