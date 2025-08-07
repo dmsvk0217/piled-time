@@ -1,17 +1,10 @@
 import { getCsrfToken } from "@/utils/authUtils";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import { toast } from "react-toastify";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_SERVER_URL,
   withCredentials: true,
-});
-
-api.interceptors.request.use((config) => {
-  const csrf = getCsrfToken();
-  if (csrf) {
-    config.headers["X-CSRF-Token"] = csrf;
-  }
-  return config;
 });
 
 let isRefreshing = false;
@@ -22,9 +15,18 @@ const processQueue = (error?: AxiosError) => {
   failedQueue = [];
 };
 
+api.interceptors.request.use((config) => {
+  const csrf = getCsrfToken();
+  if (csrf) {
+    config.headers["X-CSRF-Token"] = csrf;
+  }
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
+    const status = error.response?.status;
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
       _csrfRetry?: boolean;
@@ -32,7 +34,7 @@ api.interceptors.response.use(
 
     const isLoginPage = window.location.pathname === "/login";
 
-    if (error.response?.status === 403 && !originalRequest._csrfRetry) {
+    if (status === 403 && !originalRequest._csrfRetry) {
       originalRequest._csrfRetry = true;
       try {
         await api.get("/api/auth/csrf-token");
@@ -42,11 +44,12 @@ api.interceptors.response.use(
       }
     }
 
-    if (error.response?.status === 401 && !originalRequest._retry && !isLoginPage) {
+    if (status === 401 && !originalRequest._retry && !isLoginPage) {
       originalRequest._retry = true;
 
       const isRefreshCall = originalRequest.url?.includes("/api/auth/refresh");
       if (isRefreshCall) {
+        alert("로그인이 필요합니다.");
         window.location.href = "/login";
         return Promise.reject(error);
       }
@@ -54,15 +57,11 @@ api.interceptors.response.use(
       if (!isRefreshing) {
         isRefreshing = true;
         try {
-          console.log("/api/auth/refresh start");
           await api.get("/api/auth/refresh");
-          console.log("/api/auth/refresh end");
           processQueue();
           return api(originalRequest);
         } catch (refreshError) {
           processQueue(error);
-          console.log("/api/auth/refresh error");
-          // window.location.href = "/login"; //?
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;
@@ -78,6 +77,13 @@ api.interceptors.response.use(
           }
         });
       });
+    }
+
+    if (![401, 403].includes(status ?? 0)) {
+      const err = error as AxiosError<any>;
+      const message =
+        err.response?.data?.message || err.message || "예상치 못한 오류가 발생했습니다.";
+      toast.error(message);
     }
 
     return Promise.reject(error);
