@@ -29,38 +29,43 @@ export default function WeeklySummary() {
   const topCategory = Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0]?.[0] || "-";
 
   return (
-    <div className="flex flex-col gap-1">
-      {/* 평균 달성률 */}
-      <div className="rounded-lg bg-gray-100 p-3 shadow-sm">
-        <h3 className="text-sm font-medium mb-1">📊 평균 달성률</h3>
-        <p className="text-lg font-semibold text-blue-600">{averageProgress}%</p>
-        <div className="h-2 bg-gray-300 rounded mt-2">
-          <div
-            className="h-full bg-blue-500 rounded transition-all"
-            style={{ width: `${averageProgress}%` }}></div>
+    <div className="flex flex-col gap-2">
+      <div className="flex gap-4">
+        {/* 평균 달성률 */}
+        <div className="w-1/2 rounded-lg bg-gray-100 p-2 shadow-sm">
+          <h3 className="text-sm font-medium mb-1">평균 달성률</h3>
+          <div className="flex gap-2 items-center">
+            <div className="w-1/5 text-lg font-semibold text-blue-600">{averageProgress}%</div>
+            <div className="w-4/5 h-2 bg-gray-300 rounded">
+              <div
+                className=" h-full bg-blue-500 rounded transition-all"
+                style={{ width: `${averageProgress}%` }}></div>
+            </div>
+          </div>
+        </div>
+        {/* 계획/실행 시간 */}
+        <div className="w-1/2 rounded-lg bg-gray-100 p-2 shadow-sm">
+          <h3 className="text-sm font-medium mb-1">⏱️ 계획 / 실행</h3>
+          <p className="text-sm text-gray-800">
+            {totalPlannedTimeText} / {totalActionTimeText}
+          </p>
         </div>
       </div>
 
-      {/* 계획/실행 시간 */}
-      <div className="rounded-lg bg-gray-100 p-3 shadow-sm">
-        <h3 className="text-sm font-medium mb-1">⏱️ 계획 / 실행</h3>
-        <p className="text-sm text-gray-800">
-          {totalPlannedTimeText} / {totalActionTimeText}
-        </p>
-      </div>
+      <div className="flex gap-4">
+        {/* 완료된 할 일 */}
+        <div className="w-1/2 rounded-lg bg-gray-100 p-2 shadow-sm">
+          <h3 className="text-sm font-medium mb-1">✅ 완료한 할 일</h3>
+          <p className="text-sm text-gray-800">
+            {completedTodos} / {totalTodos}
+          </p>
+        </div>
 
-      {/* 완료된 할 일 */}
-      <div className="rounded-lg bg-gray-100 p-3 shadow-sm">
-        <h3 className="text-sm font-medium mb-1">✅ 완료한 할 일</h3>
-        <p className="text-sm text-gray-800">
-          {completedTodos} / {totalTodos}
-        </p>
-      </div>
-
-      {/* 최다 활동 카테고리 */}
-      <div className="rounded-lg bg-gray-100 p-3 shadow-sm">
-        <h3 className="text-sm font-medium mb-1">🏷️ 최다 활동 카테고리</h3>
-        <p className="text-sm font-semibold text-gray-800">{topCategory}</p>
+        {/* 최다 활동 카테고리 */}
+        <div className="w-1/2 rounded-lg bg-gray-100 p-2 shadow-sm">
+          <h3 className="text-sm font-medium mb-1">🏷️ 최다 활동 카테고리</h3>
+          <p className="text-sm font-semibold text-gray-800">{topCategory}</p>
+        </div>
       </div>
     </div>
   );

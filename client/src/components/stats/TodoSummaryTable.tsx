@@ -58,33 +58,33 @@ export default function TodoSummaryTable() {
   };
 
   return (
-    <div className="overflow-auto rounded border border-gray-200">
+    <div className="overflow-y-auto max-h-[550px] rounded border border-gray-200">
       <table className="min-w-full table-auto text-sm">
         <thead className="bg-gray-100">
           <tr>
-            <th className="px-4 py-2 cursor-pointer select-none" onClick={() => handleSort("date")}>
+            <th className="px-4 py-1 cursor-pointer select-none" onClick={() => handleSort("date")}>
               날짜 {renderSortIcon("date")}
             </th>
             <th
-              className="px-4 py-2 cursor-pointer select-none"
+              className="px-4 py-1 cursor-pointer select-none"
               onClick={() => handleSort("category")}>
               카테고리 {renderSortIcon("category")}
             </th>
             <th
-              className="px-4 py-2 cursor-pointer select-none"
+              className="px-4 py-1 cursor-pointer select-none"
               onClick={() => handleSort("content")}>
               내용 {renderSortIcon("content")}
             </th>
-            <th className="px-4 py-2 cursor-pointer select-none" onClick={() => handleSort("plan")}>
+            <th className="px-4 py-1 cursor-pointer select-none" onClick={() => handleSort("plan")}>
               계획 시간 {renderSortIcon("plan")}
             </th>
             <th
-              className="px-4 py-2 cursor-pointer select-none"
+              className="px-4 py-1 cursor-pointer select-none"
               onClick={() => handleSort("action")}>
               실행 시간 {renderSortIcon("action")}
             </th>
             <th
-              className="px-4 py-2 cursor-pointer select-none"
+              className="px-4 py-1 cursor-pointer select-none"
               onClick={() => handleSort("percent")}>
               달성률 {renderSortIcon("percent")}
             </th>
@@ -96,10 +96,10 @@ export default function TodoSummaryTable() {
             const actionMin = todo.action?.duration || 0;
             return (
               <tr key={todo.id} className="border-t">
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 py-1 text-center">
                   {todo.date.slice(5, 10).replace("-", "/")}
                 </td>
-                <td className="border px-4 py-2 text-center">
+                <td className="border px-4 py-1 text-center">
                   <span
                     className="inline-block w-4 h-4 rounded-sm mr-1.5 align-middle"
                     style={{ backgroundColor: todo.category.color }}
@@ -107,15 +107,15 @@ export default function TodoSummaryTable() {
                   <span className="align-middle">{todo.category.name}</span>
                 </td>
 
-                <td className="px-4 py-2">{todo.content}</td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 py-1">{todo.content}</td>
+                <td className="px-4 py-1 text-center">
                   {Math.floor(planMin / 60)}h {planMin % 60}m
                 </td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 py-1 text-center">
                   {Math.floor(actionMin / 60)}h {actionMin % 60}m
                 </td>
                 <td
-                  className={`px-4 py-2 text-center w-full h-6 rounded flex items-center justify-center select-none border
+                  className={`px-4 py-1 text-center w-full h-6 rounded flex items-center justify-center select-none border
                     ${todo.percent === 0 ? "bg-white text-gray-800" : ""}
                     ${todo.percent === 25 ? "bg-gray-100 text-gray-800" : ""}
                     ${todo.percent === 50 ? "bg-gray-300 text-gray-800" : ""}

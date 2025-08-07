@@ -97,9 +97,7 @@ export default function FeedbackBox({ date, type }: Props) {
   };
 
   return (
-    <div
-      className="border rounded p-4 mt-6 bg-gray-50 mx-auto"
-      style={{ maxWidth: 700, minWidth: 320, width: "100%" }}>
+    <div className="border overflow-y-auto w-full max-h-[360px] min-w-[200px] max-w-[600px] rounded p-4 bg-gray-50 mx-auto">
       <h3 className="font-bold mb-2">{getTitle()}</h3>
       {editMode ? (
         <div className="flex flex-col gap-2">

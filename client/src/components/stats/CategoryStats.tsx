@@ -17,7 +17,7 @@ export default function CategoryStats() {
         totalAction: number;
         percentSum: number;
         count: number;
-        dailyTrend: { day: string; value: number }[];
+        dailyTrend: { day: string; value: number; count: number }[];
       }
     > = {};
 
@@ -36,7 +36,7 @@ export default function CategoryStats() {
             totalAction: 0,
             percentSum: 0,
             count: 0,
-            dailyTrend: DAY_LABELS.map((d) => ({ day: d, value: 0 })),
+            dailyTrend: DAY_LABELS.map((d) => ({ day: d, value: 0, count: 0 })),
           };
         }
 
@@ -52,6 +52,7 @@ export default function CategoryStats() {
         const trend = stat.dailyTrend.find((d) => d.day === dayLabel);
         if (trend) {
           trend.value += planDuration;
+          trend.count += 1;
           if (trend.value > max) max = trend.value;
         }
       }
@@ -60,9 +61,16 @@ export default function CategoryStats() {
     const finalStats = Object.values(categoryMap).map((cat) => ({
       ...cat,
       averagePercent: cat.count > 0 ? Math.round(cat.percentSum / cat.count) : 0,
+      dailyCountLabel: cat.dailyTrend
+        .filter((d) => d.count > 0)
+        .map((d) => `${d.day}(${d.count})`)
+        .join(", "),
     }));
 
-    return { categoryStats: finalStats, maxDuration: Math.ceil(max / 60) * 60 }; // 최대값은 60단위로 올림
+    return {
+      categoryStats: finalStats,
+      maxDuration: Math.ceil(max / 60) * 60,
+    };
   }, [weeklyData]);
 
   return (
@@ -82,16 +90,30 @@ export default function CategoryStats() {
               {cat.name}
             </h4>
             <p className="text-sm text-gray-700 mb-1">
-              총 계획 / 실행 시간: <b>{Math.floor(cat.totalPlan / 60)}h</b> /{" "}
-              <b>{Math.floor(cat.totalAction / 60)}h</b>
+              총 계획 / 실행 시간:{" "}
+              <b>
+                {Math.floor(cat.totalPlan / 60)}h {cat.totalPlan % 60}m
+              </b>{" "}
+              /{" "}
+              <b>
+                {Math.floor(cat.totalAction / 60)}h {cat.totalAction % 60}m
+              </b>
             </p>
-            <p className="text-sm text-gray-700 mb-2">
+
+            <p className="text-sm text-gray-700 mb-1">
               평균 달성률: <b>{cat.averagePercent}%</b>
             </p>
 
             <ResponsiveContainer width="100%" height={150}>
               <BarChart data={cat.dailyTrend}>
-                <XAxis dataKey="day" />
+                <XAxis
+                  dataKey="day"
+                  tickFormatter={(day: string) => {
+                    const trend = cat.dailyTrend.find((d) => d.day === day);
+                    return trend?.count ? `${day} (${trend.count})` : day;
+                  }}
+                />
+
                 <YAxis domain={[0, maxDuration]} />
                 <Tooltip formatter={(v) => `${v}분`} />
                 <Bar dataKey="value" fill={cat.color} />
