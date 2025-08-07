@@ -122,13 +122,17 @@ const WeeklyStatsPage = () => {
         </section>
       </div>
       {/* 시간표 요약 */}
-      <div className="w-full overflow-x-auto px-28">
+      <div className="w-full overflow-x-auto">
         <h1 className="font-extrabold text-2xl text-center mt-14 mb-6">Plan</h1>
-        <WeeklyPlanTimeTable />
+        <div className="mx-auto w-fit">
+          <WeeklyPlanTimeTable />
+        </div>
       </div>
-      <div className="w-full overflow-x-auto px-28">
+      <div className="w-full overflow-x-auto">
         <h1 className="font-extrabold text-2xl text-center mt-14 mb-6">Action</h1>
-        <WeeklyActionTimeTable />
+        <div className="mx-auto w-fit">
+          <WeeklyActionTimeTable />
+        </div>
       </div>
       {/* 카테고리 통계 */}
       <div>

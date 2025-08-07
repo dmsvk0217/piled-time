@@ -19,7 +19,7 @@ export default function WeeklyActionTimeTable() {
   };
 
   return (
-    <div className="grid grid-cols-7 gap-4 w-full overflow-x-auto">
+    <div className="flex gap-4 w-fit min-w-max">
       {DAY_LABELS.map((label) => {
         const dailyData = weeklyData.find((day) => getDayLabel(day.date) === label);
         const entries =
@@ -54,14 +54,14 @@ export default function WeeklyActionTimeTable() {
         };
 
         return (
-          <div key={label}>
+          <div key={label} className="min-w-[140px] max-w-[140px]">
             <h3 className="font-semibold text-center mb-2">{label}</h3>
-            <table className="border text-xs select-none table-fixed w-full">
+            <table className="border w-full text-xs select-none table-fixed">
               <thead>
                 <tr>
-                  <th className="border px-2 py-1">시간</th>
+                  <th></th>
                   {MINUTES.map((m) => (
-                    <th key={m} className="border px-2 py-1">
+                    <th key={m} className="border font-light text-xs text-center whitespace-nowrap">
                       {m.toString().padStart(2, "0")}
                     </th>
                   ))}
@@ -70,7 +70,7 @@ export default function WeeklyActionTimeTable() {
               <tbody>
                 {HOURS.map((hour) => (
                   <tr key={hour}>
-                    <td className="border px-2 py-1 font-bold bg-gray-50">
+                    <td className="border font-light text-center bg-gray-50">
                       {hour.toString().padStart(2, "0")}
                     </td>
                     {MINUTES.map((min) => {
@@ -79,7 +79,7 @@ export default function WeeklyActionTimeTable() {
                       return (
                         <td
                           key={idx}
-                          className={`border w-8 h-6 ${borderClass}`}
+                          className={`border ${borderClass}`}
                           style={{ backgroundColor: bgColor, opacity: entry ? 0.7 : 1 }}
                           title={entry?.todoDetail?.content || ""}
                         />
