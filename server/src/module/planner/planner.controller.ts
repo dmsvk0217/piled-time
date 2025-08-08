@@ -3,12 +3,10 @@ import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUser } from "src/common/decorators/user.decorator";
 import {
-  DailyPlannerQueryDto,
+  PlannerQueryDto,
   PlannerResponse,
   PlannerWeekdayResponse,
-  PlannerWeekResponse,
   WeekdayPlannerQueryDto,
-  WeeklyPlannerQueryDto,
 } from "src/module/planner/dto";
 import { PlannerService } from "src/module/planner/planner.service";
 import { User } from "src/module/user/entities/user.entity";
@@ -23,7 +21,7 @@ export class PlannerController {
   @ApiOperation({ summary: "일간 플래너 조회" })
   getDailyPlanner(
     @GetUser() user: User,
-    @Query() query: DailyPlannerQueryDto
+    @Query() query: PlannerQueryDto
   ): Promise<PlannerResponse> {
     return this.plannerService.getDailyPlanner(user, query);
   }
@@ -32,8 +30,17 @@ export class PlannerController {
   @ApiOperation({ summary: "주간 플래너 조회" })
   getWeeklyPlanner(
     @GetUser() user: User,
-    @Query() query: WeeklyPlannerQueryDto
-  ): Promise<PlannerWeekResponse[]> {
+    @Query() query: PlannerQueryDto
+  ): Promise<PlannerResponse[]> {
+    return this.plannerService.getWeeklyPlannerData(user, query);
+  }
+
+  @Get("monthly")
+  @ApiOperation({ summary: "월간 플래너 조회" })
+  getmonthlyPlanner(
+    @GetUser() user: User,
+    @Query() query: PlannerQueryDto
+  ): Promise<PlannerResponse[]> {
     return this.plannerService.getWeeklyPlannerData(user, query);
   }
 

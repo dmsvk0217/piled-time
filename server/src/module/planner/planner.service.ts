@@ -2,14 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
 import { addDays, format } from "date-fns";
-import { getDayRange, getWeekRange } from "src/common/utils/date.utils";
+import { getDayRange, getMonthRange, getWeekRange } from "src/common/utils/date.utils";
 import {
-  DailyPlannerQueryDto,
+  PlannerQueryDto,
   PlannerResponse,
   PlannerWeekdayResponse,
-  PlannerWeekResponse,
   WeekdayPlannerQueryDto,
-  WeeklyPlannerQueryDto,
 } from "src/module/planner/dto";
 import { Weekday } from "src/module/planner/type/weekday.enum";
 import { User } from "src/module/user/entities/user.entity";
@@ -22,7 +20,7 @@ export class PlannerService {
     @InjectRepository(Todo)
     private readonly todoRepository: Repository<Todo>
   ) {}
-  async getDailyPlanner(user: User, query: DailyPlannerQueryDto): Promise<PlannerResponse> {
+  async getDailyPlanner(user: User, query: PlannerQueryDto): Promise<PlannerResponse> {
     const { start, end } = getDayRange(query.date);
 
     const todos = await this.todoRepository.find({
@@ -38,44 +36,28 @@ export class PlannerService {
     });
 
     return plainToInstance(PlannerResponse, {
+      date: start,
       todos,
     });
   }
 
-  async getWeeklyPlannerData(user: User, query: WeeklyPlannerQueryDto) {
+  async getWeeklyPlannerData(user: User, query: PlannerQueryDto): Promise<PlannerResponse[]> {
     const { start, end } = getWeekRange(query.date);
 
-    const todos = await this.todoRepository.find({
-      where: {
-        user: { id: user.id },
-        date: Between(start, end),
-      },
-      relations: {
-        category: true,
-        plan: true,
-        action: true,
-      },
-    });
+    const todos = await this.findTodosInRange(user.id, start, end);
 
-    const weeklyMap: Record<string, any[]> = {};
-    for (let i = 0; i < 7; i++) {
-      const day = format(addDays(start, i), "yyyy-MM-dd");
-      weeklyMap[day] = [];
-    }
+    const results = this.buildPlannerArray(start, 7, todos);
+    return results.map((result) => plainToInstance(PlannerResponse, result));
+  }
 
-    for (const todo of todos) {
-      const dayKey = format(new Date(todo.date), "yyyy-MM-dd");
-      if (weeklyMap[dayKey]) {
-        weeklyMap[dayKey].push(todo);
-      }
-    }
+  async getMonthlyPlannerData(user: User, query: PlannerQueryDto): Promise<PlannerResponse[]> {
+    const { start, end } = getMonthRange(query.date);
+    const monthDays = start.getDate();
 
-    const result = Object.entries(weeklyMap).map(([date, todos]) => ({
-      date,
-      todos,
-    }));
+    const todos = await this.findTodosInRange(user.id, start, end);
 
-    return plainToInstance(PlannerWeekResponse, result);
+    const results = this.buildPlannerArray(start, monthDays, todos);
+    return results.map((result) => plainToInstance(PlannerResponse, result));
   }
 
   async getWeekdayPlanner(
@@ -107,5 +89,43 @@ export class PlannerService {
       SUNDAY: 6,
     };
     return map[weekday];
+  }
+
+  private async findTodosInRange(userId: number, start: Date, end: Date) {
+    return this.todoRepository.find({
+      where: {
+        user: { id: userId },
+        date: Between(start, end),
+      },
+      relations: {
+        category: true,
+        plan: true,
+        action: true,
+      },
+    });
+  }
+
+  private buildPlannerArray(
+    start: Date,
+    days: number,
+    todos: Todo[]
+  ): { date: string; todos: Todo[] }[] {
+    const dateMap: Record<string, any[]> = {};
+    for (let i = 0; i < days; i++) {
+      const day = format(addDays(start, i), "yyyy-MM-dd");
+      dateMap[day] = [];
+    }
+
+    for (const todo of todos) {
+      const dayKey = format(new Date(todo.date), "yyyy-MM-dd");
+      if (dateMap[dayKey]) {
+        dateMap[dayKey].push(todo);
+      }
+    }
+
+    return Object.entries(dateMap).map(([date, todos]) => ({
+      date,
+      todos,
+    }));
   }
 }
