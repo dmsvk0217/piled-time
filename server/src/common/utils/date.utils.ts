@@ -1,4 +1,4 @@
-import { addDays, startOfWeek } from "date-fns";
+import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 
 export function getDayRange(dateInput: Date | string): { start: Date; end: Date } {
   const date = new Date(dateInput);
@@ -16,7 +16,16 @@ export function getWeekRange(dateInput: Date | string): { start: Date; end: Date
   const date = new Date(dateInput);
 
   const start = startOfWeek(date, { weekStartsOn: 0 }); // 일요일 기준
-  const end = addDays(start, 7);
+  const end = endOfWeek(date, { weekStartsOn: 0 });
+
+  return { start, end };
+}
+
+export function getMonthRange(dateInput: Date | string): { start: Date; end: Date } {
+  const date = new Date(dateInput);
+
+  const start = startOfMonth(date);
+  const end = endOfMonth(date);
 
   return { start, end };
 }

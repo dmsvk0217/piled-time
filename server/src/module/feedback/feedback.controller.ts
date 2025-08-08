@@ -57,6 +57,12 @@ export class FeedbackController {
     return this.feedbackService.findWeeklyByDate(user, date);
   }
 
+  @FeedbackDocs.getWeekly()
+  @Get("monthly")
+  getMonthly(@GetUser() user: User, @Query("date") date: string): Promise<FeedbackResponse> {
+    return this.feedbackService.findMonthlyByDate(user, date);
+  }
+
   @FeedbackDocs.getDailyOfWeek()
   @Get("daily/weekly")
   getDailyFeedbacksOfWeek(

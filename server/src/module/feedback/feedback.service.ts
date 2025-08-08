@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToInstance } from "class-transformer";
-import { getDayRange, getWeekRange } from "src/common/utils/date.utils";
+import { getDayRange, getMonthRange, getWeekRange } from "src/common/utils/date.utils";
 import {
   FeedbackCreateRequest,
   FeedbackResponse,
@@ -71,6 +71,20 @@ export class FeedbackService {
       where: {
         user: { id: user.id },
         type: FeedbackType.WEEKLY,
+        date: Between(start, end),
+      },
+    });
+
+    return plainToInstance(FeedbackResponse, feedback);
+  }
+
+  async findMonthlyByDate(user: User, date: string): Promise<FeedbackResponse> {
+    const { start, end } = getMonthRange(date);
+
+    const feedback = await this.feedbackRepository.findOne({
+      where: {
+        user: { id: user.id },
+        type: FeedbackType.MONTHLY,
         date: Between(start, end),
       },
     });
