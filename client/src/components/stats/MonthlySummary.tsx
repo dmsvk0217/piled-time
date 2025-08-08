@@ -8,8 +8,6 @@ export default function MonthlySummary() {
   const allTodos: Todo[] = monthlyData.flatMap((day: DailyData) => day.todos);
 
   const totalTodos = allTodos.length;
-  console.log("🚀 ~ MonthlySummary ~ totalTodos:", totalTodos);
-  console.log("🚀 ~ MonthlySummary ~ allTodos:", allTodos);
   const completedTodos = allTodos.filter((todo) => todo.percent >= 100).length;
   const averageProgress = totalTodos
     ? Math.round(allTodos.reduce((sum, t) => sum + t.percent, 0) / totalTodos)
