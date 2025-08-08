@@ -25,6 +25,13 @@ export const fetchWeeklyFeedbackByDate = async (date: Date): Promise<Feedback | 
   return res.data;
 };
 
+export const fetchMonthlyFeedbackByDate = async (date: Date): Promise<Feedback | null> => {
+  const res = await api.get<Feedback>("/api/feedbacks/monthly", {
+    params: { date: date.toISOString() },
+  });
+  return res.data;
+};
+
 export const fetchDailyFeedbacksOfWeek = async (date: Date): Promise<Feedback[]> => {
   const res = await api.get<Feedback[]>("/api/feedbacks/daily/weekly", {
     params: { date: date.toISOString() },

@@ -45,11 +45,10 @@ api.interceptors.response.use(
     }
 
     if (status === 401 && !originalRequest._retry && !isLoginPage) {
+      const isRefreshCall = originalRequest.url?.includes("/api/auth/refresh");
       originalRequest._retry = true;
 
-      const isRefreshCall = originalRequest.url?.includes("/api/auth/refresh");
       if (isRefreshCall) {
-        alert("로그인이 필요합니다.");
         window.location.href = "/login";
         return Promise.reject(error);
       }

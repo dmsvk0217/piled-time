@@ -1,7 +1,7 @@
 import FeedbackBox from "@/components/common/FeedbackBox";
-import CategoryStats from "@/components/stats/CategoryStats";
 import TodoSummaryTable from "@/components/stats/TodoSummaryTable";
 import WeeklyActionTimeTable from "@/components/stats/WeeklyActionTimeTable";
+import CategoryStats from "@/components/stats/WeeklyCategoryStats";
 import WeeklyDailyFeedbackList from "@/components/stats/WeeklyDailyFeedbackList";
 import WeeklyPlanTimeTable from "@/components/stats/WeeklyPlanTimeTable";
 import WeeklySelector from "@/components/stats/WeeklySelector";
@@ -54,6 +54,9 @@ const WeeklyStatsPage = () => {
             <TodoSummaryTable />
           </div>
         </div>
+
+        <hr className="my-12 border-gray-300" />
+
         {/* 시간표 요약, 주간 일간 피드백 */}
         <div className="flex gap-7 mt-10">
           <div>
@@ -76,9 +79,11 @@ const WeeklyStatsPage = () => {
           </div>
         </div>
 
+        <hr className="my-12 border-gray-300" />
+
         {/* 카테고리 통계 */}
-        <div className="mt-24">
-          <h1 className="text-2xl font-extrabold text-center mb-8">🏷️ 카테고리 통계</h1>
+        <div>
+          <h1 className="text-xl font-semibold mb-4">🏷️ 카테고리 통계</h1>
           <CategoryStats />
         </div>
       </div>

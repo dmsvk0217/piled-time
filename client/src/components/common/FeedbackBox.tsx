@@ -2,6 +2,7 @@ import {
   createFeedback,
   deleteFeedback,
   fetchDailyFeedbackByDate,
+  fetchMonthlyFeedbackByDate,
   fetchWeeklyFeedbackByDate,
   updateFeedback,
 } from "@/api/feedbackApi";
@@ -90,7 +91,7 @@ export default function FeedbackBox({ date, type }: Props) {
       case FeedbackType.WEEKLY:
         return await fetchWeeklyFeedbackByDate(date);
       case FeedbackType.MONTHLY:
-        return null;
+        return await fetchMonthlyFeedbackByDate(date);
       default:
         return null;
     }

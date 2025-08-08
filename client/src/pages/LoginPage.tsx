@@ -15,7 +15,7 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 flex flex-col justify-between">
       <div className="flex-1 flex items-center justify-center">
         <div
-          className="w-full max-w-md bg-white/90 rounded-2xl shadow-xl p-8 flex flex-col items-center animate-fadein"
+          className="w-full origin-top scale-[0.8] max-w-md bg-white/90 rounded-2xl shadow-xl p-8 flex flex-col items-center animate-fadein"
           style={{ animation: "fadein 0.8s" }}>
           <img src={Logo} alt="로고" className="w-24 h-24" />
           <br />

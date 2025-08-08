@@ -7,4 +7,4 @@ export type DailyData = {
 
 export type WeeklyData = DailyData[];
 
-export type monthlyData = WeeklyData[];
+export type MonthlyData = DailyData[];
