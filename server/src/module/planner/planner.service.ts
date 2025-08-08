@@ -52,7 +52,7 @@ export class PlannerService {
 
   async getMonthlyPlannerData(user: User, query: PlannerQueryDto): Promise<PlannerResponse[]> {
     const { start, end } = getMonthRange(query.date);
-    const monthDays = start.getDate();
+    const monthDays = end.getDate();
 
     const todos = await this.findTodosInRange(user.id, start, end);
 
