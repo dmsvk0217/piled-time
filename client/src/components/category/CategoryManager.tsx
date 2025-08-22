@@ -1,124 +1,34 @@
-import api from "@/api/axiosApi";
-import { useCategoryStore } from "@/stores/useCatgoryStore";
-import { useHomePageStore } from "@/stores/useHomePageStore";
-import { useTodoStore } from "@/stores/useTodoStore";
-import { Category } from "@/types/category";
+import CategoryManagerForm from "@/components/category/CategoryManagerForm";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Settings2 } from "lucide-react";
 import { useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import { toast } from "react-toastify";
-import CategoryColorBox from "./CategoryColorBox";
 
 export default function CategoryManager() {
-  const { categories, fetchCategories } = useCategoryStore();
-  const date = useHomePageStore((s) => s.date);
-  const fetchTododetails = useTodoStore((s) => s.fetchTododetails);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [colorPicker, setColorPicker] = useState("#000000");
-  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-  const [editCategoryName, setEditCategoryName] = useState("");
-
-  const addCategory = async () => {
-    if (!newCategoryName.trim()) return;
-    await api.post("/api/categories", {
-      name: newCategoryName,
-      color: colorPicker,
-    });
-    setNewCategoryName("");
-    setColorPicker("#000000");
-    await fetchCategories();
-  };
-
-  const startEdit = (cat: Category) => {
-    setEditCategoryId(cat.id);
-    setEditCategoryName(cat.name);
-    setColorPicker(cat.color);
-  };
-
-  const updateCategory = async (id: number) => {
-    await api.patch(`/api/categories/${id}`, { name: editCategoryName, color: colorPicker });
-    setEditCategoryId(null);
-    setEditCategoryName("");
-    setColorPicker("#000000");
-    await fetchCategories();
-    await fetchTododetails(date);
-  };
-
-  const deleteCategory = async (id: number) => {
-    try {
-      await api.delete(`/api/categories/${id}`);
-      toast.success("카테고리가 삭제되었습니다.");
-      await fetchCategories();
-    } catch (error: any) {
-      const message = error?.response?.data?.errors[0]?.message;
-      if (message) {
-        toast.error(message);
-      } else {
-        toast.error("카테고리 삭제 중 오류가 발생했습니다.");
-      }
-    }
-  };
+  const [open, setOpen] = useState(false);
 
   return (
-    <div>
-      <div className="mb-4 space-y-2">
-        <input
-          type="text"
-          placeholder="카테고리 이름"
-          className="border px-3 py-1 rounded w-full"
-          value={editCategoryId ? editCategoryName : newCategoryName}
-          onChange={(e) =>
-            editCategoryId
-              ? setEditCategoryName(e.target.value)
-              : setNewCategoryName(e.target.value)
-          }
-        />
-        <HexColorPicker color={colorPicker} onChange={setColorPicker} />
-        <CategoryColorBox color={colorPicker} />
-        {editCategoryId ? (
-          <div className="flex gap-2">
-            <button
-              onClick={() => updateCategory(editCategoryId)}
-              className="bg-green-500 text-white px-3 py-1 rounded w-full mt-2">
-              저장
-            </button>
-            <button
-              onClick={() => {
-                setEditCategoryId(null);
-                setEditCategoryName("");
-                setColorPicker("#000000");
-              }}
-              className="bg-gray-400 text-white px-3 py-1 rounded w-full mt-2">
-              취소
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={addCategory}
-            className="bg-blue-500 text-white px-3 py-1 rounded w-full mt-2">
-            추가
-          </button>
-        )}
-      </div>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <button
+          className="hover:text-blue-500 inline-flex items-center"
+          aria-label="카테고리 관리"
+          title="카테고리 관리">
+          <Settings2 size={16} />
+        </button>
+      </Dialog.Trigger>
 
-      <ul className="space-y-2">
-        {categories.map((cat) => (
-          <li key={cat.id} className="flex items-center gap-3">
-            <CategoryColorBox color={cat.color} />
-
-            {editCategoryId === cat.id ? null : (
-              <>
-                <span>{cat.name}</span>
-                <button onClick={() => startEdit(cat)} className="text-blue-600">
-                  수정
-                </button>
-              </>
-            )}
-            <button onClick={() => deleteCategory(cat.id)} className="text-red-500">
-              삭제
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+        <Dialog.Content className="scale-75 fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow-lg w-full max-w-md">
+          <Dialog.Title className="text-lg font-bold mb-4">카테고리 관리</Dialog.Title>
+          <CategoryManagerForm />
+          <Dialog.Close
+            className="absolute top-2 right-2 text-gray-500 hover:text-black"
+            aria-label="닫기">
+            ✕
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
