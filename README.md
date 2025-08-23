@@ -25,7 +25,6 @@
 
 ### 🏗 아키텍처
 
-아래는 서비스의 아키텍처 다이어그램입니다.
 ![](./readme-assets/architecture.png)
 
 ---
