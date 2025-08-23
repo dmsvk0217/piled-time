@@ -26,13 +26,7 @@
 ### 🏗 아키텍처
 
 아래는 서비스의 아키텍처 다이어그램입니다.
-
-```
-[Frontend: React]  →  [Backend API: NestJS]  →  [DB: MySQL]
-           │                           │
-           ▼                           ▼
-     [AWS EC2 + Route53]        [Docker 컨테이너]
-```
+![](./readme-assets/architecture.png)
 
 ---
 
