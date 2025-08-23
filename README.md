@@ -25,7 +25,7 @@
 
 ### 🏗 아키텍처
 
-![](./readme-assets/architecture.png)
+![](./readme-assets/서비스구조.png)
 
 ---
 
