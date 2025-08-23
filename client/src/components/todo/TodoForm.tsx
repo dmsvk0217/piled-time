@@ -33,7 +33,7 @@ export default function TodoForm({ onSubmit, loading }: TodoFormProps) {
           onChange={(e) => setCategoryId(Number(e.target.value))}
           className="border px-2 py-1 rounded">
           {categories.map((cat) => (
-            <option key={cat.id} value={cat.id} style={{ color: cat.color }}>
+            <option key={cat.id} value={cat.id}>
               {cat.name}
             </option>
           ))}
