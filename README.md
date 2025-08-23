@@ -40,15 +40,15 @@
 
 #### Frontend
 
-- React, Axios, Zustand
+![](https://img.shields.io/badge/react-61DAFB?style=flat-square&logo=react&logoColor=black) ![](https://img.shields.io/badge/axios-5A29E4?style=flat-square&logo=axios&logoColor=white) ![](https://img.shields.io/badge/zustand-443E38?style=flat-square&logo=react&logoColor=white)
 
 #### Backend
 
-- TypeScript, NestJS, TypeORM, MySQL, Swagger
+![](https://img.shields.io/badge/typescript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![](https://img.shields.io/badge/nestjs-E0234E?style=flat-square&logo=nestjs&logoColor=white) ![](https://img.shields.io/badge/typeorm-000000?style=flat-square&logo=typeorm&logoColor=white) ![](https://img.shields.io/badge/mysql-4479A1?style=flat-square&logo=mysql&logoColor=white) ![](https://img.shields.io/badge/swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)
 
 #### DevOps
 
-- Docker, GitHub Actions, AWS EC2, Route53
+![](https://img.shields.io/badge/docker-2496ED?style=flat-square&logo=docker&logoColor=white) ![](https://img.shields.io/badge/github%20actions-2088FF?style=flat-square&logo=githubactions&logoColor=white) ![](https://img.shields.io/badge/aws%20ec2-FF9900?style=flat-square&logo=amazonec2&logoColor=white) ![](https://img.shields.io/badge/route53-FF9900?style=flat-square&logo=amazonroute53&logoColor=white)
 
 ---
 
